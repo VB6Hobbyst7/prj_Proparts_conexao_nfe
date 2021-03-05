@@ -3,16 +3,30 @@
 Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e criação de dois arquivos do tipo json dos seguintes modelos: Atualizada no ERP (lançada) e Envio do manifesto pelo ERP.
 
 
+## Alguns Links
+[MSXML 4.0 Service Pack 3 (Microsoft XML Core Services)](https://www.microsoft.com/en-us/download/details.aspx?id=15697)
+
+[Aplicativo da Manifestação do Destinatário](http://www.mdehom.fazenda.sp.gov.br/docs/manual.pdf)
+
+https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZk=
+
+[The Markdown (Basic Syntax)](https://www.markdownguide.org/basic-syntax/)
+
+
+## Tags
+
 #### #Previsão
 #### #Replanejado
-#### #Concluido
+#### #EmDesenvolvimento
 #### #EmTestes
+#### #Concluido
+
 
 
 
 # To-Do
 
-## 01 - 23/02 - Coleta - 23/02 - ** CONCLUIDO **
+## 01 - 23/02 - Coleta - 23/02 - EmTestes
 
 - [ ] Identificação e relacionamento de campos do arquivo com os campos da tabela
 - [ ] Origem/Destino - Processamento e movimentação de arquivos para pastas (Processados e/ou Sem Identificação).
