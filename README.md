@@ -32,13 +32,13 @@ Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dad
 - [ ] Envio do manifesto pelo ERP.
 
 
-## 05 - 01/03 - Implantação e testes - Previsão: 01/03
+## 05 - 01/03 - Implantação e testes - Previsão: 01/03 - Replanejar
 
 - [ ] Implantação e Testes com massa de dados ;
 - [ ] Envio do manifesto pelo ERP.
 
 
-## 06 - 01/03 - Validação e Entrega - Previsão: 01/03
+## 06 - 01/03 - Validação e Entrega - Previsão: 01/03 - Replanejar
 
 - [ ] Validação do dados processados atraves de evidencias do fluxo (Inicio - Fim) ;
 - [ ] Entrega do projeto com documentação enexo ao códigos para futuras pesquisas e melhorias caso necessário.
