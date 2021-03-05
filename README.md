@@ -33,72 +33,71 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 ###### 01 - 23/02 - Coleta - 23/02 - EmTestes - Previsão: 02/03 - Replanejado: [09/03]
 
-- [ ] Regras de negócio
+	* Regras de negócio
 
-	- [ ] Dados Gerais
-	- [ ] Compras e Itens da compra
-	- [ ] Origem x Destino - ( Identificação e relacionamento de campos do arquivo com os campos da tabela )
-	- [ ] Parametros - ( Variaveis de ambiente )
-	- [ ] Tipos - ( Controle de registros )
+		- [ ] Dados Gerais
+		- [ ] Compras e Itens da compra
+		- [ ] Origem x Destino - ( Identificação e relacionamento de campos do arquivo com os campos da tabela )
+		- [ ] Parametros - ( Variaveis de ambiente )
+		- [ ] Tipos - ( Controle de registros )
 
-- [ ] Cadatro de Variaveis de ambiente
+	* Cadatro de Variaveis de ambiente
 
-	* Processamento de Arquivos
-		- [ ] Pendente
-		- [ ] Processamento
-		- [ ] Transferir
-		- [ ] Rejeitado
+		* Processamento de Arquivos
+			- [ ] Pendente
+			- [ ] Processamento
+			- [ ] Transferir
+			- [ ] Rejeitado
 
-	* Controle de usuário
-		- [ ] UsuarioNome
-		- [ ] UsuarioCodigo
+		* Controle de usuário
+			- [ ] UsuarioNome
+			- [ ] UsuarioCodigo
 
 ###### 02 - 24/02 - Arquivo - 24/02 - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
 
-* Tabelas
+	* Tabelas
 
-	- [ ] Dados Gerais
-	- [ ] Compras e Itens da compra
-	- [ ] Origem x Destino
-	- [ ] Parametros
-	- [ ] Tipos
+		- [ ] Dados Gerais
+		- [ ] Compras e Itens da compra
+		- [ ] Origem x Destino
+		- [ ] Parametros
+		- [ ] Tipos
 
-* Consultas para cadastro 
+	* Consultas para cadastro 
 
-	- [ ] Dados Gerais
-	- [ ] Compras e Itens da compra
-	- [ ] Origem x Destino
-	- [ ] Parametros
-	- [ ] Tipos
+		- [ ] Dados Gerais
+		- [ ] Compras e Itens da compra
+		- [ ] Origem x Destino
+		- [ ] Parametros
+		- [ ] Tipos
 
-* Módulos 
+	* Módulos 
 
-	- [ ] Dados Gerais
-	- [ ] Compras e Itens da compra
-	- [ ] Origem x Destino
-	- [ ] Parametros
-	- [ ] Tipos
+		- [ ] Dados Gerais
+		- [ ] Compras e Itens da compra
+		- [ ] Origem x Destino
+		- [ ] Parametros
+		- [ ] Tipos
 
 
 ###### 03 - 25/03 - Extração - 25/03 - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
-* Envio do manifesto pelo ERP - EmTestes - 05/03;
+	* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
+	* Envio do manifesto pelo ERP - EmTestes - 05/03;
 
 ###### 04 - 26/02 - Envio - 26/02 - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
-* Envio do manifesto pelo ERP - EmTestes - 05/03;
+	* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
+	* Envio do manifesto pelo ERP - EmTestes - 05/03;
 
 
 ###### 05 - 01/03 - Implantação e testes - 01/03 - EmPausa - Previsão: 01/03 - Replanejar
 
-* Implantação e Testes com massa de dados ;
-* Envio do manifesto pelo ERP.
-
+	* Implantação e Testes com massa de dados ;
+	* Envio do manifesto pelo ERP.
 
 ###### 06 - 01/03 - Validação e Entrega - 01/03 - EmPausa - Previsão: 01/03 - Replanejar
 
-* Validação do dados processados atraves de evidencias do fluxo (Inicio - Fim) ;
-* Entrega do projeto com documentação enexo ao códigos para futuras pesquisas e melhorias caso necessário.
+	* Validação do dados processados atraves de evidencias do fluxo (Inicio - Fim) ;
+	* Entrega do projeto com documentação enexo ao códigos para futuras pesquisas e melhorias caso necessário.
 
