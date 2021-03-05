@@ -55,7 +55,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 ###### 02 - 24/02 - Arquivo - 24/02 - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
 
-- [ ] Tabelas
+* Tabelas
 
 	- [ ] Dados Gerais
 	- [ ] Compras e Itens da compra
@@ -63,7 +63,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 	- [ ] Parametros
 	- [ ] Tipos
 
-- [ ] Consultas para cadastro 
+* Consultas para cadastro 
 
 	- [ ] Dados Gerais
 	- [ ] Compras e Itens da compra
@@ -71,7 +71,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 	- [ ] Parametros
 	- [ ] Tipos
 
-- [ ] Módulos 
+* Módulos 
 
 	- [ ] Dados Gerais
 	- [ ] Compras e Itens da compra
@@ -79,33 +79,26 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 	- [ ] Parametros
 	- [ ] Tipos
 
-
-- [ ] Criação de tabelas auxiliares ( tblDadosConexaoNFeCTe e tblTipos )
-	- [ ] tblDadosConexaoNFeCTe  | Dados coletados dos arquivos tipo xml;
-	- [ ] tblTipos | Responsável pela identificação de arquivos processados.
-	      
-- [ ] Envio de dados coletados para as tabelas ( tblDadosConexaoNFeCTe, tblCompraNF e tblCompraNFItem ).
 
 ###### 03 - 25/03 - Extração - 25/03 - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-- [X] ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
-- [ ] Envio do manifesto pelo ERP - EmTestes - 05/03;
-	- [ ] 
+* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
+* Envio do manifesto pelo ERP - EmTestes - 05/03;
 
 ###### 04 - 26/02 - Envio - 26/02 - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-- [ ] Atualizada no ERP (Lançada);
-- [ ] Envio do manifesto pelo ERP.
+* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
+* Envio do manifesto pelo ERP - EmTestes - 05/03;
 
 
 ###### 05 - 01/03 - Implantação e testes - 01/03 - EmPausa - Previsão: 01/03 - Replanejar
 
-- [ ] Implantação e Testes com massa de dados ;
-- [ ] Envio do manifesto pelo ERP.
+* Implantação e Testes com massa de dados ;
+* Envio do manifesto pelo ERP.
 
 
 ###### 06 - 01/03 - Validação e Entrega - 01/03 - EmPausa - Previsão: 01/03 - Replanejar
 
-- [ ] Validação do dados processados atraves de evidencias do fluxo (Inicio - Fim) ;
-- [ ] Entrega do projeto com documentação enexo ao códigos para futuras pesquisas e melhorias caso necessário.
+* Validação do dados processados atraves de evidencias do fluxo (Inicio - Fim) ;
+* Entrega do projeto com documentação enexo ao códigos para futuras pesquisas e melhorias caso necessário.
 
