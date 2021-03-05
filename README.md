@@ -33,11 +33,52 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 ###### 01 - 23/02 - Coleta - 23/02 - EmTestes - Previsão: 02/03 - Replanejado: [09/03]
 
-- [ ] Identificação e relacionamento de campos do arquivo com os campos da tabela
-- [ ] Origem/Destino - Processamento e movimentação de arquivos para pastas (Processados e/ou Sem Identificação).
+- [ ] Regras de negócio
 
+	- [ ] Dados Gerais
+	- [ ] Compras e Itens da compra
+	- [ ] Origem x Destino - ( Identificação e relacionamento de campos do arquivo com os campos da tabela )
+	- [ ] Parametros - ( Variaveis de ambiente )
+	- [ ] Tipos - ( Controle de registros )
+
+- [ ] Cadatro de Variaveis de ambiente
+
+	* Processamento de Arquivos
+		- [ ] Pendente
+		- [ ] Processamento
+		- [ ] Transferir
+		- [ ] Rejeitado
+
+	* Controle de usuário
+		- [ ] UsuarioNome
+		- [ ] UsuarioCodigo
 
 ###### 02 - 24/02 - Arquivo - 24/02 - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
+
+- [ ] Tabelas
+
+	- [ ] Dados Gerais
+	- [ ] Compras e Itens da compra
+	- [ ] Origem x Destino
+	- [ ] Parametros
+	- [ ] Tipos
+
+- [ ] Consultas para cadastro 
+
+	- [ ] Dados Gerais
+	- [ ] Compras e Itens da compra
+	- [ ] Origem x Destino
+	- [ ] Parametros
+	- [ ] Tipos
+
+- [ ] Módulos 
+
+	- [ ] Dados Gerais
+	- [ ] Compras e Itens da compra
+	- [ ] Origem x Destino
+	- [ ] Parametros
+	- [ ] Tipos
+
 
 - [ ] Criação de tabelas auxiliares ( tblDadosConexaoNFeCTe e tblTipos )
 	- [ ] tblDadosConexaoNFeCTe  | Dados coletados dos arquivos tipo xml;
@@ -45,13 +86,11 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 	      
 - [ ] Envio de dados coletados para as tabelas ( tblDadosConexaoNFeCTe, tblCompraNF e tblCompraNFItem ).
 
-
 ###### 03 - 25/03 - Extração - 25/03 - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
 - [X] ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
 - [ ] Envio do manifesto pelo ERP - EmTestes - 05/03;
 	- [ ] 
-
 
 ###### 04 - 26/02 - Envio - 26/02 - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
 
