@@ -82,12 +82,12 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 ###### 03 - 25/03 - Extração - 25/03 - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-	* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
+	* Atualizada no ERP (Lançada) - Concluido - 04/03;
 	* Envio do manifesto pelo ERP - EmTestes - 05/03;
 
 ###### 04 - 26/02 - Envio - 26/02 - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-	* ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
+	* Atualizada no ERP (Lançada) - Concluido - 04/03;
 	* Envio do manifesto pelo ERP - EmTestes - 05/03;
 
 
