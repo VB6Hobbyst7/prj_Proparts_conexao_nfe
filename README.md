@@ -1,4 +1,4 @@
-# prj_Proparts_conexa_nfe
+# Proparts_conexa_nfe
 
 Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e criação de dois arquivos do tipo json dos seguintes modelos: Atualizada no ERP (lançada) e Envio do manifesto pelo ERP.
 
@@ -22,10 +22,10 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 #### #Previsão
 #### #Replanejado
+#### #EmPausa
 #### #EmDesenvolvimento
 #### #EmTestes
 #### #Concluido
-
 
 
 
@@ -37,7 +37,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 - [ ] Origem/Destino - Processamento e movimentação de arquivos para pastas (Processados e/ou Sem Identificação).
 
 
-## 02 - 24/02 - Arquivo - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
+## 02 - 24/02 - Arquivo - 24/02 - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
 
 - [ ] Criação de tabelas auxiliares ( tblDadosConexaoNFeCTe e tblTipos )
 	- [ ] tblDadosConexaoNFeCTe  | Dados coletados dos arquivos tipo xml;
@@ -46,26 +46,26 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 - [ ] Envio de dados coletados para as tabelas ( tblDadosConexaoNFeCTe, tblCompraNF e tblCompraNFItem ).
 
 
-## 03 - 25/03 - Extração - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
+## 03 - 25/03 - Extração - 25/03 - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
 - [X] ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
 - [ ] Envio do manifesto pelo ERP - EmTestes - 05/03;
 	- [ ] 
 
 
-## 04 - 26/02 - Envio - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
+## 04 - 26/02 - Envio - 26/02 - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
 
 - [ ] Atualizada no ERP (Lançada);
 - [ ] Envio do manifesto pelo ERP.
 
 
-## 05 - 01/03 - Implantação e testes - Previsão: 01/03 - Replanejar
+## 05 - 01/03 - Implantação e testes - 01/03 - EmPausa - Previsão: 01/03 - Replanejar
 
 - [ ] Implantação e Testes com massa de dados ;
 - [ ] Envio do manifesto pelo ERP.
 
 
-## 06 - 01/03 - Validação e Entrega - Previsão: 01/03 - Replanejar
+## 06 - 01/03 - Validação e Entrega - 01/03 - EmPausa - Previsão: 01/03 - Replanejar
 
 - [ ] Validação do dados processados atraves de evidencias do fluxo (Inicio - Fim) ;
 - [ ] Entrega do projeto com documentação enexo ao códigos para futuras pesquisas e melhorias caso necessário.
