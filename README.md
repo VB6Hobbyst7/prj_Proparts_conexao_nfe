@@ -11,7 +11,7 @@ To-Do
 - [ ] Origem/Destino - Processamento e movimentação de arquivos para pastas (Processados e/ou Sem Identificação).
 
 
-# 02 - 24/02 - Arquivo - Em desenvolvimento - previsão de terminio: 02/03
+# 02 - 24/02 - Arquivo - Em desenvolvimento - previsão: 02/03
 
 - [ ] Criação de tabelas auxiliares ( tblDadosConexaoNFeCTe e tblTipos )
 	- [ ] tblDadosConexaoNFeCTe  | Dados coletados dos arquivos tipo xml;
@@ -20,7 +20,7 @@ To-Do
 - [ ] Envio de dados coletados para as tabelas ( tblDadosConexaoNFeCTe, tblCompraNF e tblCompraNFItem ).
 
 
-# 03 - 25/03 - Extração - 01/03 - previsão de terminio: 02/03
+# 03 - 25/03 - Extração - 01/03 - previsão: 02/03
 
 - [ ] Atualizada no ERP (Lançada);
 - [ ] Envio do manifesto pelo ERP.
