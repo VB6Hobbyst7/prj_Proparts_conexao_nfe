@@ -5,7 +5,7 @@ Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dad
 
 #### #Previsão
 #### #Replanejado
-#### #Conluido
+#### #Concluido
 #### #EmTestes
 
 
