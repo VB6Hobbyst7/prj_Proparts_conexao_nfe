@@ -3,6 +3,13 @@
 Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e criação de dois arquivos do tipo json dos seguintes modelos: Atualizada no ERP (lançada) e Envio do manifesto pelo ERP.
 
 
+#### #Previsão
+#### #Replanejado
+#### #Conluido
+#### #EmTestes
+
+
+
 # To-Do
 
 ## 01 - 23/02 - Coleta - 23/02 - ** CONCLUIDO **
@@ -22,8 +29,9 @@ Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dad
 
 ## 03 - 25/03 - Extração - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-- [ ] Atualizada no ERP (Lançada);
-- [ ] Envio do manifesto pelo ERP.
+- [X] Atualizada no ERP (Lançada) - Concluido - 04/03;
+- [ ] Envio do manifesto pelo ERP - EmTestes - 05/03;
+	- [ ] 
 
 
 ## 04 - 26/02 - Envio - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
