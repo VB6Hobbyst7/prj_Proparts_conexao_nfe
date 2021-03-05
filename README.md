@@ -4,13 +4,18 @@ Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dad
 
 
 ## Alguns Links
-[MSXML 4.0 Service Pack 3 (Microsoft XML Core Services)](https://www.microsoft.com/en-us/download/details.aspx?id=15697)
+[Arquivos Integração com ERP](http://docs.conexaonfe.com.br/arquivos-integracao/#envio-do-manifesto-pelo-erp)
 
 [Aplicativo da Manifestação do Destinatário](http://www.mdehom.fazenda.sp.gov.br/docs/manual.pdf)
 
 https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZk=
 
+
+
+[MSXML 4.0 Service Pack 3 (Microsoft XML Core Services)](https://www.microsoft.com/en-us/download/details.aspx?id=15697)
+
 [The Markdown (Basic Syntax)](https://www.markdownguide.org/basic-syntax/)
+[Basic writing and formatting syntax](https://docs.github.com/pt/github/writing-on-github/basic-writing-and-formatting-syntax)
 
 
 ## Tags
@@ -43,7 +48,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 ## 03 - 25/03 - Extração - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
-- [X] Atualizada no ERP (Lançada) - Concluido - 04/03;
+- [X] ~~Atualizada no ERP (Lançada) - Concluido - 04/03;~~
 - [ ] Envio do manifesto pelo ERP - EmTestes - 05/03;
 	- [ ] 
 
