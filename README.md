@@ -44,28 +44,28 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 	* Cadatro de Variaveis de ambiente
 
 		* Processamento de Arquivos
-			- [ ] Pendente
-			- [ ] Processamento
-			- [ ] Transferir
-			- [ ] Rejeitado
+			- [X] Pendente
+			- [X] Processamento
+			- [X] Transferir
+			- [X] Rejeitado
 
 		* Controle de usuário
-			- [ ] UsuarioNome
-			- [ ] UsuarioCodigo
+			- [X] UsuarioNome
+			- [X] UsuarioCodigo
 
 ###### 02 - 24/02 - Arquivo - 24/02 - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
 
 	* Tabelas
 
-		- [ ] Dados Gerais
-		- [ ] Compras e Itens da compra
-		- [ ] Origem x Destino
-		- [ ] Parametros
-		- [ ] Tipos
+		- [X] Dados Gerais
+		- [X] Compras e Itens da compra
+		- [X] Origem x Destino
+		- [X] Parametros
+		- [X] Tipos
 
 	* Consultas para cadastro 
 
-		- [ ] Dados Gerais
+		- [X] Dados Gerais
 		- [ ] Compras e Itens da compra
 		- [ ] Origem x Destino
 		- [ ] Parametros
