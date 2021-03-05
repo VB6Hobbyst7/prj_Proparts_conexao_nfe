@@ -26,7 +26,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 # To-Do
 
-## 01 - 23/02 - Coleta - 23/02 - EmTestes
+## 01 - 23/02 - Coleta - 23/02 - EmTestes - Previsão: 02/03 - Replanejado: [09/03]
 
 - [ ] Identificação e relacionamento de campos do arquivo com os campos da tabela
 - [ ] Origem/Destino - Processamento e movimentação de arquivos para pastas (Processados e/ou Sem Identificação).
