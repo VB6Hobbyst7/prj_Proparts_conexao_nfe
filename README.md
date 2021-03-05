@@ -32,7 +32,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 - [ ] Origem/Destino - Processamento e movimentação de arquivos para pastas (Processados e/ou Sem Identificação).
 
 
-## 02 - 24/02 - Arquivo - Em desenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
+## 02 - 24/02 - Arquivo - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
 
 - [ ] Criação de tabelas auxiliares ( tblDadosConexaoNFeCTe e tblTipos )
 	- [ ] tblDadosConexaoNFeCTe  | Dados coletados dos arquivos tipo xml;
@@ -41,14 +41,14 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 - [ ] Envio de dados coletados para as tabelas ( tblDadosConexaoNFeCTe, tblCompraNF e tblCompraNFItem ).
 
 
-## 03 - 25/03 - Extração - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
+## 03 - 25/03 - Extração - EmDesenvolvimento - 01/03 - Previsão: 02/03 - Replanejado: [09/03]
 
 - [X] Atualizada no ERP (Lançada) - Concluido - 04/03;
 - [ ] Envio do manifesto pelo ERP - EmTestes - 05/03;
 	- [ ] 
 
 
-## 04 - 26/02 - Envio - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
+## 04 - 26/02 - Envio - EmDesenvolvimento - 02/03 - Previsão: 02/03 - Replanejado: [09/03]
 
 - [ ] Atualizada no ERP (Lançada);
 - [ ] Envio do manifesto pelo ERP.
