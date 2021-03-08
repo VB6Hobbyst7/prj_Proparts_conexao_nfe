@@ -27,20 +27,15 @@ Private Const createComprasItens As String = "CREATE TABLE tblCompraNFItem (ID_C
                                             "VCntb_CompraNFItem double , BaseCalcICMS_CompraNFItem double , VTotBaseCalcICMS_CompraNFItem double , DebICMS_CompraNFItem double , IseICMS_CompraNFItem double , OutICMS_CompraNFItem double , BaseCalcIPI_CompraNFItem double , DebIPI_CompraNFItem double , IseIPI_CompraNFItem double , OutIPI_CompraNFItem double , Obs_CompraNFItem TEXT (255) , TxMLSubsTrib_CompraNFItem double , TxIntSubsTrib_CompraNFItem double , TxExtSubsTrib_CompraNFItem double , BaseCalcICMSSubsTrib_CompraNFItem double , VTotICMSSubsTrib_compranfitem double , VTotDesc_CompraNFItem double , VTotFrete_CompraNFItem double ,  VTotSeg_CompraNFItem double , STIPI_CompraNFItem TEXT (255) , STPIS_CompraNFItem TEXT (255) , STCOFINS_CompraNFItem TEXT (255) , nID_CompraNFItem TEXT (255) , PIS_CompraNFItem double ,  COFINS_CompraNFItem double , VTotBaseCalcPIS_CompraNFItem double , VTotBaseCalcCOFINS_CompraNFItem double , VTotPIS_CompraNFItem double , VTotCOFINS_CompraNFItem double , " & _
                                             "VTotOutDesp_CompraNFItem double ,  VUntCustoSI_CompraNFItem double , VTotDebISSRet_CompraNFItem double , VTotIseICMS_CompraNFItem double , VTotOutICMS_CompraNFItem double , SNCredICMS_CompraNFItem double , VTotSNCredICMS_CompraNFItem double)"
 
-''==================================================================================================================================================='
-''
-''#CriacaoDeAmbiente                     : Criacao De Ambiente para uso da nova aplicação ( Conexao NF-e e CT-e )
-''#ExclusaoTabelasAuxiliares             : Exclusao de tabelas auxiliares caso existam
-''#CriacaoTabelasAuxiliares              : Criação de tabelas auxiliares para uso no processamento de arquivos xmls e json
-''
-''#CadastroDeParametros                  : Cadastro de parametros ex: ( Caminhos, Valores padrões e outros )
-''#CadastroDeTipos                       : Cadastro de tipos para classificação de registros
-''#CadastroOrigemDestino                 : Relacionamento entre campos dos arquivos (nfe,cte) das tabela (tblCompraNF,tblCompraNFItem)
-''
-''==================================================================================================================================================='
-
-
 ''#CriacaoDeAmbiente
+''#ExclusaoTabelasAuxiliares
+''#CriacaoTabelasAuxiliares
+''#CadastroDeParametros
+''#CadastroDeTipos
+''#CadastroOrigemDestino
+
+
+''#CriacaoDeAmbiente - Criacao De Ambiente para uso da nova aplicação ( Conexao NF-e e CT-e )
 Sub main_criacao()
 ''==============================================================================================================='
 '' OBJETIVO          : Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e
@@ -52,23 +47,23 @@ Sub main_criacao()
 On Error Resume Next
     Dim arr() As Variant
     
-    ''#ExclusaoTabelasAuxiliares
+    ''#ExclusaoTabelasAuxiliares - Exclusao de tabelas auxiliares caso existam
     arr = Array(deleteOrigemDestino, deleteParametros, deleteTipos, deleteDados, deleteCompras, deleteComprasItens)
     executarComandos arr
     
 On Error GoTo 0
 
-    ''#CriacaoTabelasAuxiliares
+    ''#CriacaoTabelasAuxiliares - Criação de tabelas auxiliares para uso no processamento de arquivos xmls e json
     arr = Array(createOrigemDestino, createParametros, createTipos, createDados, createCompras, createComprasItens)
     executarComandos arr
 
-    ''#CadastroDeParametros
+    ''#CadastroDeParametros - Cadastro de parametros ex: ( Caminhos, Valores padrões e outros )
     CadastroDeItens ItensDeParametros
     
-    ''#CadastroDeTipos
+    ''#CadastroDeTipos - Cadastro de tipos para classificação de registros
     CadastroDeItens ItensDeTipos
     
-    ''#CadastroOrigemDestino
+    ''#CadastroOrigemDestino - Relacionamento entre campos dos arquivos (nfe,cte) das tabela (tblCompraNF,tblCompraNFItem)
     CadastroOrigemDestino
     
     MsgBox "Concluido!", vbOKOnly + vbInformation, "main_criacao"
@@ -81,7 +76,7 @@ End Sub
 '' ### #Libs - USADAS APENAS NESTE MÓDULO PARA CRIAÇÃO
 '' #####################################################################
 
-Function getTypeText(ID As Integer) As String
+Private Function getTypeText(ID As Integer) As String
 Dim myData As Object: Set myData = CreateObject("Scripting.Dictionary")
 
     myData.add 1, "dbBoolean"
@@ -110,9 +105,10 @@ getTypeText = myData(ID)
 
 End Function
 
-Function ItensDeTipos() As Collection
+Private Function ItensDeTipos() As Collection
 Set ItensDeTipos = New Collection
 
+    '' TIPOS DE CADASTROS
     ItensDeTipos.add "INSERT INTO tblTipos (codMod,Descricao) VALUES(0,'1 - NF-e Importação')"
     ItensDeTipos.add "INSERT INTO tblTipos (codMod,Descricao) VALUES(0,'2 - NF-e Consumo')"
     ItensDeTipos.add "INSERT INTO tblTipos (codMod,Descricao) VALUES(0,'3 - NF-e com código Sisparts')"
@@ -123,14 +119,25 @@ Set ItensDeTipos = New Collection
 
 End Function
 
-Function ItensDeParametros() As Collection
+Private Function ItensDeParametros() As Collection
 Set ItensDeParametros = New Collection
 
+    '' CAMINHOS
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('caminhoDeColeta','C:\temp\proparts\Coleta\')"
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('caminhoDeProcessados','C:\temp\proparts\Processados\')"
+    
+    '' USUARIO
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('UsuarioErpCod','000001')"
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('UsuarioErpNome','RoboProparts')"
-
+    
+    '' TABELAS AUXILIARES
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblParametros')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblTipos')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblOrigemDestino')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblDadosConexaoNFeCTe')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblCompraNF')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblCompraNFItem')"
+    
 End Function
 
 
@@ -156,4 +163,34 @@ Dim script As String: script = "INSERT INTO tblOrigemDestino (Destino,Tipo) VALU
 Set con = Nothing
 
 End Sub
+
+Private Sub CadastroDeItens(Itens As Collection)
+Dim con As ADODB.Connection: Set con = CurrentProject.Connection
+Dim i As Variant
+
+    For Each i In Itens
+        con.Execute i
+    Next i
+
+Set con = Nothing
+
+End Sub
+
+Private Sub criarConsulta(nomeDaConsulta As String, scriptDaConsulta As String)
+Dim db As DAO.Database: Set db = CurrentDb
+
+    db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
+    db.Close
+
+End Sub
+
+Private Sub executarComandos(comandos() As Variant) ''#ExecutarConsultas
+Dim Comando As Variant
+
+    For Each Comando In comandos
+        Application.CurrentDb.Execute Comando
+    Next Comando
+
+End Sub
+
 
