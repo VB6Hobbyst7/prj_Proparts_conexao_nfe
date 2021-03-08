@@ -66,10 +66,10 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 	* Consultas para cadastro 
 
 		- [X] Dados Gerais
-		- [ ] Compras e Itens da compra
-		- [ ] Origem x Destino
-		- [ ] Parametros
-		- [ ] Tipos
+		- [X] Compras e Itens da compra
+		- [X] Origem x Destino
+		- [X] Parametros
+		- [X] Tipos
 
 	* Módulos 
 
