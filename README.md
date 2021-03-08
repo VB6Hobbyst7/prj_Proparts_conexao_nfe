@@ -55,7 +55,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 ###### 02 - 24/02 - Arquivo - 24/02 - EmDesenvolvimento - Previsão: 02/03 - Replanejado: [09/03]
 
-	* Tabelas
+	* Criar Tabelas Auxiliares
 
 		- [X] Dados Gerais
 		- [X] Compras e Itens da compra
@@ -63,7 +63,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 		- [X] Parametros
 		- [X] Tipos
 
-	* Consultas para cadastro 
+	* Criar Consultas para cadastro ( Usadas pelos módulos )
 
 		- [X] Dados Gerais
 		- [X] Compras e Itens da compra
@@ -71,7 +71,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 		- [X] Parametros
 		- [X] Tipos
 
-	* Módulos 
+	* Módulos ( Regras de negócios X Consultas )
 
 		- [ ] Dados Gerais
 		- [ ] Compras e Itens da compra
