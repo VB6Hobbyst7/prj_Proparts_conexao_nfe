@@ -37,7 +37,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 		- [ ] Dados Gerais
 		- [ ] Compras e Itens da compra
-		- [ ] Origem x Destino - ( Identificação e relacionamento de campos do arquivo com os campos da tabela )
+		- [ ] Origem x Destino - ( Mapeamento de campos do arquivo com os campos da tabela )
 		- [ ] Parametros - ( Variaveis de ambiente )
 		- [ ] Tipos - ( Controle de registros )
 
