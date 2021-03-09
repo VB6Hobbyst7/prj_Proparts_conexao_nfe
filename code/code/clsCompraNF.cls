@@ -10,11 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Private This As ClassType
-
-
 Private Type ClassType
-	ID_CompraNF As Long
 	IDOLD_CompraNF As Long
 	Fil_CompraNF As String
 	NumNF_CompraNF As String
@@ -95,10 +91,9 @@ Private Type ClassType
 	IDVendaNF_CompraNF As String
 	FlagTransf_CompraNF As String
 End Type
+Private This As ClassType
 
 
-Property Get ID_CompraNF() As Long:ID_CompraNF = This.ID_CompraNF:End Property
-Property Let ID_CompraNF(pValue As Long):This.ID_CompraNF = pValue:End Property
 Property Get IDOLD_CompraNF() As Long:IDOLD_CompraNF = This.IDOLD_CompraNF:End Property
 Property Let IDOLD_CompraNF(pValue As Long):This.IDOLD_CompraNF = pValue:End Property
 Property Get Fil_CompraNF() As String:Fil_CompraNF = This.Fil_CompraNF:End Property
@@ -259,92 +254,91 @@ Property Get FlagTransf_CompraNF() As String:FlagTransf_CompraNF = This.FlagTran
 Property Let FlagTransf_CompraNF(pValue As String):This.FlagTransf_CompraNF = pValue:End Property
 
 
-sub cadastrar(obj as clsCompraNF)
+sub cadastrar()
 Dim db As DAO.Database: Set db = CurrentDb
 Dim qdf As DAO.QueryDef: Set qdf = db.QueryDefs("INSERT_tblCompraNF")
 
 
 With qdf
-	.Parameters("strID_CompraNF") = obj.ID_CompraNF
-	.Parameters("strIDOLD_CompraNF") = obj.IDOLD_CompraNF
-	.Parameters("strFil_CompraNF") = obj.Fil_CompraNF
-	.Parameters("strNumNF_CompraNF") = obj.NumNF_CompraNF
-	.Parameters("strNumPed_CompraNF") = obj.NumPed_CompraNF
-	.Parameters("strNumOrc_CompraNF") = obj.NumOrc_CompraNF
-	.Parameters("strEsp_CompraNF") = obj.Esp_CompraNF
-	.Parameters("strSerie_CompraNF") = obj.Serie_CompraNF
-	.Parameters("strTPNF_CompraNF") = obj.TPNF_CompraNF
-	.Parameters("strID_NatOp_CompraNF") = obj.ID_NatOp_CompraNF
-	.Parameters("strID_NatOpOLD_CompraNF") = obj.ID_NatOpOLD_CompraNF
-	.Parameters("strCFOP_CompraNF") = obj.CFOP_CompraNF
-	.Parameters("strIESubsTrib_CompraNF") = obj.IESubsTrib_CompraNF
-	.Parameters("strDTEmi_CompraNF") = obj.DTEmi_CompraNF
-	.Parameters("strDTEntd_CompraNF") = obj.DTEntd_CompraNF
-	.Parameters("strHoraEntd_CompraNF") = obj.HoraEntd_CompraNF
-	.Parameters("strID_Forn_CompraNF") = obj.ID_Forn_CompraNF
-	.Parameters("strID_FornOld_CompraNF") = obj.ID_FornOld_CompraNF
-	.Parameters("strID_Compr_CompraNF") = obj.ID_Compr_CompraNF
-	.Parameters("strID_Transp_CompraNF") = obj.ID_Transp_CompraNF
-	.Parameters("strID_CondPgto_CompraNF") = obj.ID_CondPgto_CompraNF
-	.Parameters("strBaseCalcICMSSubsTrib_CompraNF") = obj.BaseCalcICMSSubsTrib_CompraNF
-	.Parameters("strVTotICMSSubsTrib_CompraNF") = obj.VTotICMSSubsTrib_CompraNF
-	.Parameters("strVTotFrete_CompraNF") = obj.VTotFrete_CompraNF
-	.Parameters("strVTotSeguro_CompraNF") = obj.VTotSeguro_CompraNF
-	.Parameters("strVTotOutDesp_CompraNF") = obj.VTotOutDesp_CompraNF
-	.Parameters("strBaseCalcICMS_CompraNF") = obj.BaseCalcICMS_CompraNF
-	.Parameters("strVTotICMS_CompraNF") = obj.VTotICMS_CompraNF
-	.Parameters("strVTotIPI_CompraNF") = obj.VTotIPI_CompraNF
-	.Parameters("strVTotISS_CompraNF") = obj.VTotISS_CompraNF
-	.Parameters("strVTotProd_CompraNF") = obj.VTotProd_CompraNF
-	.Parameters("strVTotServ_CompraNF") = obj.VTotServ_CompraNF
-	.Parameters("strVTotNF_CompraNF") = obj.VTotNF_CompraNF
-	.Parameters("strTxDesc_CompraNF") = obj.TxDesc_CompraNF
-	.Parameters("strVTotDesc_CompraNF") = obj.VTotDesc_CompraNF
-	.Parameters("strTPFrete_CompraNF") = obj.TPFrete_CompraNF
-	.Parameters("strPlaca_CompraNF") = obj.Placa_CompraNF
-	.Parameters("strUFVeic_CompraNF") = obj.UFVeic_CompraNF
-	.Parameters("strQtdVol_CompraNF") = obj.QtdVol_CompraNF
-	.Parameters("strEspVol_CompraNF") = obj.EspVol_CompraNF
-	.Parameters("strMarcaVol_CompraNF") = obj.MarcaVol_CompraNF
-	.Parameters("strNumVol_CompraNF") = obj.NumVol_CompraNF
-	.Parameters("strPesoBrt_CompraNF") = obj.PesoBrt_CompraNF
-	.Parameters("strPesoLiq_CompraNF") = obj.PesoLiq_CompraNF
-	.Parameters("strDdAdic_CompraNF") = obj.DdAdic_CompraNF
-	.Parameters("strObs_CompraNF") = obj.Obs_CompraNF
-	.Parameters("strSit_CompraNF") = obj.Sit_CompraNF
-	.Parameters("strIDCli_Depto_CompraNF") = obj.IDCli_Depto_CompraNF
-	.Parameters("strIDCli_Contato_CompraNF") = obj.IDCli_Contato_CompraNF
-	.Parameters("strIDCli_Email_CompraNF") = obj.IDCli_Email_CompraNF
-	.Parameters("strIDCli_Fone_CompraNF") = obj.IDCli_Fone_CompraNF
-	.Parameters("strCondEsp_CompraNF") = obj.CondEsp_CompraNF
-	.Parameters("strValidade_CompraNF") = obj.Validade_CompraNF
-	.Parameters("strPzEntg_CompraNF") = obj.PzEntg_CompraNF
-	.Parameters("strGarantia_CompraNF") = obj.Garantia_CompraNF
-	.Parameters("strFlagSimples_CompraNF") = obj.FlagSimples_CompraNF
-	.Parameters("strFlagDescBaseICMS_CompraNF") = obj.FlagDescBaseICMS_CompraNF
-	.Parameters("strFlagExp_CompraNF") = obj.FlagExp_CompraNF
-	.Parameters("strModeloDoc_CompraNF") = obj.ModeloDoc_CompraNF
-	.Parameters("strChvAcesso_CompraNF") = obj.ChvAcesso_CompraNF
-	.Parameters("strVTotPIS_CompraNF") = obj.VTotPIS_CompraNF
-	.Parameters("strVTotCOFINS_CompraNF") = obj.VTotCOFINS_CompraNF
-	.Parameters("strVTotPISRet_CompraNF") = obj.VTotPISRet_CompraNF
-	.Parameters("strVTotCOFINSRet_CompraNF") = obj.VTotCOFINSRet_CompraNF
-	.Parameters("strVTotCSLLRet_CompraNF") = obj.VTotCSLLRet_CompraNF
-	.Parameters("strVTotIRRFRet_CompraNF") = obj.VTotIRRFRet_CompraNF
-	.Parameters("strFlagSomaST_CompraNF") = obj.FlagSomaST_CompraNF
-	.Parameters("strFlagCalculado_CompraNF") = obj.FlagCalculado_CompraNF
-	.Parameters("strVTotISSRet_CompraNF") = obj.VTotISSRet_CompraNF
-	.Parameters("strDTExt_CompraNF") = obj.DTExt_CompraNF
-	.Parameters("strCNPJ_CPF_CompraNF") = obj.CNPJ_CPF_CompraNF
-	.Parameters("strNomeCompleto_CompraNF") = obj.NomeCompleto_CompraNF
-	.Parameters("strNomeCompleto_VendaNF") = obj.NomeCompleto_VendaNF
-	.Parameters("strID_Imp_CompraNF") = obj.ID_Imp_CompraNF
-	.Parameters("strSitOR_CompraNF") = obj.SitOR_CompraNF
-	.Parameters("strNumOR_CompraNF") = obj.NumOR_CompraNF
-	.Parameters("strFlagNEnvWMAS_CompraNF") = obj.FlagNEnvWMAS_CompraNF
-	.Parameters("strIDVD_CompraNF") = obj.IDVD_CompraNF
-	.Parameters("strIDVendaNF_CompraNF") = obj.IDVendaNF_CompraNF
-	.Parameters("strFlagTransf_CompraNF") = obj.FlagTransf_CompraNF
+	.Parameters("IDOLD_CompraNF") = IDOLD_CompraNF
+	.Parameters("Fil_CompraNF") = Fil_CompraNF
+	.Parameters("NumNF_CompraNF") = NumNF_CompraNF
+	.Parameters("NumPed_CompraNF") = NumPed_CompraNF
+	.Parameters("NumOrc_CompraNF") = NumOrc_CompraNF
+	.Parameters("Esp_CompraNF") = Esp_CompraNF
+	.Parameters("Serie_CompraNF") = Serie_CompraNF
+	.Parameters("TPNF_CompraNF") = TPNF_CompraNF
+	.Parameters("ID_NatOp_CompraNF") = ID_NatOp_CompraNF
+	.Parameters("ID_NatOpOLD_CompraNF") = ID_NatOpOLD_CompraNF
+	.Parameters("CFOP_CompraNF") = CFOP_CompraNF
+	.Parameters("IESubsTrib_CompraNF") = IESubsTrib_CompraNF
+	.Parameters("DTEmi_CompraNF") = DTEmi_CompraNF
+	.Parameters("DTEntd_CompraNF") = DTEntd_CompraNF
+	.Parameters("HoraEntd_CompraNF") = HoraEntd_CompraNF
+	.Parameters("ID_Forn_CompraNF") = ID_Forn_CompraNF
+	.Parameters("ID_FornOld_CompraNF") = ID_FornOld_CompraNF
+	.Parameters("ID_Compr_CompraNF") = ID_Compr_CompraNF
+	.Parameters("ID_Transp_CompraNF") = ID_Transp_CompraNF
+	.Parameters("ID_CondPgto_CompraNF") = ID_CondPgto_CompraNF
+	.Parameters("BaseCalcICMSSubsTrib_CompraNF") = BaseCalcICMSSubsTrib_CompraNF
+	.Parameters("VTotICMSSubsTrib_CompraNF") = VTotICMSSubsTrib_CompraNF
+	.Parameters("VTotFrete_CompraNF") = VTotFrete_CompraNF
+	.Parameters("VTotSeguro_CompraNF") = VTotSeguro_CompraNF
+	.Parameters("VTotOutDesp_CompraNF") = VTotOutDesp_CompraNF
+	.Parameters("BaseCalcICMS_CompraNF") = BaseCalcICMS_CompraNF
+	.Parameters("VTotICMS_CompraNF") = VTotICMS_CompraNF
+	.Parameters("VTotIPI_CompraNF") = VTotIPI_CompraNF
+	.Parameters("VTotISS_CompraNF") = VTotISS_CompraNF
+	.Parameters("VTotProd_CompraNF") = VTotProd_CompraNF
+	.Parameters("VTotServ_CompraNF") = VTotServ_CompraNF
+	.Parameters("VTotNF_CompraNF") = VTotNF_CompraNF
+	.Parameters("TxDesc_CompraNF") = TxDesc_CompraNF
+	.Parameters("VTotDesc_CompraNF") = VTotDesc_CompraNF
+	.Parameters("TPFrete_CompraNF") = TPFrete_CompraNF
+	.Parameters("Placa_CompraNF") = Placa_CompraNF
+	.Parameters("UFVeic_CompraNF") = UFVeic_CompraNF
+	.Parameters("QtdVol_CompraNF") = QtdVol_CompraNF
+	.Parameters("EspVol_CompraNF") = EspVol_CompraNF
+	.Parameters("MarcaVol_CompraNF") = MarcaVol_CompraNF
+	.Parameters("NumVol_CompraNF") = NumVol_CompraNF
+	.Parameters("PesoBrt_CompraNF") = PesoBrt_CompraNF
+	.Parameters("PesoLiq_CompraNF") = PesoLiq_CompraNF
+	.Parameters("DdAdic_CompraNF") = DdAdic_CompraNF
+	.Parameters("Obs_CompraNF") = Obs_CompraNF
+	.Parameters("Sit_CompraNF") = Sit_CompraNF
+	.Parameters("IDCli_Depto_CompraNF") = IDCli_Depto_CompraNF
+	.Parameters("IDCli_Contato_CompraNF") = IDCli_Contato_CompraNF
+	.Parameters("IDCli_Email_CompraNF") = IDCli_Email_CompraNF
+	.Parameters("IDCli_Fone_CompraNF") = IDCli_Fone_CompraNF
+	.Parameters("CondEsp_CompraNF") = CondEsp_CompraNF
+	.Parameters("Validade_CompraNF") = Validade_CompraNF
+	.Parameters("PzEntg_CompraNF") = PzEntg_CompraNF
+	.Parameters("Garantia_CompraNF") = Garantia_CompraNF
+	.Parameters("FlagSimples_CompraNF") = FlagSimples_CompraNF
+	.Parameters("FlagDescBaseICMS_CompraNF") = FlagDescBaseICMS_CompraNF
+	.Parameters("FlagExp_CompraNF") = FlagExp_CompraNF
+	.Parameters("ModeloDoc_CompraNF") = ModeloDoc_CompraNF
+	.Parameters("ChvAcesso_CompraNF") = ChvAcesso_CompraNF
+	.Parameters("VTotPIS_CompraNF") = VTotPIS_CompraNF
+	.Parameters("VTotCOFINS_CompraNF") = VTotCOFINS_CompraNF
+	.Parameters("VTotPISRet_CompraNF") = VTotPISRet_CompraNF
+	.Parameters("VTotCOFINSRet_CompraNF") = VTotCOFINSRet_CompraNF
+	.Parameters("VTotCSLLRet_CompraNF") = VTotCSLLRet_CompraNF
+	.Parameters("VTotIRRFRet_CompraNF") = VTotIRRFRet_CompraNF
+	.Parameters("FlagSomaST_CompraNF") = FlagSomaST_CompraNF
+	.Parameters("FlagCalculado_CompraNF") = FlagCalculado_CompraNF
+	.Parameters("VTotISSRet_CompraNF") = VTotISSRet_CompraNF
+	.Parameters("DTExt_CompraNF") = DTExt_CompraNF
+	.Parameters("CNPJ_CPF_CompraNF") = CNPJ_CPF_CompraNF
+	.Parameters("NomeCompleto_CompraNF") = NomeCompleto_CompraNF
+	.Parameters("NomeCompleto_VendaNF") = NomeCompleto_VendaNF
+	.Parameters("ID_Imp_CompraNF") = ID_Imp_CompraNF
+	.Parameters("SitOR_CompraNF") = SitOR_CompraNF
+	.Parameters("NumOR_CompraNF") = NumOR_CompraNF
+	.Parameters("FlagNEnvWMAS_CompraNF") = FlagNEnvWMAS_CompraNF
+	.Parameters("IDVD_CompraNF") = IDVD_CompraNF
+	.Parameters("IDVendaNF_CompraNF") = IDVendaNF_CompraNF
+	.Parameters("FlagTransf_CompraNF") = FlagTransf_CompraNF
 	.Execute
 End With
 End Sub

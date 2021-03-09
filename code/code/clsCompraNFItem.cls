@@ -10,11 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Private This As ClassType
-
-
 Private Type ClassType
-	ID_CompraNFItem As Long
 	IDOLD_CompraNFItem As Long
 	ID_CompraNF_CompraNFItem As Long
 	ID_CompraNFOLD_CompraNFItem As Long
@@ -81,10 +77,9 @@ Private Type ClassType
 	SNCredICMS_CompraNFItem As Double
 	VTotSNCredICMS_CompraNFItem As Double
 End Type
+Private This As ClassType
 
 
-Property Get ID_CompraNFItem() As Long:ID_CompraNFItem = This.ID_CompraNFItem:End Property
-Property Let ID_CompraNFItem(pValue As Long):This.ID_CompraNFItem = pValue:End Property
 Property Get IDOLD_CompraNFItem() As Long:IDOLD_CompraNFItem = This.IDOLD_CompraNFItem:End Property
 Property Let IDOLD_CompraNFItem(pValue As Long):This.IDOLD_CompraNFItem = pValue:End Property
 Property Get ID_CompraNF_CompraNFItem() As Long:ID_CompraNF_CompraNFItem = This.ID_CompraNF_CompraNFItem:End Property
@@ -217,78 +212,77 @@ Property Get VTotSNCredICMS_CompraNFItem() As Double:VTotSNCredICMS_CompraNFItem
 Property Let VTotSNCredICMS_CompraNFItem(pValue As Double):This.VTotSNCredICMS_CompraNFItem = pValue:End Property
 
 
-sub cadastrar(obj as clsCompraNFItem)
+sub cadastrar()
 Dim db As DAO.Database: Set db = CurrentDb
 Dim qdf As DAO.QueryDef: Set qdf = db.QueryDefs("INSERT_tblCompraNFItem")
 
 
 With qdf
-	.Parameters("strID_CompraNFItem") = obj.ID_CompraNFItem
-	.Parameters("strIDOLD_CompraNFItem") = obj.IDOLD_CompraNFItem
-	.Parameters("strID_CompraNF_CompraNFItem") = obj.ID_CompraNF_CompraNFItem
-	.Parameters("strID_CompraNFOLD_CompraNFItem") = obj.ID_CompraNFOLD_CompraNFItem
-	.Parameters("strItem_CompraNFItem") = obj.Item_CompraNFItem
-	.Parameters("strID_Prod_CompraNFItem") = obj.ID_Prod_CompraNFItem
-	.Parameters("strID_ProdOld_CompraNFItem") = obj.ID_ProdOld_CompraNFItem
-	.Parameters("strID_Grade_CompraNFItem") = obj.ID_Grade_CompraNFItem
-	.Parameters("strAlmox_CompraNFItem") = obj.Almox_CompraNFItem
-	.Parameters("strQtdFat_CompraNFItem") = obj.QtdFat_CompraNFItem
-	.Parameters("strVUnt_CompraNFItem") = obj.VUnt_CompraNFItem
-	.Parameters("strTxDesc_CompraNFItem") = obj.TxDesc_CompraNFItem
-	.Parameters("strVUntDesc_CompraNFItem") = obj.VUntDesc_CompraNFItem
-	.Parameters("strICMS_CompraNFItem") = obj.ICMS_CompraNFItem
-	.Parameters("strISS_CompraNFItem") = obj.ISS_CompraNFItem
-	.Parameters("strIPI_CompraNFItem") = obj.IPI_CompraNFItem
-	.Parameters("strID_NatOp_CompraNFItem") = obj.ID_NatOp_CompraNFItem
-	.Parameters("strID_NatOpOLD_CompraNFItem") = obj.ID_NatOpOLD_CompraNFItem
-	.Parameters("strCFOP_CompraNFItem") = obj.CFOP_CompraNFItem
-	.Parameters("strST_CompraNFItem") = obj.ST_CompraNFItem
-	.Parameters("strFlagEst_CompraNFItem") = obj.FlagEst_CompraNFItem
-	.Parameters("strEstDe_CompraNFItem") = obj.EstDe_CompraNFItem
-	.Parameters("strEstPara_CompraNFItem") = obj.EstPara_CompraNFItem
-	.Parameters("strDTEmi_CompraNFItem") = obj.DTEmi_CompraNFItem
-	.Parameters("strEsp_CompraNFItem") = obj.Esp_CompraNFItem
-	.Parameters("strSérie_CompraNFItem") = obj.Série_CompraNFItem
-	.Parameters("strNum_CompraNFItem") = obj.Num_CompraNFItem
-	.Parameters("strDia_CompraNFItem") = obj.Dia_CompraNFItem
-	.Parameters("strUF_CompraNFItem") = obj.UF_CompraNFItem
-	.Parameters("strVTot_CompraNFItem") = obj.VTot_CompraNFItem
-	.Parameters("strVCntb_CompraNFItem") = obj.VCntb_CompraNFItem
-	.Parameters("strBaseCalcICMS_CompraNFItem") = obj.BaseCalcICMS_CompraNFItem
-	.Parameters("strVTotBaseCalcICMS_CompraNFItem") = obj.VTotBaseCalcICMS_CompraNFItem
-	.Parameters("strDebICMS_CompraNFItem") = obj.DebICMS_CompraNFItem
-	.Parameters("strIseICMS_CompraNFItem") = obj.IseICMS_CompraNFItem
-	.Parameters("strOutICMS_CompraNFItem") = obj.OutICMS_CompraNFItem
-	.Parameters("strBaseCalcIPI_CompraNFItem") = obj.BaseCalcIPI_CompraNFItem
-	.Parameters("strDebIPI_CompraNFItem") = obj.DebIPI_CompraNFItem
-	.Parameters("strIseIPI_CompraNFItem") = obj.IseIPI_CompraNFItem
-	.Parameters("strOutIPI_CompraNFItem") = obj.OutIPI_CompraNFItem
-	.Parameters("strObs_CompraNFItem") = obj.Obs_CompraNFItem
-	.Parameters("strTxMLSubsTrib_CompraNFItem") = obj.TxMLSubsTrib_CompraNFItem
-	.Parameters("strTxIntSubsTrib_CompraNFItem") = obj.TxIntSubsTrib_CompraNFItem
-	.Parameters("strTxExtSubsTrib_CompraNFItem") = obj.TxExtSubsTrib_CompraNFItem
-	.Parameters("strBaseCalcICMSSubsTrib_CompraNFItem") = obj.BaseCalcICMSSubsTrib_CompraNFItem
-	.Parameters("strVTotICMSSubsTrib_compranfitem") = obj.VTotICMSSubsTrib_compranfitem
-	.Parameters("strVTotDesc_CompraNFItem") = obj.VTotDesc_CompraNFItem
-	.Parameters("strVTotFrete_CompraNFItem") = obj.VTotFrete_CompraNFItem
-	.Parameters("strVTotSeg_CompraNFItem") = obj.VTotSeg_CompraNFItem
-	.Parameters("strSTIPI_CompraNFItem") = obj.STIPI_CompraNFItem
-	.Parameters("strSTPIS_CompraNFItem") = obj.STPIS_CompraNFItem
-	.Parameters("strSTCOFINS_CompraNFItem") = obj.STCOFINS_CompraNFItem
-	.Parameters("strnID_CompraNFItem") = obj.nID_CompraNFItem
-	.Parameters("strPIS_CompraNFItem") = obj.PIS_CompraNFItem
-	.Parameters("strCOFINS_CompraNFItem") = obj.COFINS_CompraNFItem
-	.Parameters("strVTotBaseCalcPIS_CompraNFItem") = obj.VTotBaseCalcPIS_CompraNFItem
-	.Parameters("strVTotBaseCalcCOFINS_CompraNFItem") = obj.VTotBaseCalcCOFINS_CompraNFItem
-	.Parameters("strVTotPIS_CompraNFItem") = obj.VTotPIS_CompraNFItem
-	.Parameters("strVTotCOFINS_CompraNFItem") = obj.VTotCOFINS_CompraNFItem
-	.Parameters("strVTotOutDesp_CompraNFItem") = obj.VTotOutDesp_CompraNFItem
-	.Parameters("strVUntCustoSI_CompraNFItem") = obj.VUntCustoSI_CompraNFItem
-	.Parameters("strVTotDebISSRet_CompraNFItem") = obj.VTotDebISSRet_CompraNFItem
-	.Parameters("strVTotIseICMS_CompraNFItem") = obj.VTotIseICMS_CompraNFItem
-	.Parameters("strVTotOutICMS_CompraNFItem") = obj.VTotOutICMS_CompraNFItem
-	.Parameters("strSNCredICMS_CompraNFItem") = obj.SNCredICMS_CompraNFItem
-	.Parameters("strVTotSNCredICMS_CompraNFItem") = obj.VTotSNCredICMS_CompraNFItem
+	.Parameters("IDOLD_CompraNFItem") = IDOLD_CompraNFItem
+	.Parameters("ID_CompraNF_CompraNFItem") = ID_CompraNF_CompraNFItem
+	.Parameters("ID_CompraNFOLD_CompraNFItem") = ID_CompraNFOLD_CompraNFItem
+	.Parameters("Item_CompraNFItem") = Item_CompraNFItem
+	.Parameters("ID_Prod_CompraNFItem") = ID_Prod_CompraNFItem
+	.Parameters("ID_ProdOld_CompraNFItem") = ID_ProdOld_CompraNFItem
+	.Parameters("ID_Grade_CompraNFItem") = ID_Grade_CompraNFItem
+	.Parameters("Almox_CompraNFItem") = Almox_CompraNFItem
+	.Parameters("QtdFat_CompraNFItem") = QtdFat_CompraNFItem
+	.Parameters("VUnt_CompraNFItem") = VUnt_CompraNFItem
+	.Parameters("TxDesc_CompraNFItem") = TxDesc_CompraNFItem
+	.Parameters("VUntDesc_CompraNFItem") = VUntDesc_CompraNFItem
+	.Parameters("ICMS_CompraNFItem") = ICMS_CompraNFItem
+	.Parameters("ISS_CompraNFItem") = ISS_CompraNFItem
+	.Parameters("IPI_CompraNFItem") = IPI_CompraNFItem
+	.Parameters("ID_NatOp_CompraNFItem") = ID_NatOp_CompraNFItem
+	.Parameters("ID_NatOpOLD_CompraNFItem") = ID_NatOpOLD_CompraNFItem
+	.Parameters("CFOP_CompraNFItem") = CFOP_CompraNFItem
+	.Parameters("ST_CompraNFItem") = ST_CompraNFItem
+	.Parameters("FlagEst_CompraNFItem") = FlagEst_CompraNFItem
+	.Parameters("EstDe_CompraNFItem") = EstDe_CompraNFItem
+	.Parameters("EstPara_CompraNFItem") = EstPara_CompraNFItem
+	.Parameters("DTEmi_CompraNFItem") = DTEmi_CompraNFItem
+	.Parameters("Esp_CompraNFItem") = Esp_CompraNFItem
+	.Parameters("Série_CompraNFItem") = Série_CompraNFItem
+	.Parameters("Num_CompraNFItem") = Num_CompraNFItem
+	.Parameters("Dia_CompraNFItem") = Dia_CompraNFItem
+	.Parameters("UF_CompraNFItem") = UF_CompraNFItem
+	.Parameters("VTot_CompraNFItem") = VTot_CompraNFItem
+	.Parameters("VCntb_CompraNFItem") = VCntb_CompraNFItem
+	.Parameters("BaseCalcICMS_CompraNFItem") = BaseCalcICMS_CompraNFItem
+	.Parameters("VTotBaseCalcICMS_CompraNFItem") = VTotBaseCalcICMS_CompraNFItem
+	.Parameters("DebICMS_CompraNFItem") = DebICMS_CompraNFItem
+	.Parameters("IseICMS_CompraNFItem") = IseICMS_CompraNFItem
+	.Parameters("OutICMS_CompraNFItem") = OutICMS_CompraNFItem
+	.Parameters("BaseCalcIPI_CompraNFItem") = BaseCalcIPI_CompraNFItem
+	.Parameters("DebIPI_CompraNFItem") = DebIPI_CompraNFItem
+	.Parameters("IseIPI_CompraNFItem") = IseIPI_CompraNFItem
+	.Parameters("OutIPI_CompraNFItem") = OutIPI_CompraNFItem
+	.Parameters("Obs_CompraNFItem") = Obs_CompraNFItem
+	.Parameters("TxMLSubsTrib_CompraNFItem") = TxMLSubsTrib_CompraNFItem
+	.Parameters("TxIntSubsTrib_CompraNFItem") = TxIntSubsTrib_CompraNFItem
+	.Parameters("TxExtSubsTrib_CompraNFItem") = TxExtSubsTrib_CompraNFItem
+	.Parameters("BaseCalcICMSSubsTrib_CompraNFItem") = BaseCalcICMSSubsTrib_CompraNFItem
+	.Parameters("VTotICMSSubsTrib_compranfitem") = VTotICMSSubsTrib_compranfitem
+	.Parameters("VTotDesc_CompraNFItem") = VTotDesc_CompraNFItem
+	.Parameters("VTotFrete_CompraNFItem") = VTotFrete_CompraNFItem
+	.Parameters("VTotSeg_CompraNFItem") = VTotSeg_CompraNFItem
+	.Parameters("STIPI_CompraNFItem") = STIPI_CompraNFItem
+	.Parameters("STPIS_CompraNFItem") = STPIS_CompraNFItem
+	.Parameters("STCOFINS_CompraNFItem") = STCOFINS_CompraNFItem
+	.Parameters("nID_CompraNFItem") = nID_CompraNFItem
+	.Parameters("PIS_CompraNFItem") = PIS_CompraNFItem
+	.Parameters("COFINS_CompraNFItem") = COFINS_CompraNFItem
+	.Parameters("VTotBaseCalcPIS_CompraNFItem") = VTotBaseCalcPIS_CompraNFItem
+	.Parameters("VTotBaseCalcCOFINS_CompraNFItem") = VTotBaseCalcCOFINS_CompraNFItem
+	.Parameters("VTotPIS_CompraNFItem") = VTotPIS_CompraNFItem
+	.Parameters("VTotCOFINS_CompraNFItem") = VTotCOFINS_CompraNFItem
+	.Parameters("VTotOutDesp_CompraNFItem") = VTotOutDesp_CompraNFItem
+	.Parameters("VUntCustoSI_CompraNFItem") = VUntCustoSI_CompraNFItem
+	.Parameters("VTotDebISSRet_CompraNFItem") = VTotDebISSRet_CompraNFItem
+	.Parameters("VTotIseICMS_CompraNFItem") = VTotIseICMS_CompraNFItem
+	.Parameters("VTotOutICMS_CompraNFItem") = VTotOutICMS_CompraNFItem
+	.Parameters("SNCredICMS_CompraNFItem") = SNCredICMS_CompraNFItem
+	.Parameters("VTotSNCredICMS_CompraNFItem") = VTotSNCredICMS_CompraNFItem
 	.Execute
 End With
 End Sub

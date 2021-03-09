@@ -4,6 +4,12 @@ Option Compare Database
 Private Comando As Variant
 Private con As ADODB.Connection
 
+Private Const qryOrigemDestino As String = "INSERT INTO tblOrigemDestino (Destino,Tipo) VALUES('strDestino','strTipo')"
+Private Const qryParametro As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
+
+Private Const deleteProcessamento As String = "DROP TABLE tblProcessamento"
+Private Const Processamento As String = "CREATE TABLE tblProcessamento(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,pk TEXT (50),chave TEXT (255),valor TEXT (255))"
+
 Private Const deleteDados As String = "DROP TABLE tblDadosConexaoNFeCTe"
 Private Const createDados As String = "CREATE TABLE tblDadosConexaoNFeCTe(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,ID_Empresa Integer,ID_Tipo Integer,codMod Integer,codIntegrado Integer,dhEmi TEXT (50),CNPJ_emit TEXT (50),Razao_emit TEXT (255),CNPJ_Rem TEXT (50),CPNJ_Dest TEXT (50),CaminhoDoArquivo TEXT (255),Chave TEXT (255),Comando TEXT (255));"
 
@@ -33,9 +39,24 @@ Private Const createComprasItens As String = "CREATE TABLE tblCompraNFItem (ID_C
 ''#CadastroDeParametros
 ''#CadastroDeTipos
 ''#CadastroOrigemDestino
+''#EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
 
 
-''#CriacaoDeAmbiente - Criacao De Ambiente para uso da nova aplicação ( Conexao NF-e e CT-e )
+'' #####################################################################
+'' ### #Ailton - EM TESTES
+'' #####################################################################
+
+Sub teste_CADASTRO_UNICO()
+    Dim arr() As Variant: arr = Array(deleteProcessamento, Processamento): executarComandos arr
+End Sub
+
+
+
+
+'' #########################################################################################
+'' ### #Proparts - Criacao De Ambiente para uso da nova aplicação ( Conexao NF-e e CT-e )
+'' #########################################################################################
+
 Sub main_criacao()
 ''==============================================================================================================='
 '' OBJETIVO          : Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e
@@ -47,14 +68,30 @@ Sub main_criacao()
 On Error Resume Next
     Dim arr() As Variant
     
+    
+    '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+    '' #EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
+    '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+    arr = Array(deleteCompras, deleteComprasItens)
+    executarComandos arr
+    
+    
     ''#ExclusaoTabelasAuxiliares - Exclusao de tabelas auxiliares caso existam
-    arr = Array(deleteOrigemDestino, deleteParametros, deleteTipos, deleteDados, deleteCompras, deleteComprasItens)
+    arr = Array(deleteProcessamento, deleteOrigemDestino, deleteParametros, deleteTipos, deleteDados)
     executarComandos arr
     
 On Error GoTo 0
 
+
+    '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+    '' #EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
+    '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+    arr = Array(createCompras, createComprasItens)
+    executarComandos arr
+
+
     ''#CriacaoTabelasAuxiliares - Criação de tabelas auxiliares para uso no processamento de arquivos xmls e json
-    arr = Array(createOrigemDestino, createParametros, createTipos, createDados, createCompras, createComprasItens)
+    arr = Array(Processamento, createOrigemDestino, createParametros, createTipos, createDados)
     executarComandos arr
 
     ''#CadastroDeParametros - Cadastro de parametros ex: ( Caminhos, Valores padrões e outros )
@@ -72,9 +109,64 @@ On Error GoTo 0
 End Sub
 
 
+
+
+
+
 '' #####################################################################
 '' ### #Libs - USADAS APENAS NESTE MÓDULO PARA CRIAÇÃO
 '' #####################################################################
+
+Private Sub CadastroOrigemDestino()
+Dim db As Database
+Dim tdf As TableDef
+Dim x As Integer
+
+    Set db = CurrentDb
+    Set con = CurrentProject.Connection
+
+    For Each Comando In carregarParametros("tblOrigemDestino", qryParametro)
+        For Each tdf In db.TableDefs
+           If left(tdf.Name, 4) <> "MSys" And (tdf.Name = Comando) Then
+              For x = 0 To tdf.Fields.count - 1
+                con.Execute Replace(Replace(qryOrigemDestino, "strDestino", tdf.Name & "." & tdf.Fields(x).Name), "strTipo", getTypeText(tdf.Fields(x).Type))
+              Next x
+           End If
+        Next tdf
+    Next Comando
+
+Set con = Nothing
+
+End Sub
+
+Private Sub CadastroDeItens(Itens As Collection)
+Dim con As ADODB.Connection: Set con = CurrentProject.Connection
+Dim I As Variant
+
+    For Each I In Itens
+        con.Execute I
+    Next I
+
+Set con = Nothing
+
+End Sub
+
+Private Sub criarConsulta(nomeDaConsulta As String, scriptDaConsulta As String)
+Dim db As DAO.Database: Set db = CurrentDb
+
+    db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
+    db.Close
+
+End Sub
+
+Private Sub executarComandos(comandos() As Variant)
+Dim Comando As Variant
+
+    For Each Comando In comandos
+        Application.CurrentDb.Execute Comando
+    Next Comando
+
+End Sub
 
 Private Function getTypeText(ID As Integer) As String
 Dim myData As Object: Set myData = CreateObject("Scripting.Dictionary")
@@ -104,6 +196,10 @@ Dim myData As Object: Set myData = CreateObject("Scripting.Dictionary")
 getTypeText = myData(ID)
 
 End Function
+
+'' #####################################################################
+'' ### #Repositorios - CARGA DE DADOS INICIAIS
+'' #####################################################################
 
 Private Function ItensDeTipos() As Collection
 Set ItensDeTipos = New Collection
@@ -135,62 +231,25 @@ Set ItensDeParametros = New Collection
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblTipos')"
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblOrigemDestino')"
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblDadosConexaoNFeCTe')"
+    
+    '' TABELAS TEMPORARIAS
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaProcessamento','tblProcessamento')"
+        
+    '' TABELAS MAPEAMENTO ( ORIGEM / DESTINO )
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tblOrigemDestino','tblDadosConexaoNFeCTe')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tblOrigemDestino','tblCompraNF')"
+    ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tblOrigemDestino','tblCompraNFItem')"
+        
+        
+        
+    '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
+    '' #EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
+    '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblCompraNF')"
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('tabelaAuxiliar','tblCompraNFItem')"
+        
+        
     
 End Function
-
-
-Private Sub CadastroOrigemDestino()
-Dim db As Database
-Dim tdf As TableDef
-Dim x As Integer
-Dim script As String: script = "INSERT INTO tblOrigemDestino (Destino,Tipo) VALUES('strDestino','strTipo')"
-
-    Set db = CurrentDb
-    Set con = CurrentProject.Connection
-
-    For Each Comando In Array("tblDadosConexaoNFeCTe", "tblCompraNF", "tblCompraNFItem")
-        For Each tdf In db.TableDefs
-           If left(tdf.Name, 4) <> "MSys" And (tdf.Name = Comando) Then
-              For x = 0 To tdf.Fields.count - 1
-                con.Execute Replace(Replace(script, "strDestino", tdf.Name & "." & tdf.Fields(x).Name), "strTipo", getTypeText(tdf.Fields(x).Type))
-              Next x
-           End If
-        Next tdf
-    Next Comando
-
-Set con = Nothing
-
-End Sub
-
-Private Sub CadastroDeItens(Itens As Collection)
-Dim con As ADODB.Connection: Set con = CurrentProject.Connection
-Dim i As Variant
-
-    For Each i In Itens
-        con.Execute i
-    Next i
-
-Set con = Nothing
-
-End Sub
-
-Private Sub criarConsulta(nomeDaConsulta As String, scriptDaConsulta As String)
-Dim db As DAO.Database: Set db = CurrentDb
-
-    db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
-    db.Close
-
-End Sub
-
-Private Sub executarComandos(comandos() As Variant) ''#ExecutarConsultas
-Dim Comando As Variant
-
-    For Each Comando In comandos
-        Application.CurrentDb.Execute Comando
-    Next Comando
-
-End Sub
 
 

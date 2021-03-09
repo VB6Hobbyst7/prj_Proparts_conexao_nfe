@@ -1,3 +1,3 @@
-INSERT INTO tblParametros (ID,TipoDeParametro,ValorDoParametro ) 
-Select [ID] as strID,[TipoDeParametro] as strTipoDeParametro,[ValorDoParametro] as strValorDoParametro;
+INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro)
+Select [TipoDeParametro] as strTipoDeParametro,[ValorDoParametro] as strValorDoParametro;
 

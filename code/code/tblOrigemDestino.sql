@@ -1,3 +1,3 @@
-INSERT INTO tblOrigemDestino (ID,Origem,Destino,Tipo ) 
-Select [ID] as strID,[Origem] as strOrigem,[Destino] as strDestino,[Tipo] as strTipo;
+INSERT INTO tblOrigemDestino (Origem,Destino,Tipo,Tag)
+Select [Origem] as strOrigem,[Destino] as strDestino,[Tipo] as strTipo,[Tag] as strTag;
 

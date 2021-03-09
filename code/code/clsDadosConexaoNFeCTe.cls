@@ -10,11 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Private This As ClassType
-
-
 Private Type ClassType
-	ID As Long
 	ID_Empresa As Long
 	ID_Tipo As Long
 	codMod As Long
@@ -28,10 +24,9 @@ Private Type ClassType
 	Chave As String
 	Comando As String
 End Type
+Private This As ClassType
 
 
-Property Get ID() As Long:ID = This.ID:End Property
-Property Let ID(pValue As Long):This.ID = pValue:End Property
 Property Get ID_Empresa() As Long:ID_Empresa = This.ID_Empresa:End Property
 Property Let ID_Empresa(pValue As Long):This.ID_Empresa = pValue:End Property
 Property Get ID_Tipo() As Long:ID_Tipo = This.ID_Tipo:End Property
@@ -58,25 +53,24 @@ Property Get Comando() As String:Comando = This.Comando:End Property
 Property Let Comando(pValue As String):This.Comando = pValue:End Property
 
 
-sub cadastrar(obj as clsDadosConexaoNFeCTe)
+sub cadastrar()
 Dim db As DAO.Database: Set db = CurrentDb
 Dim qdf As DAO.QueryDef: Set qdf = db.QueryDefs("INSERT_tblDadosConexaoNFeCTe")
 
 
 With qdf
-	.Parameters("strID") = obj.ID
-	.Parameters("strID_Empresa") = obj.ID_Empresa
-	.Parameters("strID_Tipo") = obj.ID_Tipo
-	.Parameters("strcodMod") = obj.codMod
-	.Parameters("strcodIntegrado") = obj.codIntegrado
-	.Parameters("strdhEmi") = obj.dhEmi
-	.Parameters("strCNPJ_emit") = obj.CNPJ_emit
-	.Parameters("strRazao_emit") = obj.Razao_emit
-	.Parameters("strCNPJ_Rem") = obj.CNPJ_Rem
-	.Parameters("strCPNJ_Dest") = obj.CPNJ_Dest
-	.Parameters("strCaminhoDoArquivo") = obj.CaminhoDoArquivo
-	.Parameters("strChave") = obj.Chave
-	.Parameters("strComando") = obj.Comando
+	.Parameters("ID_Empresa") = ID_Empresa
+	.Parameters("ID_Tipo") = ID_Tipo
+	.Parameters("codMod") = codMod
+	.Parameters("codIntegrado") = codIntegrado
+	.Parameters("dhEmi") = dhEmi
+	.Parameters("CNPJ_emit") = CNPJ_emit
+	.Parameters("Razao_emit") = Razao_emit
+	.Parameters("CNPJ_Rem") = CNPJ_Rem
+	.Parameters("CPNJ_Dest") = CPNJ_Dest
+	.Parameters("CaminhoDoArquivo") = CaminhoDoArquivo
+	.Parameters("Chave") = Chave
+	.Parameters("Comando") = Comando
 	.Execute
 End With
 End Sub

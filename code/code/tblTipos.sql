@@ -1,3 +1,3 @@
-INSERT INTO tblTipos (ID,codMod,Descricao ) 
-Select [ID] as strID,[codMod] as strcodMod,[Descricao] as strDescricao;
+INSERT INTO tblTipos (codMod,Descricao)
+Select [codMod] as strcodMod,[Descricao] as strDescricao;
 

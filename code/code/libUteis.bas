@@ -1,8 +1,6 @@
 Attribute VB_Name = "libUteis"
 Option Compare Database
 
-Private Const parametro As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strTipoDeParametro'))"
-
 Public Enum enumOperacao
     opNome = 0
     opExecutar = 1
@@ -13,6 +11,10 @@ End Enum
 '' #####################################################################
 '' ### #Libs - PODE SER ADICIONADAS AS FUNÇÕES GERAIS DA APLICAÇÃO
 '' #####################################################################
+
+Public Function Controle() As String
+    Controle = right(Year(Now()), 2) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & Format(Hour(Now()), "00") & Format(Minute(Now()), "00") & Format(Second(Now()), "00")
+End Function
 
 Public Function GetFilesInSubFolders(pFolder As String) As Collection ''#ConsultarArquivosEmPastas
     Dim objFSO As Object: Set objFSO = CreateObject("Scripting.FileSystemObject")
@@ -103,23 +105,6 @@ Dim Comando As Variant
 
 End Sub
 
-Public Function carregarParametros(pTipoDeParametro As String) As Collection
-Set carregarParametros = New Collection
-Dim db As DAO.Database: Set db = CurrentDb
-Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(parametro, "strTipoDeParametro", pTipoDeParametro))
-Dim f As Variant
-
-Do While Not rst.EOF
-    carregarParametros.add rst.Fields("ValorDoParametro").Value
-    rst.MoveNext
-Loop
-
-db.Close
-
-Set db = Nothing
-
-End Function
-
 Public Function qryExists(strQryName As String) As Boolean: qryExists = False
 Dim db As DAO.Database
 Dim qdf As DAO.QueryDef
@@ -133,36 +118,71 @@ Next
 
 End Function
 
-
-Public Function pegarValorDoParametro(pTipoDeParametro As String) As String ''#CarregarValorDeParametro
+Public Function carregarParametros(pParametro As String, pConsulta As String) As Collection
+Set carregarParametros = New Collection
 Dim db As DAO.Database: Set db = CurrentDb
-Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(parametro, "strTipoDeParametro", pTipoDeParametro))
+Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pParametro))
+Dim f As Variant
+
+Do While Not rst.EOF
+    carregarParametros.add rst.Fields(0).Value
+    rst.MoveNext
+Loop
+
+db.Close
+
+Set db = Nothing
+
+End Function
+
+Public Function pegarValorDoParametro(pTipoDeParametro As String, pConsulta As String) As String ''#CarregarValorDeParametro
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pTipoDeParametro))
 
     pegarValorDoParametro = rst.Fields("ValorDoParametro").Value
 
 End Function
 
 Public Function getPath(sPathIn As String) As String ''#ExtrairCaminhoDoArquivo
-Dim i As Integer
+Dim I As Integer
 
-  For i = Len(sPathIn) To 1 Step -1
-     If InStr(":\", Mid$(sPathIn, i, 1)) Then Exit For
+  For I = Len(sPathIn) To 1 Step -1
+     If InStr(":\", Mid$(sPathIn, I, 1)) Then Exit For
   Next
 
-  getPath = left$(sPathIn, i)
+  getPath = left$(sPathIn, I)
 
 End Function
 
 Public Function getFileNameAndExt(sFileIn As String) As String ''#ExtrairNomeDoArquivo
 ' Essa função irá retornar apenas o nome do  arquivo de uma
 ' string que contenha o path e o nome do arquiva
-Dim i As Integer
+Dim I As Integer
 
-    For i = Len(sFileIn) To 1 Step -1
-       If InStr("\", Mid$(sFileIn, i, 1)) Then Exit For
+    For I = Len(sFileIn) To 1 Step -1
+       If InStr("\", Mid$(sFileIn, I, 1)) Then Exit For
     Next
     
-    getFileNameAndExt = Mid$(sFileIn, i + 1, Len(sFileIn) - i)
+    getFileNameAndExt = Mid$(sFileIn, I + 1, Len(sFileIn) - I)
 
 End Function
 
+Public Function getFileName(sFileIn As String) As String
+' Essa função irá retornar apenas o nome do  arquivo de uma
+' string que contenha o path e o nome do arquiva
+Dim I As Integer
+
+  For I = Len(sFileIn) To 1 Step -1
+     If InStr("\", Mid$(sFileIn, I, 1)) Then Exit For
+  Next
+
+  getFileName = left(Mid$(sFileIn, I + 1, Len(sFileIn) - I), Len(Mid$(sFileIn, I + 1, Len(sFileIn) - I)) - 4)
+
+End Function
+
+Public Sub ClearCollection(ByRef container As Collection)
+    Dim index As Long
+    For index = 1 To container.count
+        container.remove 1
+    Next
+End Sub
