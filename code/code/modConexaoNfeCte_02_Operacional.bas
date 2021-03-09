@@ -6,7 +6,9 @@ Private con As ADODB.Connection
 
 Private Const script_tblDadosConexaoNFeCTe As String = "INSERT INTO tblDadosConexaoNFeCTe (codMod,dhEmi,CNPJ_emit,Razao_emit,CNPJ_Rem,CPNJ_Dest,CaminhoDoArquivo) VALUES(strOrigem,'strCaminhoDoArquivo')"
 Private Const qryParametro As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
-Private Const qryTags As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.Destino) Like 'strParametro*'));"
+Private Const qryTags As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.Destino) Like 'strParametro*') AND ((tblOrigemDestino.TagOrigem)=1));"
+Private Const qryTagsLocais As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.Destino) Like 'strParametro*') AND ((tblOrigemDestino.TagOrigem)=2));"
+Private Const qryUpdateProcessamento As String = "UPDATE (SELECT tblOrigemDestino.Destino, tblOrigemDestino.Tag, strSplit([Destino],'.',0) AS NomeTabela, strSplit([Destino],'.',1) AS NomeCampo FROM tblOrigemDestino) as qryOrigemDestino INNER JOIN tblProcessamento ON qryOrigemDestino.Tag = tblProcessamento.chave SET tblProcessamento.NomeTabela = [qryOrigemDestino].[NomeTabela], tblProcessamento.NomeCampo = [qryOrigemDestino].[NomeCampo] ;" 'WHERE (((Len([NomeTabela]))<0))
 
 Private Const strCaminhoDeColeta As String = "caminhoDeColeta"
 
@@ -37,8 +39,10 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
     Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
     Dim cadastro As clsProcessamento
     Dim col As New Collection
-    
     Dim strPk As String
+    
+    Dim qryAtulizacoes() As Variant: arr = Array(qryUpdateProcessamento)
+    
         
     '' 01. Leitura e identificação do arquivo
     For Each fileName In GetFilesInSubFolders(pegarValorDoParametro(strCaminhoDeColeta, qryParametro))
@@ -49,8 +53,8 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
         '' IDENTIFICAÇÃO DO ARQUIVO (PK)
         strPk = Controle & getFileName(CStr(fileName))
         
-'        Debug.Print strPk & "|" & "CaminhoDoArquivo" & "|" & fileName
         col.add strPk & "|" & "CaminhoDoArquivo" & "|" & fileName
+        
                 
         '' 02. Separação por tags e coleta de dados
         For Each Item In carregarParametros("tblDadosConexaoNFeCTe", qryTags)
@@ -60,7 +64,6 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
                 If (fieldnode.HasChildNodes) Then
                     For Each childNode In fieldnode.ChildNodes
                        
-'                        Debug.Print strPk & "|" & Item & "|" & fieldnode.text
                         col.add strPk & "|" & Item & "|" & fieldnode.text
                         
                     Next childNode
@@ -72,7 +75,13 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
 
         '' REALIZAR CADASTRO
         If (col.count > 2) Then
+            
+            '' CADASTRAR REGISTRO
             CadastroDeProcessamento col
+            
+            '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
+            Application.CurrentDb.Execute qryUpdateProcessamento
+            
         End If
         
         '' LIMPAR COLEÇÃO
@@ -84,18 +93,3 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
 End Sub
 
 
-
-Sub CadastroDeProcessamento(obj As Collection)
-Dim cadastro As clsProcessamento: Set cadastro = New clsProcessamento
-Dim I As Variant
-
-For Each I In obj
-    With cadastro
-        .pk = Split(I, "|")(0)
-        .chave = Split(I, "|")(1)
-        .valor = Split(I, "|")(2)
-        .cadastrar
-    End With
-Next I
-
-End Sub

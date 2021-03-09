@@ -8,7 +8,7 @@ Private Const qryOrigemDestino As String = "INSERT INTO tblOrigemDestino (Destin
 Private Const qryParametro As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
 
 Private Const deleteProcessamento As String = "DROP TABLE tblProcessamento"
-Private Const Processamento As String = "CREATE TABLE tblProcessamento(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,pk TEXT (50),chave TEXT (255),valor TEXT (255))"
+Private Const Processamento As String = "CREATE TABLE tblProcessamento(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,pk TEXT (50),chave TEXT (255),valor TEXT (255),NomeTabela TEXT (255),NomeCampo TEXT (255))"
 
 Private Const deleteDados As String = "DROP TABLE tblDadosConexaoNFeCTe"
 Private Const createDados As String = "CREATE TABLE tblDadosConexaoNFeCTe(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,ID_Empresa Integer,ID_Tipo Integer,codMod Integer,codIntegrado Integer,dhEmi TEXT (50),CNPJ_emit TEXT (50),Razao_emit TEXT (255),CNPJ_Rem TEXT (50),CPNJ_Dest TEXT (50),CaminhoDoArquivo TEXT (255),Chave TEXT (255),Comando TEXT (255));"

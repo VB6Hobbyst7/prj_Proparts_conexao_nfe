@@ -12,6 +12,10 @@ End Enum
 '' ### #Libs - PODE SER ADICIONADAS AS FUNÇÕES GERAIS DA APLICAÇÃO
 '' #####################################################################
 
+Public Function strSplit(strValor As String, strSeparador As String, intPosicao As Integer) As String
+    strSplit = Split(strValor, strSeparador)(intPosicao)
+End Function
+
 Public Function Controle() As String
     Controle = right(Year(Now()), 2) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & Format(Hour(Now()), "00") & Format(Minute(Now()), "00") & Format(Second(Now()), "00")
 End Function
@@ -185,4 +189,19 @@ Public Sub ClearCollection(ByRef container As Collection)
     For index = 1 To container.count
         container.remove 1
     Next
+End Sub
+
+Public Sub CadastroDeProcessamento(obj As Collection)
+Dim cadastro As clsProcessamento: Set cadastro = New clsProcessamento
+Dim I As Variant
+
+For Each I In obj
+    With cadastro
+        .pk = Split(I, "|")(0)
+        .Chave = Split(I, "|")(1)
+        .valor = Split(I, "|")(2)
+        .cadastrar
+    End With
+Next I
+
 End Sub
