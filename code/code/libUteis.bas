@@ -13,7 +13,11 @@ End Enum
 '' #####################################################################
 
 Public Function strSplit(strValor As String, strSeparador As String, intPosicao As Integer) As String
-    strSplit = Split(strValor, strSeparador)(intPosicao)
+    If (strValor <> "") Then
+        strSplit = Split(strValor, strSeparador)(intPosicao)
+    Else
+        strSplit = ""
+    End If
 End Function
 
 Public Function Controle() As String

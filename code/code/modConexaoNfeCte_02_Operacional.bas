@@ -30,7 +30,6 @@ Private Const strCaminhoDeColeta As String = "caminhoDeColeta"
 ''#CriarArquivosJson
 
 
-
 '' #########################################################################################
 '' ### #Proparts - Módulo principal para processamento de dados
 '' #########################################################################################
@@ -90,6 +89,29 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
     Next fileName
 
     Set XDoc = Nothing
+    
+    MsgBox "Concluido!", vbOKOnly + vbInformation, "LeituraDeArquivos"
+    
 End Sub
 
 
+Sub DadosConexaoNFeCTe()
+Dim dados As New clsDadosConexaoNFeCTe
+Dim sqyProcessamentosPendentes As String: sqyProcessamentosPendentes = "SELECT DISTINCT pk from tblProcessamento;"
+
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(sqyProcessamentosPendentes)
+
+    Do While Not rst.EOF
+        dados.carregar_dados rst.Fields("pk").Value
+        dados.cadastrar
+        rst.MoveNext
+    Loop
+
+    db.Close
+    
+    Set db = Nothing
+    
+    MsgBox "Concluido!", vbOKOnly + vbInformation, "DadosConexaoNFeCTe"
+
+End Sub
