@@ -30,6 +30,15 @@ Private Const strCaminhoDeColeta As String = "caminhoDeColeta"
 ''#CriarArquivosJson
 
 
+Sub TESTES_20210311_1159()
+
+    LeituraDeArquivos
+    CadastroDadosGerais
+
+End Sub
+
+
+
 '' #########################################################################################
 '' ### #Proparts - Módulo principal para processamento de dados
 '' #########################################################################################
@@ -95,7 +104,7 @@ Private Sub LeituraDeArquivos() ''#ExtrairConteudoDeArquivo - Armazenar em tabel
 End Sub
 
 
-Sub DadosConexaoNFeCTe()
+Sub CadastroDadosGerais()
 Dim dados As New clsDadosConexaoNFeCTe
 Dim sqyProcessamentosPendentes As String: sqyProcessamentosPendentes = "SELECT DISTINCT pk from tblProcessamento;"
 
