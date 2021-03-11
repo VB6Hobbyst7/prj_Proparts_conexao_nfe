@@ -35,11 +35,11 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 	* Regras de negócio
 
-		- [ ] Dados Gerais
-		- [ ] Compras e Itens da compra
-		- [ ] Origem x Destino - ( Mapeamento de campos do arquivo com os campos da tabela )
-		- [ ] Parametros - ( Variaveis de ambiente )
-		- [ ] Tipos - ( Controle de registros )
+		- [TESTES] Dados Gerais
+		- [AJUSTES] Compras e Itens da compra
+		- [PENDENTE] Origem x Destino - ( Mapeamento de campos do arquivo com os campos da tabela )
+		- [X] Parametros - ( Variaveis de ambiente )
+		- [X] Tipos - ( Controle de registros )
 
 	* Cadatro de Variaveis de ambiente
 
@@ -73,7 +73,7 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 
 	* Módulos ( Regras de negócios X Consultas )
 
-		- [ ] Dados Gerais
+		- [X] Dados Gerais
 		- [ ] Compras e Itens da compra
 		- [X] Origem x Destino
 		- [X] Parametros
