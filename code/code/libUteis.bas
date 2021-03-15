@@ -2,7 +2,7 @@ Attribute VB_Name = "libUteis"
 Option Compare Database
 
 Public Enum enumOperacao
-    opNome = 0
+    opNone = 0
     opExecutar = 1
     opNotepad = 2
 End Enum
@@ -126,7 +126,7 @@ Next
 
 End Function
 
-Public Function carregarParametros(pParametro As String, pConsulta As String) As Collection
+Public Function carregarParametros(pConsulta As String, pParametro As String) As Collection
 Set carregarParametros = New Collection
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pParametro))
@@ -143,7 +143,7 @@ Set db = Nothing
 
 End Function
 
-Public Function pegarValorDoParametro(pTipoDeParametro As String, pConsulta As String) As String ''#CarregarValorDeParametro
+Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String) As String
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pTipoDeParametro))
 
@@ -195,17 +195,4 @@ Public Sub ClearCollection(ByRef container As Collection)
     Next
 End Sub
 
-Public Sub CadastroDeProcessamento(obj As Collection)
-Dim cadastro As clsProcessamento: Set cadastro = New clsProcessamento
-Dim I As Variant
 
-For Each I In obj
-    With cadastro
-        .pk = Split(I, "|")(0)
-        .Chave = Split(I, "|")(1)
-        .valor = Split(I, "|")(2)
-        .cadastrar
-    End With
-Next I
-
-End Sub

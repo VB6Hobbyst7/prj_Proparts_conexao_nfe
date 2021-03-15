@@ -31,7 +31,7 @@ Private Const createTipos As String = "CREATE TABLE tblTipos (ID AutoIncrement C
 
 '' TABELA DE DADOS GERAIS
 Private Const deleteDados As String = "DROP TABLE tblDadosConexaoNFeCTe"
-Private Const createDados As String = "CREATE TABLE tblDadosConexaoNFeCTe(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,ID_Empresa Integer,ID_Tipo Integer,codMod Integer,codIntegrado Integer,dhEmi TEXT (50),CNPJ_emit TEXT (50),Razao_emit TEXT (255),CNPJ_Rem TEXT (50),CPNJ_Dest TEXT (50),CaminhoDoArquivo TEXT (255),Chave TEXT (255),Comando TEXT (255));"
+Private Const createDados As String = "CREATE TABLE tblDadosConexaoNFeCTe(ID AutoIncrement CONSTRAINT PrimaryKey PRIMARY KEY,ID_Empresa Integer,ID_Tipo Integer,codMod Integer,codIntegrado Integer,dhEmi TEXT (50),CNPJ_emit TEXT (50),Razao_emit TEXT (255),CNPJ_Rem TEXT (50),CPNJ_Dest TEXT (50),CaminhoDoArquivo TEXT (255),Chave TEXT (255),Comando TEXT (255),codTipoEvento TEXT (255));"
 
 '' TABELA TEMPORARIA PARA SIMULAÇÃO DE COMPRAS
 Private Const deleteCompras As String = "DROP TABLE tblCompraNF"
