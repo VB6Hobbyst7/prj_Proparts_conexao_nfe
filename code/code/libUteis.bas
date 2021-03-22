@@ -143,48 +143,49 @@ Set db = Nothing
 
 End Function
 
-Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String) As String
+Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String, Optional pCampo As String) As String
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pTipoDeParametro))
 
-    pegarValorDoParametro = rst.Fields("ValorDoParametro").Value
+    pegarValorDoParametro = rst.Fields(iif(pCampo <> "", pCampo, "ValorDoParametro")).Value
 
+db.Close
 End Function
 
 Public Function getPath(sPathIn As String) As String ''#ExtrairCaminhoDoArquivo
-Dim I As Integer
+Dim i As Integer
 
-  For I = Len(sPathIn) To 1 Step -1
-     If InStr(":\", Mid$(sPathIn, I, 1)) Then Exit For
+  For i = Len(sPathIn) To 1 Step -1
+     If InStr(":\", Mid$(sPathIn, i, 1)) Then Exit For
   Next
 
-  getPath = left$(sPathIn, I)
+  getPath = left$(sPathIn, i)
 
 End Function
 
 Public Function getFileNameAndExt(sFileIn As String) As String ''#ExtrairNomeDoArquivo
 ' Essa função irá retornar apenas o nome do  arquivo de uma
 ' string que contenha o path e o nome do arquiva
-Dim I As Integer
+Dim i As Integer
 
-    For I = Len(sFileIn) To 1 Step -1
-       If InStr("\", Mid$(sFileIn, I, 1)) Then Exit For
+    For i = Len(sFileIn) To 1 Step -1
+       If InStr("\", Mid$(sFileIn, i, 1)) Then Exit For
     Next
     
-    getFileNameAndExt = Mid$(sFileIn, I + 1, Len(sFileIn) - I)
+    getFileNameAndExt = Mid$(sFileIn, i + 1, Len(sFileIn) - i)
 
 End Function
 
 Public Function getFileName(sFileIn As String) As String
 ' Essa função irá retornar apenas o nome do  arquivo de uma
 ' string que contenha o path e o nome do arquiva
-Dim I As Integer
+Dim i As Integer
 
-  For I = Len(sFileIn) To 1 Step -1
-     If InStr("\", Mid$(sFileIn, I, 1)) Then Exit For
+  For i = Len(sFileIn) To 1 Step -1
+     If InStr("\", Mid$(sFileIn, i, 1)) Then Exit For
   Next
 
-  getFileName = left(Mid$(sFileIn, I + 1, Len(sFileIn) - I), Len(Mid$(sFileIn, I + 1, Len(sFileIn) - I)) - 4)
+  getFileName = left(Mid$(sFileIn, i + 1, Len(sFileIn) - i), Len(Mid$(sFileIn, i + 1, Len(sFileIn) - i)) - 4)
 
 End Function
 

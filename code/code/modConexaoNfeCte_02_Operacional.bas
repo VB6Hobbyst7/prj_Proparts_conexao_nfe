@@ -4,9 +4,6 @@ Option Compare Database
 Private FileCollention As New Collection
 Private con As ADODB.Connection
 
-'' DESATIVADO
-'Private Const script_tblDadosConexaoNFeCTe As String = "INSERT INTO tblDadosConexaoNFeCTe (codMod,dhEmi,CNPJ_emit,Razao_emit,CNPJ_Rem,CPNJ_Dest,CaminhoDoArquivo) VALUES(strOrigem,'strCaminhoDoArquivo')"
-
 '' PROCESSAMENTOS - LIMPAR TABELA
 Private Const qryDeleteProcessamento As String = "DELETE * FROM tblProcessamento;"
 
@@ -17,11 +14,7 @@ Private Const sqyProcessamentosPendentes As String = "SELECT DISTINCT pk from tb
 Private Const sqyDadosJson As String = "SELECT chave, Comando, dhEmi, CaminhoDoArquivo,codTipoEvento FROM tblDadosConexaoNFeCTe WHERE LEN(Chave)>0;"
 
 '' CARREGAR TAGs DE VINDAS DO XML
-'Private Const qryTags As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.Destino) Like 'strParametro*') AND ((tblOrigemDestino.TagOrigem)=1));"
 Private Const qryTags As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.tabela) = 'strParametro') AND ((tblOrigemDestino.TagOrigem)=1));"
-
-'' CARREGAR TAGs DE VINDAS DA TABELA
-Private Const qryTagsLocais As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.Destino) Like 'strParametro*') AND ((tblOrigemDestino.TagOrigem)=2));"
 
 '' ATUALIZAR CAMPOS ( Nometabela e NomeCampo ) PARA USO DA TABELA DE PROCESSAMENTO
 Private Const qryUpdateProcessamento As String = "UPDATE (SELECT tblOrigemDestino.Destino, tblOrigemDestino.Tag, strSplit([Destino],'.',0) AS NomeTabela, strSplit([Destino],'.',1) AS NomeCampo FROM tblOrigemDestino WHERE tblOrigemDestino.Tabela = 'strParametro' ) as qryOrigemDestino INNER JOIN tblProcessamento ON qryOrigemDestino.Tag = tblProcessamento.chave SET tblProcessamento.NomeTabela = [qryOrigemDestino].[NomeTabela], tblProcessamento.NomeCampo = [qryOrigemDestino].[NomeCampo];"
@@ -33,16 +26,38 @@ Private Const strUsuarioErpCod As String = "UsuarioErpCod"
 Private Const strUsuarioErpNome As String = "UsuarioErpNome"
 Private Const strCodTipoEvento As String = "codTipoEvento"
 Private Const strComando As String = "Comando"
-Private Const strTagOrigemPrincipal As String = "tagOrigemPrincipal"
+
+''###########################################################################
+
+
+'' #TESTES - SELEÇÃO DE FORNECEDORES VALIDOS
+Private Const qryUpdate_FornecedoresValidos As String = "UPDATE (SELECT Replace(Replace(Replace([CNPJ_CPF],""."",""""),""-"",""""),""/"","""") AS strCNPJ_CPF, Clientes.CÓDIGOClientes AS ID_Cad FROM Clientes WHERE (((Replace(Replace(Replace([CNPJ_CPF],""."",""""),""-"",""""),""/"",""""))<>""00000000000000"" And (Replace(Replace(Replace([CNPJ_CPF],""."",""""),""-"",""""),""/"",""""))<>""99999999999""))) AS qryFornecedoresValidos     INNER JOIN tblDadosConexaoNFeCTe ON qryFornecedoresValidos.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit SET tblDadosConexaoNFeCTe.registroValido = 1;"
+
+
+
+Sub teste_FornecedoresValidos()
+Dim qry() As Variant: qry = Array(qryUpdate_FornecedoresValidos)
+
+    executarComandos qry
+
+End Sub
 
 
 Sub TESTES_20210314_2111()
-Dim arr As Variant
 Dim t As Variant
 
-    For Each t In Array("tblCompraNF")  ''Array("tblDadosConexaoNFeCTe", "tblCompraNF", "tblCompraNFItem")
+    For Each t In Array("tblDadosConexaoNFeCTe")
         ProcessarArquivosXml CStr(t)
+        TransferirDadosConexaoNFeCTe
+        ''qryUpdateDadosConexaoNFeCTe_IdTipo
     Next
+
+
+'    For Each t In Array("tblCompraNF")  ''Array("tblDadosConexaoNFeCTe", "tblCompraNF", "tblCompraNFItem")
+'        ProcessarArquivosXml CStr(t)
+'        TransferirCompras
+'    Next
+
 
 End Sub
 
@@ -52,12 +67,38 @@ End Sub
 '' ### #Proparts - Módulo principal para processamento de dados
 '' #########################################################################################
 
+Sub teste()
+Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
+Dim qry() As Variant: qry = Array("chCTe")
+
+'' cte
+'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\32210204884082000569570000039548351039548356-cteproc.xml"
+
+'' nfe
+'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\29210220961864000187550010000001891138200000-nfeproc.xml"
+
+For Each Item In qry
+    Set lists = XDoc.SelectNodes("//" & Item)
+    For Each fieldnode In lists
+        If (fieldnode.HasChildNodes) Then
+            For Each childNode In fieldnode.ChildNodes
+                Debug.Print fieldnode.text
+            Next childNode
+        End If
+    Next fieldnode
+Next Item
+
+Set XDoc = Nothing
+
+End Sub
+
+
 Private Sub ProcessarArquivosXml(pTabelaDestino As String)
     Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
     Dim cadastro As clsProcessamento
     Dim col As New Collection
     Dim strPk As String
-    Dim I As Variant
+    Dim i As Variant
     
     '' LIMPAR TABELA DE PROCESSAMENTOS
     Application.CurrentDb.Execute qryDeleteProcessamento
@@ -82,20 +123,19 @@ Private Sub ProcessarArquivosXml(pTabelaDestino As String)
             Next fieldnode
         Next Item
 
-
         '' 03. REALIZAR CADASTRO DE TODOS OS ITENS COLETADOS NA TABELA DE PROCESSAMENTO
         If (col.count > 2) Then
             
             '' CADASTRAR REGISTRO
             Set cadastro = New clsProcessamento
-            For Each I In col
+            For Each i In col
                 With cadastro
-                    .pk = Split(I, "|")(0)
-                    .Chave = Split(I, "|")(1)
-                    .valor = Split(I, "|")(2)
+                    .pk = Split(i, "|")(0)
+                    .Chave = Split(i, "|")(1)
+                    .valor = Split(i, "|")(2)
                     .cadastrar
                 End With
-            Next I
+            Next i
             
             '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
             Application.CurrentDb.Execute Replace(qryUpdateProcessamento, "strParametro", pTabelaDestino)
@@ -134,6 +174,28 @@ Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(sqyProcessamentosPendentes)
     MsgBox "Concluido!", vbOKOnly + vbInformation, "TransferirDadosConexaoNFeCTe"
 
 End Sub
+
+Sub TransferirCompras()
+Dim dados As New clsCompraNF
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(sqyProcessamentosPendentes)
+
+    Do While Not rst.EOF
+        
+        dados.carregar_dados rst.Fields("pk").Value
+        dados.cadastrar
+        
+        rst.MoveNext
+    Loop
+
+    db.Close
+    
+    Set db = Nothing
+    
+    MsgBox "Concluido!", vbOKOnly + vbInformation, "TransferirDadosConexaoNFeCTe"
+
+End Sub
+
 
 Sub CriarArquivoFlagLancadaERP()
 Dim dados As New clsDadosConexaoNFeCTe
@@ -192,7 +254,17 @@ Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(sqyDadosJson)
 End Sub
 
 
-Sub CadastrarCompras()
+''#######################################################################################
+''### LIMBO
+''#######################################################################################
+
+'' #DESCONTINUADO - CONTROLE DE FORNECEDORES VALIDOS
+''Private Const qryFornecedoresValidos As String = "SELECT Replace(Replace(Replace([CNPJ_CPF],""."",""""),""-"",""""),""/"","""") AS Expr1, Clientes.CÓDIGOClientes AS ID_Cad FROM Clientes WHERE (((Replace(Replace(Replace([CNPJ_CPF],""."",""""),""-"",""""),""/"",""""))<>""00000000000000"" And (Replace(Replace(Replace([CNPJ_CPF],""."",""""),""-"",""""),""/"",""""))<>""99999999999""));"
+
+'' #DESCONTINUADO - CARREGAR TAGs DE VINDAS DA TABELA
+'Private Const qryTagsLocais As String = "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((Len([Tag]))>0) AND ((tblOrigemDestino.Destino) Like 'strParametro*') AND ((tblOrigemDestino.TagOrigem)=2));"
+
+'Sub CadastrarCompras()
 'Dim dados As New clsDadosConexaoNFeCTe
 'Dim sqyProcessamentosPendentes As String: sqyProcessamentosPendentes = "SELECT DISTINCT pk from tblProcessamento;"
 '
@@ -210,11 +282,8 @@ Sub CadastrarCompras()
 '    Set db = Nothing
 '
 '    MsgBox "Concluido!", vbOKOnly + vbInformation, "CadastroCompras"
-
-End Sub
-
-
-
+'
+'End Sub
 
 'Public Sub CadastroDeProcessamento(obj As Collection)
 'Dim cadastro As clsProcessamento: Set cadastro = New clsProcessamento

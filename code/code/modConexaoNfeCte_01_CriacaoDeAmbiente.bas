@@ -46,35 +46,10 @@ Private Const createComprasItens As String = "CREATE TABLE tblCompraNFItem (ID_C
                                             "VCntb_CompraNFItem double , BaseCalcICMS_CompraNFItem double , VTotBaseCalcICMS_CompraNFItem double , DebICMS_CompraNFItem double , IseICMS_CompraNFItem double , OutICMS_CompraNFItem double , BaseCalcIPI_CompraNFItem double , DebIPI_CompraNFItem double , IseIPI_CompraNFItem double , OutIPI_CompraNFItem double , Obs_CompraNFItem TEXT (255) , TxMLSubsTrib_CompraNFItem double , TxIntSubsTrib_CompraNFItem double , TxExtSubsTrib_CompraNFItem double , BaseCalcICMSSubsTrib_CompraNFItem double , VTotICMSSubsTrib_compranfitem double , VTotDesc_CompraNFItem double , VTotFrete_CompraNFItem double ,  VTotSeg_CompraNFItem double , STIPI_CompraNFItem TEXT (255) , STPIS_CompraNFItem TEXT (255) , STCOFINS_CompraNFItem TEXT (255) , nID_CompraNFItem TEXT (255) , PIS_CompraNFItem double ,  COFINS_CompraNFItem double , VTotBaseCalcPIS_CompraNFItem double , VTotBaseCalcCOFINS_CompraNFItem double , VTotPIS_CompraNFItem double , VTotCOFINS_CompraNFItem double , " & _
                                             "VTotOutDesp_CompraNFItem double ,  VUntCustoSI_CompraNFItem double , VTotDebISSRet_CompraNFItem double , VTotIseICMS_CompraNFItem double , VTotOutICMS_CompraNFItem double , SNCredICMS_CompraNFItem double , VTotSNCredICMS_CompraNFItem double)"
 
-''#CriacaoDeAmbiente
-''#ExclusaoTabelasAuxiliares
-''#CriacaoTabelasAuxiliares
-''#CadastroDeParametros
-''#CadastroDeTipos
-''#CadastroOrigemDestino
-''#EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
-
-
-'' #####################################################################
-'' ### #Ailton - EM TESTES
-'' #####################################################################
-
-'Sub cadastroUnico_ORIGEM_DESTINO()
-'    Dim arr() As Variant: arr = Array(createOrigemDestino): executarComandos arr
-'    CadastroDeItens ItensDeOrigemDestino
-'End Sub
-
-
-'' #########################################################################################
-'' ### #Proparts - Criacao De Ambiente para uso da nova aplicação ( Conexao NF-e e CT-e )
-'' #########################################################################################
 
 Sub main_criacao()
 ''==============================================================================================================='
-'' OBJETIVO          : Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e
-''                     criação de dois arquivos do tipo json dos seguintes modelos: Atualizada no ERP (lançada)
-''                     e Envio do manifesto pelo ERP.
-''
+'' OBJETIVO          : Criacao De Ambiente para uso da nova aplicação ( Conexao NF-e e CT-e )
 ''==============================================================================================================='
 
 On Error Resume Next
@@ -84,13 +59,14 @@ On Error Resume Next
     '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
     '' #EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
     '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
-    arr = Array(deleteCompras, deleteComprasItens)
-    executarComandos arr
+    
+'    arr = Array(deleteCompras, deleteComprasItens)
+'    executarComandos arr
     
     
     ''#ExclusaoTabelasAuxiliares - Exclusao de tabelas auxiliares caso existam
-    arr = Array(deleteProcessamento, deleteOrigemDestino, deleteParametros, deleteTipos, deleteDados)
-    executarComandos arr
+'    arr = Array(deleteProcessamento, deleteOrigemDestino, deleteParametros, deleteTipos, deleteDados)
+'    executarComandos arr
     
 On Error GoTo 0
 
@@ -98,23 +74,21 @@ On Error GoTo 0
     '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
     '' #EXCLUIR - USAR APENAS EM AMBIENTE DE DESENVOLVIMENTO
     '' X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X-X
-    arr = Array(createCompras, createComprasItens)
-    executarComandos arr
-
+'    arr = Array(createCompras, createComprasItens)
+'    executarComandos arr
 
     ''#CriacaoTabelasAuxiliares - Criação de tabelas auxiliares para uso no processamento de arquivos xmls e json
-    arr = Array(Processamento, createOrigemDestino, createParametros, createTipos, createDados)
+    arr = Array(createTipos, createParametros, createOrigemDestino, Processamento, createDados)
     executarComandos arr
+
+    ''#CadastroDeTipos - Cadastro de tipos para classificação de registros
+    CadastroDeItens ItensDeTipos
 
     ''#CadastroDeParametros - Cadastro de parametros ex: ( Caminhos, Valores padrões e outros )
     CadastroDeItens ItensDeParametros
-    
-    ''#CadastroDeTipos - Cadastro de tipos para classificação de registros
-    CadastroDeItens ItensDeTipos
             
-    ''#CadastroOrigemDestino - Relacionamento entre campos dos arquivos (nfe,cte) das tabela (tblCompraNF,tblCompraNFItem)
-    ''' CadastroOrigemDestino - DESATIVADO
-    CadastroDeItens ItensDeOrigemDestino
+    ''#ItensDeOrigemDestino - Relacionamento entre campos dos arquivos (nfe,cte) das tabela (tblCompraNF,tblCompraNFItem)
+'    CadastroDeItens ItensDeOrigemDestino
     
     
     MsgBox "Concluido!", vbOKOnly + vbInformation, "main_criacao"
@@ -127,49 +101,25 @@ End Sub
 '' ### #Libs - USADAS APENAS NESTE MÓDULO PARA CRIAÇÃO
 '' #####################################################################
 
-Private Sub CadastroOrigemDestino()
-Dim db As Database
-Dim tdf As TableDef
-Dim x As Integer
-
-    Set db = CurrentDb
-    Set con = CurrentProject.Connection
-
-    For Each Comando In carregarParametros("tblOrigemDestino", qryParametro)
-        For Each tdf In db.TableDefs
-           If left(tdf.Name, 4) <> "MSys" And (tdf.Name = Comando) Then
-              For x = 0 To tdf.Fields.count - 1
-                con.Execute Replace(Replace(qryOrigemDestino, "strDestino", tdf.Name & "." & tdf.Fields(x).Name), "strTipo", getTypeText(tdf.Fields(x).Type))
-              Next x
-           End If
-        Next tdf
-    Next Comando
-    
-    Application.CurrentDb.Execute qryOrigemDestinoSplit
-
-Set con = Nothing
-
-End Sub
-
 Private Sub CadastroDeItens(Itens As Collection)
 Dim con As ADODB.Connection: Set con = CurrentProject.Connection
-Dim I As Variant
+Dim i As Variant
 
-    For Each I In Itens
-        con.Execute I
-    Next I
+    For Each i In Itens
+        con.Execute i
+    Next i
 
 Set con = Nothing
 
 End Sub
 
-Private Sub criarConsulta(nomeDaConsulta As String, scriptDaConsulta As String)
-Dim db As DAO.Database: Set db = CurrentDb
-
-    db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
-    db.Close
-
-End Sub
+'Private Sub criarConsulta(nomeDaConsulta As String, scriptDaConsulta As String)
+'Dim db As DAO.Database: Set db = CurrentDb
+'
+'    db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
+'    db.Close
+'
+'End Sub
 
 Private Sub executarComandos(comandos() As Variant)
 Dim Comando As Variant
@@ -234,8 +184,6 @@ Set ItensDeParametros = New Collection
     '' ORIGEM/DESTINO
     '' #AILTON - TagOrigem [0,null,1,xml,2,tbl,3,Duvida]
     
-
-
     '' CAMINHOS
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('caminhoDeColeta','C:\temp\Coleta\')"
     ItensDeParametros.add "INSERT INTO tblParametros (TipoDeParametro,ValorDoParametro) VALUES('caminhoDeProcessados','C:\temp\Processados\')"
@@ -275,164 +223,196 @@ End Function
 Private Function ItensDeOrigemDestino() As Collection
 Set ItensDeOrigemDestino = New Collection
 
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.ID_Empresa' , 'dbLong' , '' , cInt('0') , 'tblDadosConexaoNFeCTe' , 'ID_Empresa')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.ID_Tipo' , 'dbLong' , '' , cInt('0') , 'tblDadosConexaoNFeCTe' , 'ID_Tipo')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.codMod' , 'dbLong' , 'ide/mod' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'codMod')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.codIntegrado' , 'dbLong' , '' , cInt('0') , 'tblDadosConexaoNFeCTe' , 'codIntegrado')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.dhEmi' , 'dbText' , 'ide/dhEmi' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'dhEmi')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CNPJ_emit' , 'dbText' , 'emit/CNPJ' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CNPJ_emit')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.Razao_emit' , 'dbText' , 'emit/xNome' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'Razao_emit')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CNPJ_Rem' , 'dbText' , 'rem/CNPJ' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CNPJ_Rem')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CPNJ_Dest' , 'dbText' , 'dest/CNPJ' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CPNJ_Dest')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CaminhoDoArquivo' , 'dbText' , 'CaminhoDoArquivo' , cInt('2') , 'tblDadosConexaoNFeCTe' , 'CaminhoDoArquivo')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.Chave' , 'dbText' , 'infCTeNorm/infDoc/infNFe/chave' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'Chave')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.Comando' , 'dbText' , 'Comando' , cInt('2') , 'tblDadosConexaoNFeCTe' , 'Comando')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Fil_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Fil')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumNF_CompraNF' , 'dbText' , 'ide/cNF' , cInt('1') , 'tblCompraNF' , 'NumNF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumPed_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumPed')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumOrc_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumOrc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Esp_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Esp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Serie_CompraNF' , 'dbText' , 'ide/serie' , cInt('1') , 'tblCompraNF' , 'Serie')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.TPNF_CompraNF' , 'dbText' , 'ide/tpNF' , cInt('1') , 'tblCompraNF' , 'TPNF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_NatOp_CompraNF' , 'dbLong' , 'ide/natOp' , cInt('1') , 'tblCompraNF' , 'ID_NatOp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_NatOpOLD_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_NatOpOLD')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.CFOP_CompraNF' , 'dbText' , 'ide/CFOP' , cInt('1') , 'tblCompraNF' , 'CFOP')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IESubsTrib_CompraNF' , 'dbText' , 'emit/IE' , cInt('1') , 'tblCompraNF' , 'IESubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DTEmi_CompraNF' , 'dbDate' , 'ide/dhEmi' , cInt('1') , 'tblCompraNF' , 'DTEmi')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DTEntd_CompraNF' , 'dbDate' , 'xxx' , cInt('0') , 'tblCompraNF' , 'DTEntd')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.HoraEntd_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'HoraEntd')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Forn_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_Forn')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_FornOld_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_FornOld')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Compr_CompraNF' , 'dbLong' , 'transp/modFrete' , cInt('3') , 'tblCompraNF' , 'ID_Compr')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Transp_CompraNF' , 'dbLong' , 'transp/modFrete' , cInt('3') , 'tblCompraNF' , 'ID_Transp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_CondPgto_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_CondPgto')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.BaseCalcICMSSubsTrib_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'BaseCalcICMSSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotICMSSubsTrib_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotICMSSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotFrete_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotFrete')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotSeguro_CompraNF' , 'dbDouble' , 'total/ICMSTot/vSeg' , cInt('3') , 'tblCompraNF' , 'VTotSeguro')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotOutDesp_CompraNF' , 'dbDouble' , 'total/ICMSTot/vOutro' , cInt('1') , 'tblCompraNF' , 'VTotOutDesp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.BaseCalcICMS_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'BaseCalcICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotICMS_CompraNF' , 'dbDouble' , 'total/ICMSTot/vICMS' , cInt('1') , 'tblCompraNF' , 'VTotICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotIPI_CompraNF' , 'dbDouble' , 'total/ICMSTot/vIPI' , cInt('3') , 'tblCompraNF' , 'VTotIPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotISS_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotISS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotProd_CompraNF' , 'dbDouble' , 'total/ICMSTot/vProd' , cInt('1') , 'tblCompraNF' , 'VTotProd')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotServ_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotServ')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotNF_CompraNF' , 'dbDouble' , 'total/ICMSTot/vNF' , cInt('1') , 'tblCompraNF' , 'VTotNF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.TxDesc_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'TxDesc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotDesc_CompraNF' , 'dbDouble' , 'total/ICMSTot/vDesc' , cInt('3') , 'tblCompraNF' , 'VTotDesc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.TPFrete_CompraNF' , 'dbDouble' , 'total/ICMSTot/vFrete' , cInt('3') , 'tblCompraNF' , 'TPFrete')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Placa_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Placa')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.UFVeic_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'UFVeic')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.QtdVol_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'QtdVol')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.EspVol_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'EspVol')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.MarcaVol_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'MarcaVol')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumVol_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumVol')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.PesoBrt_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'PesoBrt')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.PesoLiq_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'PesoLiq')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DdAdic_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'DdAdic')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Obs_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Obs')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Sit_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Sit')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Depto_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Depto')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Contato_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Contato')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Email_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Email')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Fone_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Fone')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.CondEsp_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'CondEsp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Validade_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Validade')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.PzEntg_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'PzEntg')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Garantia_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Garantia')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagSimples_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagSimples')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagDescBaseICMS_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagDescBaseICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagExp_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagExp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ModeloDoc_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ModeloDoc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ChvAcesso_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ChvAcesso')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotPIS_CompraNF' , 'dbDouble' , 'total/ICMSTot/vPIS' , cInt('0') , 'tblCompraNF' , 'VTotPIS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotCOFINS_CompraNF' , 'dbDouble' , 'total/ICMSTot/vCOFINS' , cInt('0') , 'tblCompraNF' , 'VTotCOFINS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotPISRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotPISRet')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotCOFINSRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotCOFINSRet')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotCSLLRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotCSLLRet')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotIRRFRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotIRRFRet')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagSomaST_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagSomaST')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagCalculado_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagCalculado')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotISSRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotISSRet')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DTExt_CompraNF' , 'dbDate' , 'xxx' , cInt('0') , 'tblCompraNF' , 'DTExt')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.CNPJ_CPF_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'CNPJ_CPF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NomeCompleto_CompraNF' , 'dbText' , 'emit/xNome' , cInt('1') , 'tblCompraNF' , 'NomeCompleto')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NomeCompleto_VendaNF' , 'dbText' , 'emit/xNome' , cInt('3') , 'tblCompraNF' , 'NomeCompleto_VendaNF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Imp_CompraNF' , 'dbLong' , 'emit/tpImp' , cInt('3') , 'tblCompraNF' , 'ID_Imp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.SitOR_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'SitOR')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumOR_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumOR')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagNEnvWMAS_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagNEnvWMAS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDVD_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDVD')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDVendaNF_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDVendaNF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagTransf_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagTransf')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IDOLD_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'IDOLD')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_CompraNF_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_CompraNFOLD_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'IDOLD')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Item_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'Item')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_Prod_CompraNFItem' , 'dbLong' , 'det nItem=ContadorX /prod/cProd' , cInt('1') , 'tblCompraNFItem' , 'ID_Prod')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_ProdOld_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID_ProdOld')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_Grade_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID_Grade')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Almox_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'Almox')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.QtdFat_CompraNFItem' , 'dbLong' , 'det nItem=ContadorX /prod/qCom' , cInt('3') , 'tblCompraNFItem' , 'QtdFat')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VUnt_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /prod/vUnCom' , cInt('3') , 'tblCompraNFItem' , 'VUnt')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxDesc_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxDesc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VUntDesc_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VUntDesc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'ICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ISS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'ISS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IPI_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/IPI/CST' , cInt('3') , 'tblCompraNFItem' , 'IPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_NatOp_CompraNFItem' , 'dbLong' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'ID_NatOp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_NatOpOLD_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID_NatOpOLD')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.CFOP_CompraNFItem' , 'dbText' , 'det nItem=ContadorX /prod/CFOP' , cInt('1') , 'tblCompraNFItem' , 'CFOP')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ST_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'ST')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.FlagEst_CompraNFItem' , 'dbByte' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'FlagEst')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.EstDe_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'EstDe')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.EstPara_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'EstPara')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.DTEmi_CompraNFItem' , 'dbDate' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'DTEmi')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Esp_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Esp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Série_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Série')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Num_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Num')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Dia_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Dia')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.UF_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'UF')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTot_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /prod/vProd' , cInt('3') , 'tblCompraNFItem' , 'VTot')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VCntb_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VCntb')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.BaseCalcICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'BaseCalcICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotBaseCalcICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'VTotBaseCalcICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.DebICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'DebICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IseICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'IseICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.OutICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'OutICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.BaseCalcIPI_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/IPI/IPINT/CST' , cInt('0') , 'tblCompraNFItem' , 'BaseCalcIPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.DebIPI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'DebIPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IseIPI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'IseIPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.OutIPI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'OutIPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Obs_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Obs')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxMLSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxMLSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxIntSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxIntSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxExtSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxExtSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.BaseCalcICMSSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'BaseCalcICMSSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotICMSSubsTrib_compranfitem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotICMSSubsTrib')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotDesc_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vDesc' , cInt('3') , 'tblCompraNFItem' , 'VTotDesc')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotFrete_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vFrete' , cInt('3') , 'tblCompraNFItem' , 'VTotFrete')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotSeg_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vSeg' , cInt('3') , 'tblCompraNFItem' , 'VTotSeg')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.STIPI_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'STIPI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.STPIS_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'STPIS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.STCOFINS_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'STCOFINS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.nID_CompraNFItem' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'nID')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.PIS_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vPIS' , cInt('3') , 'tblCompraNFItem' , 'PIS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.COFINS_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vCOFINS' , cInt('0') , 'tblCompraNFItem' , 'COFINS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotBaseCalcPIS_CompraNFItem' , 'dbDouble' , 'imposto/PIS/PISAliq/vBC' , cInt('1') , 'tblCompraNFItem' , 'VTotBaseCalcPIS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotBaseCalcCOFINS_CompraNFItem' , 'dbDouble' , 'imposto/COFINS/COFINSAliq/vBC' , cInt('1') , 'tblCompraNFItem' , 'VTotBaseCalcCOFINS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotPIS_CompraNFItem' , 'dbDouble' , 'imposto/PIS/PISAliq/vPIS' , cInt('1') , 'tblCompraNFItem' , 'VTotPIS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotCOFINS_CompraNFItem' , 'dbDouble' , 'imposto/COFINS/COFINSAliq/vCOFINS' , cInt('1') , 'tblCompraNFItem' , 'VTotCOFINS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotOutDesp_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotOutDesp')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VUntCustoSI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VUntCustoSI')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotDebISSRet_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotDebISSRet')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotIseICMS_CompraNFItem' , 'dbDouble' , 'imposto/ICMS/ICMSSN102/CSOSN' , cInt('1') , 'tblCompraNFItem' , 'VTotIseICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotOutICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotOutICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.SNCredICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'SNCredICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotSNCredICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotSNCredICMS')"
-ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CPNJ_Dest' , 'dbText' , 'dest/CPF' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CPNJ_Dest')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.ID_Empresa' , 'dbLong' , '' , cInt('0') , 'tblDadosConexaoNFeCTe' , 'ID_Empresa')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.ID_Tipo' , 'dbLong' , '' , cInt('0') , 'tblDadosConexaoNFeCTe' , 'ID_Tipo')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.codMod' , 'dbLong' , 'ide/mod' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'codMod')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.codIntegrado' , 'dbLong' , '' , cInt('0') , 'tblDadosConexaoNFeCTe' , 'codIntegrado')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.dhEmi' , 'dbText' , 'ide/dhEmi' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'dhEmi')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CNPJ_emit' , 'dbText' , 'emit/CNPJ' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CNPJ_emit')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.Razao_emit' , 'dbText' , 'emit/xNome' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'Razao_emit')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CNPJ_Rem' , 'dbText' , 'rem/CNPJ' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CNPJ_Rem')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CPNJ_Dest' , 'dbText' , 'dest/CNPJ' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CPNJ_Dest')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CaminhoDoArquivo' , 'dbText' , 'CaminhoDoArquivo' , cInt('2') , 'tblDadosConexaoNFeCTe' , 'CaminhoDoArquivo')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.Chave' , 'dbText' , 'infCTeNorm/infDoc/infNFe/chave' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'Chave')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.Comando' , 'dbText' , 'Comando' , cInt('2') , 'tblDadosConexaoNFeCTe' , 'Comando')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Fil_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Fil')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumNF_CompraNF' , 'dbText' , 'ide/cNF' , cInt('1') , 'tblCompraNF' , 'NumNF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumPed_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumPed')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumOrc_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumOrc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Esp_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Esp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Serie_CompraNF' , 'dbText' , 'ide/serie' , cInt('1') , 'tblCompraNF' , 'Serie')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.TPNF_CompraNF' , 'dbText' , 'ide/tpNF' , cInt('1') , 'tblCompraNF' , 'TPNF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_NatOp_CompraNF' , 'dbLong' , 'ide/natOp' , cInt('1') , 'tblCompraNF' , 'ID_NatOp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_NatOpOLD_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_NatOpOLD')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.CFOP_CompraNF' , 'dbText' , 'ide/CFOP' , cInt('1') , 'tblCompraNF' , 'CFOP')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IESubsTrib_CompraNF' , 'dbText' , 'emit/IE' , cInt('1') , 'tblCompraNF' , 'IESubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DTEmi_CompraNF' , 'dbDate' , 'ide/dhEmi' , cInt('1') , 'tblCompraNF' , 'DTEmi')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DTEntd_CompraNF' , 'dbDate' , 'xxx' , cInt('0') , 'tblCompraNF' , 'DTEntd')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.HoraEntd_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'HoraEntd')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Forn_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_Forn')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_FornOld_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_FornOld')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Compr_CompraNF' , 'dbLong' , 'transp/modFrete' , cInt('3') , 'tblCompraNF' , 'ID_Compr')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Transp_CompraNF' , 'dbLong' , 'transp/modFrete' , cInt('3') , 'tblCompraNF' , 'ID_Transp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_CondPgto_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ID_CondPgto')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.BaseCalcICMSSubsTrib_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'BaseCalcICMSSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotICMSSubsTrib_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotICMSSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotFrete_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotFrete')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotSeguro_CompraNF' , 'dbDouble' , 'total/ICMSTot/vSeg' , cInt('3') , 'tblCompraNF' , 'VTotSeguro')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotOutDesp_CompraNF' , 'dbDouble' , 'total/ICMSTot/vOutro' , cInt('1') , 'tblCompraNF' , 'VTotOutDesp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.BaseCalcICMS_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'BaseCalcICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotICMS_CompraNF' , 'dbDouble' , 'total/ICMSTot/vICMS' , cInt('1') , 'tblCompraNF' , 'VTotICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotIPI_CompraNF' , 'dbDouble' , 'total/ICMSTot/vIPI' , cInt('3') , 'tblCompraNF' , 'VTotIPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotISS_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotISS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotProd_CompraNF' , 'dbDouble' , 'total/ICMSTot/vProd' , cInt('1') , 'tblCompraNF' , 'VTotProd')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotServ_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotServ')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotNF_CompraNF' , 'dbDouble' , 'total/ICMSTot/vNF' , cInt('1') , 'tblCompraNF' , 'VTotNF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.TxDesc_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'TxDesc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotDesc_CompraNF' , 'dbDouble' , 'total/ICMSTot/vDesc' , cInt('3') , 'tblCompraNF' , 'VTotDesc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.TPFrete_CompraNF' , 'dbDouble' , 'total/ICMSTot/vFrete' , cInt('3') , 'tblCompraNF' , 'TPFrete')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Placa_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Placa')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.UFVeic_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'UFVeic')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.QtdVol_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'QtdVol')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.EspVol_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'EspVol')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.MarcaVol_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'MarcaVol')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumVol_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumVol')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.PesoBrt_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'PesoBrt')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.PesoLiq_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'PesoLiq')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DdAdic_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'DdAdic')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Obs_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Obs')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Sit_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Sit')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Depto_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Depto')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Contato_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Contato')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Email_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Email')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDCli_Fone_CompraNF' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDCli_Fone')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.CondEsp_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'CondEsp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Validade_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Validade')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.PzEntg_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'PzEntg')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.Garantia_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'Garantia')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagSimples_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagSimples')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagDescBaseICMS_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagDescBaseICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagExp_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagExp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ModeloDoc_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ModeloDoc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ChvAcesso_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'ChvAcesso')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotPIS_CompraNF' , 'dbDouble' , 'total/ICMSTot/vPIS' , cInt('0') , 'tblCompraNF' , 'VTotPIS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotCOFINS_CompraNF' , 'dbDouble' , 'total/ICMSTot/vCOFINS' , cInt('0') , 'tblCompraNF' , 'VTotCOFINS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotPISRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotPISRet')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotCOFINSRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotCOFINSRet')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotCSLLRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotCSLLRet')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotIRRFRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotIRRFRet')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagSomaST_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagSomaST')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagCalculado_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagCalculado')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.VTotISSRet_CompraNF' , 'dbDouble' , 'xxx' , cInt('0') , 'tblCompraNF' , 'VTotISSRet')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.DTExt_CompraNF' , 'dbDate' , 'xxx' , cInt('0') , 'tblCompraNF' , 'DTExt')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.CNPJ_CPF_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'CNPJ_CPF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NomeCompleto_CompraNF' , 'dbText' , 'emit/xNome' , cInt('1') , 'tblCompraNF' , 'NomeCompleto')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NomeCompleto_VendaNF' , 'dbText' , 'emit/xNome' , cInt('3') , 'tblCompraNF' , 'NomeCompleto_VendaNF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.ID_Imp_CompraNF' , 'dbLong' , 'emit/tpImp' , cInt('3') , 'tblCompraNF' , 'ID_Imp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.SitOR_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'SitOR')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.NumOR_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'NumOR')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagNEnvWMAS_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagNEnvWMAS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDVD_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDVD')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.IDVendaNF_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'IDVendaNF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNF.FlagTransf_CompraNF' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNF' , 'FlagTransf')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IDOLD_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'IDOLD')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_CompraNF_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_CompraNFOLD_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'IDOLD')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Item_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'Item')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_Prod_CompraNFItem' , 'dbLong' , 'det nItem=ContadorX /prod/cProd' , cInt('1') , 'tblCompraNFItem' , 'ID_Prod')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_ProdOld_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID_ProdOld')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_Grade_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID_Grade')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Almox_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'Almox')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.QtdFat_CompraNFItem' , 'dbLong' , 'det nItem=ContadorX /prod/qCom' , cInt('3') , 'tblCompraNFItem' , 'QtdFat')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VUnt_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /prod/vUnCom' , cInt('3') , 'tblCompraNFItem' , 'VUnt')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxDesc_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxDesc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VUntDesc_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VUntDesc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'ICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ISS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'ISS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IPI_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/IPI/CST' , cInt('3') , 'tblCompraNFItem' , 'IPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_NatOp_CompraNFItem' , 'dbLong' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'ID_NatOp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ID_NatOpOLD_CompraNFItem' , 'dbLong' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'ID_NatOpOLD')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.CFOP_CompraNFItem' , 'dbText' , 'det nItem=ContadorX /prod/CFOP' , cInt('1') , 'tblCompraNFItem' , 'CFOP')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.ST_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'ST')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.FlagEst_CompraNFItem' , 'dbByte' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'FlagEst')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.EstDe_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'EstDe')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.EstPara_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'EstPara')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.DTEmi_CompraNFItem' , 'dbDate' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'DTEmi')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Esp_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Esp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Série_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Série')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Num_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Num')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Dia_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Dia')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.UF_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'UF')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTot_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /prod/vProd' , cInt('3') , 'tblCompraNFItem' , 'VTot')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VCntb_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VCntb')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.BaseCalcICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'BaseCalcICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotBaseCalcICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'VTotBaseCalcICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.DebICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'DebICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IseICMS_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/ICMS/CSOSN' , cInt('3') , 'tblCompraNFItem' , 'IseICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.OutICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'OutICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.BaseCalcIPI_CompraNFItem' , 'dbDouble' , 'det nItem=ContadorX /impost/IPI/IPINT/CST' , cInt('0') , 'tblCompraNFItem' , 'BaseCalcIPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.DebIPI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'DebIPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.IseIPI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'IseIPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.OutIPI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'OutIPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.Obs_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'Obs')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxMLSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxMLSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxIntSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxIntSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.TxExtSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'TxExtSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.BaseCalcICMSSubsTrib_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'BaseCalcICMSSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotICMSSubsTrib_compranfitem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotICMSSubsTrib')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotDesc_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vDesc' , cInt('3') , 'tblCompraNFItem' , 'VTotDesc')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotFrete_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vFrete' , cInt('3') , 'tblCompraNFItem' , 'VTotFrete')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotSeg_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vSeg' , cInt('3') , 'tblCompraNFItem' , 'VTotSeg')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.STIPI_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'STIPI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.STPIS_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'STPIS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.STCOFINS_CompraNFItem' , 'dbText' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'STCOFINS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.nID_CompraNFItem' , 'dbText' , 'xxx' , cInt('0') , 'tblCompraNFItem' , 'nID')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.PIS_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vPIS' , cInt('3') , 'tblCompraNFItem' , 'PIS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.COFINS_CompraNFItem' , 'dbDouble' , 'total/ICMSTot/vCOFINS' , cInt('0') , 'tblCompraNFItem' , 'COFINS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotBaseCalcPIS_CompraNFItem' , 'dbDouble' , 'imposto/PIS/PISAliq/vBC' , cInt('1') , 'tblCompraNFItem' , 'VTotBaseCalcPIS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotBaseCalcCOFINS_CompraNFItem' , 'dbDouble' , 'imposto/COFINS/COFINSAliq/vBC' , cInt('1') , 'tblCompraNFItem' , 'VTotBaseCalcCOFINS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotPIS_CompraNFItem' , 'dbDouble' , 'imposto/PIS/PISAliq/vPIS' , cInt('1') , 'tblCompraNFItem' , 'VTotPIS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotCOFINS_CompraNFItem' , 'dbDouble' , 'imposto/COFINS/COFINSAliq/vCOFINS' , cInt('1') , 'tblCompraNFItem' , 'VTotCOFINS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotOutDesp_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotOutDesp')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VUntCustoSI_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VUntCustoSI')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotDebISSRet_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotDebISSRet')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotIseICMS_CompraNFItem' , 'dbDouble' , 'imposto/ICMS/ICMSSN102/CSOSN' , cInt('1') , 'tblCompraNFItem' , 'VTotIseICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotOutICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotOutICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.SNCredICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'SNCredICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblCompraNFItem.VTotSNCredICMS_CompraNFItem' , 'dbDouble' , 'xxx' , cInt('3') , 'tblCompraNFItem' , 'VTotSNCredICMS')"
+    ItensDeOrigemDestino.add "INSERT INTO tblOrigemDestino (Destino,Tipo,Tag,TagOrigem,tabela,campo) VALUES ('tblDadosConexaoNFeCTe.CPNJ_Dest' , 'dbText' , 'dest/CPF' , cInt('1') , 'tblDadosConexaoNFeCTe' , 'CPNJ_Dest')"
 
 
 End Function
 
+
+
+''#######################################################################################
+''### LIMBO
+''#######################################################################################
+
+
+'' #DESCONTINUADO - FOI SUBSTITUIDO POR cadastrar_selecaoDeCampos()
+'Private Sub CadastroOrigemDestino() ''DESATIVADO
+''' RELACIONAR DE TAGs COM CAMPOS DAS TABELAS USADOS NO PROCESSAMENTO DOS ARQUIVOS
+'Dim db As Database
+'Dim tdf As TableDef
+'Dim x As Integer
+'
+'    Set db = CurrentDb
+'    Set con = CurrentProject.Connection
+'
+'    For Each Comando In carregarParametros("tblOrigemDestino", qryParametro)
+'        For Each tdf In db.TableDefs
+'           If left(tdf.Name, 4) <> "MSys" And (tdf.Name = Comando) Then
+'              For x = 0 To tdf.Fields.count - 1
+'                con.Execute Replace(Replace(qryOrigemDestino, "strDestino", tdf.Name & "." & tdf.Fields(x).Name), "strTipo", getTypeText(tdf.Fields(x).Type))
+'              Next x
+'           End If
+'        Next tdf
+'    Next Comando
+'
+'    Application.CurrentDb.Execute qryOrigemDestinoSplit
+'
+'Set con = Nothing
+'
+'End Sub

@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
+Private Const qryParametro As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
 Private Const qryProcessamento As String = "select nomecampo, valor from tblProcessamento where pk = 'strChave'"
 
 
@@ -103,7 +103,7 @@ Dim qdf As DAO.QueryDef: Set qdf = db.QueryDefs("INSERT_tblDadosConexaoNFeCTe")
 
     With qdf
             .Parameters("ID_Empresa") = ID_Empresa
-            .Parameters("ID_Tipo") = ID_Tipo
+            .Parameters("ID_Tipo") = pegarValorDoParametro(qryParametro, "qryTiposMod" & CStr(codMod))
             .Parameters("codMod") = codMod
             .Parameters("codIntegrado") = codIntegrado
             .Parameters("dhEmi") = dhEmi
