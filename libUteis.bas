@@ -1,6 +1,6 @@
 Attribute VB_Name = "libUteis"
 Option Compare Database
-
+Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 '' #CONTROLE_PARAMETRO
 Public Const qryParametros As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
@@ -17,6 +17,13 @@ Public Const qrySelectProcessamentoPendente As String = "SELECT tblDadosConexaoN
 Public Const qryUpdateProcessamentoConcluido As String = "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
 
 
+'' COMPRAS
+'' -- AJUSTE DE CAMPOS
+Private Const qryUpdateCurrecy As String = "UPDATE tblProcessamento SET tblProcessamento.valor = Format(Replace([tblProcessamento].[valor], '.', ','), '#,##0.00') WHERE (((tblProcessamento.NomeCampo)='strCampo'));"
+Private Const qryUpdateDate As String = "UPDATE tblProcessamento SET tblProcessamento.valor = CDate(Replace(Mid([tblProcessamento].[valor],1,10),'-','/')) WHERE (((tblProcessamento.NomeCampo)='strCampo'));"
+Private Const qryUpdateTime As String = "UPDATE tblProcessamento SET tblProcessamento.valor = Replace(Mid([tblProcessamento].[valor],12,8),'-','/') WHERE (((tblProcessamento.NomeCampo)='strCampo'));"
+
+
 Public Enum enumOperacao
     opNone = 0
     opExecutar = 1
@@ -27,6 +34,62 @@ End Enum
 '' #####################################################################
 '' ### #Libs - PODE SER ADICIONADAS AS FUNÇÕES GERAIS DA APLICAÇÃO
 '' #####################################################################
+
+Public Function statusFinal(pDate As Date, strTitulo As String)
+    
+    Debug.Print strTitulo & " - " & Format(Now - pDate, "hh:mm:ss")
+    
+End Function
+
+
+
+'' #VALIDAR_DADOS
+Sub criarConsultasParaTestes()
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rstOrigem As DAO.Recordset
+Dim strSql As String
+Dim qrySelectTabelas As String: qrySelectTabelas = "Select Distinct tabela from tblOrigemDestino order by tabela"
+Dim tabela As Variant
+
+'' CRIAR CONSULTA PARA VALIDAR DADOS PROCESSADOS
+For Each tabela In carregarParametros(qrySelectTabelas)
+    strSql = "Select "
+    Set rstOrigem = db.OpenRecordset("Select distinct Destino from tblOrigemDestino where tabela = '" & tabela & "'")
+    Do While Not rstOrigem.EOF
+        strSql = strSql & strSplit(rstOrigem.Fields("Destino").value, ".", 1) & ","
+        rstOrigem.MoveNext
+    Loop
+    strSql = left(strSql, Len(strSql) - 1) & " from " & tabela
+    qryExists "qry_" & tabela
+    qryCreate "qry_" & tabela, strSql
+Next tabela
+
+db.Close: Set db = Nothing
+
+End Sub
+
+'' #FORMATAR_CAMPOS
+Sub formatarCampos()
+Dim t As Variant
+Dim s As String
+
+'' MOEDA
+For Each t In Array("BaseCalcICMSSubsTrib_CompraNF", "BaseCalcICMS_CompraNF", "VTotICMS_CompraNF", "VTotServ_CompraNF", "VTotProd_CompraNF", "VTotNF_CompraNF", "VTotICMSSubsTrib_CompraNF", "VTotFrete_CompraNF", "VTotSeguro_CompraNF", "VTotOutDesp_CompraNF", "VTotIPI_CompraNF", "VTotISS_CompraNF", "TxDesc_CompraNF", "VTotDesc_CompraNF")
+    Application.CurrentDb.Execute Replace(qryUpdateCurrecy, "strCampo", t)
+Next t
+
+'' DATAS
+For Each t In Array("DTEmi_CompraNF", "DTEntd_CompraNF")
+    Application.CurrentDb.Execute Replace(qryUpdateDate, "strCampo", t)
+Next t
+
+'' HORAS
+For Each t In Array("HoraEntd_CompraNF")
+    Application.CurrentDb.Execute Replace(qryUpdateTime, "strCampo", t)
+Next t
+
+End Sub
+
 
 Public Function strSplit(strValor As String, strSeparador As String, intPosicao As Integer) As String
     If (strValor <> "") Then
@@ -158,7 +221,7 @@ Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(strSql)
 Dim f As Variant
 
 Do While Not rst.EOF
-    carregarParametros.add rst.Fields(0).Value
+    carregarParametros.add rst.Fields(0).value
     rst.MoveNext
 Loop
 
@@ -172,7 +235,7 @@ Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As S
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pTipoDeParametro))
 
-    pegarValorDoParametro = rst.Fields(IIf(pCampo <> "", pCampo, "ValorDoParametro")).Value
+    pegarValorDoParametro = rst.Fields(IIf(pCampo <> "", pCampo, "ValorDoParametro")).value
 
 db.Close
 End Function
@@ -216,11 +279,10 @@ End Function
 
 Public Sub ClearCollection(ByRef container As Collection)
     Dim index As Long
-    For index = 1 To container.count
+    For index = 1 To container.Count
         container.remove 1
     Next
 End Sub
-
 
 Public Function STRPontos(campo As Variant) As String
   On Error GoTo Err_STR
@@ -250,3 +312,10 @@ Err_STR:
   Resume Exit_STR
 End Function
 
+Public Function PreventNullString(pText As Variant) As String
+    If IsNull(pText) Then
+        PreventNullString = ""
+    Else
+        PreventNullString = CStr(pText)
+    End If
+End Function

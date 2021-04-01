@@ -99,13 +99,25 @@ Public Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collectio
     Dim lists As Variant
     Dim fieldnode As Variant
     Dim childNode As Variant
+    Dim contadorDeArquivos As Long: contadorDeArquivos = 1
+    Dim DT_PROCESSO As Date
+    Dim DT_REGISTRO As Date
+    
+    DT_PROCESSO = Now()
     
     '' LIMPAR TABELA DE PROCESSAMENTOS
     Application.CurrentDb.Execute qryDeleteProcessamento
         
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdInitMeter, "Reading Data...", pArquivos.Count
+        
+        
     '' 01.Leitura e identificação do arquivo
     For Each fileName In pArquivos
         XDoc.Load fileName
+        
+        '' #BARRA_PROGRESSO
+        SysCmd acSysCmdUpdateMeter, contadorDeArquivos
         
         '' 01.CRIAR CHAVE UNICA DE REGISTRO PARA CONTROLE DE DADOS
         strPk = Controle & getFileName(CStr(fileName))
@@ -121,10 +133,15 @@ Public Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collectio
                     Next childNode
                 End If
             Next fieldnode
+            
+            DoEvents
+            
         Next Item
 
         '' 03. REALIZAR CADASTRO DE TODOS OS ITENS COLETADOS NA TABELA DE PROCESSAMENTO
-        If (col.count > 2) Then
+        If (col.Count > 2) Then
+            
+            DT_REGISTRO = Now()
             
             '' CADASTRAR REGISTRO
             Set cadastro = New clsProcessamento
@@ -135,7 +152,11 @@ Public Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collectio
                     .valor = Mid(Split(i, "|")(2), 1, 255)
                     .cadastrar
                 End With
+                
+                DoEvents
             Next i
+            
+            statusFinal DT_REGISTRO, "Processamento por registro"
             
             '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
             Application.CurrentDb.Execute Replace(qryUpdateProcessamento, "strParametro", pTabelaDestino)
@@ -145,7 +166,16 @@ Public Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collectio
         '' LIMPAR COLEÇÃO
         ClearCollection col
 
+        '' #BARRA_PROGRESSO
+        contadorDeArquivos = contadorDeArquivos + 1
+        
     Next fileName
+
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdRemoveMeter
+
+    '' ANALISE DE PROCESSAMENTO
+    statusFinal DT_PROCESSO, "Processamento - ProcessarArquivosXml"
 
     Set XDoc = Nothing
     
@@ -163,7 +193,7 @@ Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateFornecedoresValidos
         '' CADASTRO
         dados.Comando = pegarValorDoParametro(qryParametros, strComando)
         dados.codTipoEvento = pegarValorDoParametro(qryParametros, strCodTipoEvento)
-        dados.carregar_dados rst.Fields("pk").Value
+        dados.carregar_dados rst.Fields("pk").value
         dados.cadastrar
 
         rst.MoveNext
@@ -179,29 +209,29 @@ Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateFornecedoresValidos
 
 End Sub
 
-Public Sub TransferirCompras()
-Dim dados As New clsConexaoNfeCteCompraNF
-Dim db As DAO.Database: Set db = CurrentDb
-Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(sqyProcessamentosPendentes)
-Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateDTEmi, qryUpdateHoraEntd)
-
-    '' REFINAMENTO DE DADOS
-    executarComandos qryProcessos
-
-    Do While Not rst.EOF
-        dados.carregar_dados rst.Fields("pk").Value
-        dados.cadastrar
-        
-        Application.CurrentDb.Execute Replace(qryUpdateProcessamentoConcluido, "strChave", rst.Fields("pk").Value)
-        
-        rst.MoveNext
-    Loop
-
-    db.Close: Set db = Nothing
-    
-    MsgBox "Concluido!", vbOKOnly + vbInformation, "TransferirCompras"
-
-End Sub
+'Public Sub TransferirCompras()
+'Dim dados As New clsConexaoNfeCteCompraNF
+'Dim db As DAO.Database: Set db = CurrentDb
+'Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(sqyProcessamentosPendentes)
+'Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateDTEmi, qryUpdateHoraEntd)
+'
+'    '' REFINAMENTO DE DADOS
+'    executarComandos qryProcessos
+'
+'    Do While Not rst.EOF
+'        dados.carregar_dados rst.Fields("pk").value
+'        dados.cadastrar
+'
+'        Application.CurrentDb.Execute Replace(qryUpdateProcessamentoConcluido, "strChave", rst.Fields("pk").value)
+'
+'        rst.MoveNext
+'    Loop
+'
+'    db.Close: Set db = Nothing
+'
+'    MsgBox "Concluido!", vbOKOnly + vbInformation, "TransferirCompras"
+'
+'End Sub
 
 
 Public Sub CriarTipoDeArquivo(pArquivo As enumTipoArquivo)
@@ -212,18 +242,18 @@ Dim dados As New clsConexaoNfeCteDados ''Set dados = New clsConexaoNfeCteDados
 
     '' CRIAÇÃO DE ARQUIVOS
     Do While Not rst.EOF
-        dados.ChvAcesso = rst.Fields("ChvAcesso").Value
-        dados.dhEmi = rst.Fields("dhEmi").Value
+        dados.ChvAcesso = rst.Fields("ChvAcesso").value
+        dados.dhEmi = rst.Fields("dhEmi").value
         dados.codUsuarioErp = pegarValorDoParametro(qryParametros, strUsuarioErpCod)
         dados.nomeUsuarioErp = pegarValorDoParametro(qryParametros, strUsuarioErpNome)
         dados.CaminhoDeProcessados = CreateDir(pegarValorDoParametro(qryParametros, strCaminhoDeProcessados))
                         
         Select Case pArquivo
             Case opFlagLancadaERP
-                dados.Comando = rst.Fields("Comando").Value
+                dados.Comando = rst.Fields("Comando").value
                 dados.criarERP
             Case opManifesto
-                dados.codTipoEvento = rst.Fields("codTipoEvento").Value
+                dados.codTipoEvento = rst.Fields("codTipoEvento").value
                 dados.criarManifesto
             Case Else
         End Select
