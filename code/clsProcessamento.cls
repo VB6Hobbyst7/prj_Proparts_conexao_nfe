@@ -27,8 +27,8 @@ Property Let valor(pValue As String): This.valor = pValue: End Property
 
 
 Sub cadastrar()
-Dim db As DAO.Database: Set db = CurrentDb
-Dim qdf As DAO.QueryDef: Set qdf = db.QueryDefs("INSERT_tblProcessamento")
+Dim db As dao.Database: Set db = CurrentDb
+Dim qdf As dao.QueryDef: Set qdf = db.QueryDefs("INSERT_tblProcessamento")
 
 With qdf
         .Parameters("pk") = pk

@@ -11,7 +11,7 @@ Public Const strUsuarioErpNome As String = "UsuarioErpNome"
 Public Const strCodTipoEvento As String = "codTipoEvento"
 Public Const strComando As String = "Comando"
 
-'' #CAPTURA_COMPRAS
+'' #carregarCompras
 '' PROCESSAMENTO DAS COMPRAS COM BASE EM REGISTROS VALIDOS PROCESSADOS PELA #CAPTURA_DADOS_GERAIS
 Public Const qrySelectProcessamentoPendente As String = "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0));"
 Public Const qryUpdateProcessamentoConcluido As String = "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
@@ -35,18 +35,99 @@ End Enum
 '' ### #Libs - PODE SER ADICIONADAS AS FUNÇÕES GERAIS DA APLICAÇÃO
 '' #####################################################################
 
-Public Function statusFinal(pDate As Date, strTitulo As String)
+Sub teste_IDVD()
+Dim db As dao.Database: Set db = CurrentDb
+Dim tmpSql As String: tmpSql = "Select * from tblCompraNF ORDER BY ID_CompraNF;"
+Dim rstPendentes As dao.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
+Dim parts() As String
+
+Do While Not rstPendentes.EOF
     
-    Debug.Print strTitulo & " - " & Format(Now - pDate, "hh:mm:ss")
+    rstPendentes.Edit
     
-End Function
+    If rstPendentes.Fields("IDVD_CompraNF").value <> "" Then
+        rstPendentes.Fields("IDVD_CompraNF").value = Replace(parts(LBound(Split((rstPendentes.Fields("IDVD_CompraNF").value), ","))), "Pedido", "")
+    Else
+        rstPendentes.Fields("IDVD_CompraNF").value = 0
+    End If
+    
+    rstPendentes.Update
+    rstPendentes.MoveNext
+Loop
+
+db.Close: Set db = Nothing
+
+End Sub
 
 
+'' #TRANSFERIR
+Sub TransferirDadosProcessados(pDestino As String)
+
+'' #BANCO_LOCAL
+Dim db As dao.Database: Set db = CurrentDb
+Dim tmpSql As String: tmpSql = "Select Distinct pk from tblProcessamento where NomeTabela = '" & pDestino & "' Order by pk;"
+Dim rstPendentes As dao.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
+Dim rstOrigem As dao.Recordset
+
+'' #BANCO_DESTINO
+tmpSql = "Select * from " & pDestino
+Dim rstDestino As dao.Recordset: Set rstDestino = db.OpenRecordset(tmpSql)
+
+'' #ANALISE_DE_PROCESSAMENTO
+Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
+
+'' #BARRA_PROGRESSO
+Dim contadorDeRegistros As Long: contadorDeRegistros = 1
+SysCmd acSysCmdInitMeter, "Transferindo Dados...", rstPendentes.RecordCount
+
+Do While Not rstPendentes.EOF
+
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdUpdateMeter, contadorDeRegistros
+
+    '' listar itens de registro para cadastro
+    Set rstOrigem = db.OpenRecordset("Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' Order by ID ")
+    Do While Not rstOrigem.EOF
+    
+        '' CONTROLE DE CADASTRO
+        If t = 0 Then rstDestino.AddNew: t = 1
+        
+        rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
+        
+        rstOrigem.MoveNext
+        DoEvents
+    Loop
+    rstDestino.Update
+    t = 0
+    
+    '' #COMPRAS
+    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(qryUpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+    
+    '' #DADOS_GERAIS
+    '' qryUpdateRegistroValido - Valor padrao
+    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
+    
+    '' #BARRA_PROGRESSO
+    contadorDeRegistros = contadorDeRegistros + 1
+    rstPendentes.MoveNext
+    DoEvents
+Loop
+
+'' #BARRA_PROGRESSO
+SysCmd acSysCmdRemoveMeter
+
+'dbDestino.CloseConnection
+db.Close: Set db = Nothing
+
+'' #ANALISE_DE_PROCESSAMENTO
+statusFinal DT_PROCESSO, "Processamento - TransferirDadosProcessados"
+
+End Sub
 
 '' #VALIDAR_DADOS
 Sub criarConsultasParaTestes()
-Dim db As DAO.Database: Set db = CurrentDb
-Dim rstOrigem As DAO.Recordset
+Dim db As dao.Database: Set db = CurrentDb
+Dim rstOrigem As dao.Recordset
 Dim strSql As String
 Dim qrySelectTabelas As String: qrySelectTabelas = "Select Distinct tabela from tblOrigemDestino order by tabela"
 Dim tabela As Variant
@@ -69,7 +150,7 @@ db.Close: Set db = Nothing
 End Sub
 
 '' #FORMATAR_CAMPOS
-Sub formatarCampos()
+Public Sub formatarCampos()
 Dim t As Variant
 Dim s As String
 
@@ -90,18 +171,6 @@ Next t
 
 End Sub
 
-
-Public Function strSplit(strValor As String, strSeparador As String, intPosicao As Integer) As String
-    If (strValor <> "") Then
-        strSplit = Split(strValor, strSeparador)(intPosicao)
-    Else
-        strSplit = ""
-    End If
-End Function
-
-Public Function Controle() As String
-    Controle = right(Year(Now()), 2) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & Format(Hour(Now()), "00") & Format(Minute(Now()), "00") & Format(Second(Now()), "00")
-End Function
 
 Public Function GetFilesInSubFolders(pFolder As String) As Collection
 Set GetFilesInSubFolders = New Collection
@@ -139,7 +208,6 @@ Public Function CreateDir(strPath As String) As String
     CreateDir = strPath
     
 End Function
-
 
 Public Function execucao(pCol As Collection, strFileName As String, Optional strFilePath As String, Optional pOperacao As enumOperacao, Optional strApp As String) 'runUrl.au3
 Dim c As Variant, tmp As String: tmp = ""
@@ -199,13 +267,13 @@ Dim Comando As Variant
 End Sub
 
 Public Sub qryCreate(nomeDaConsulta As String, scriptDaConsulta As String)
-Dim db As DAO.Database: Set db = CurrentDb
+Dim db As dao.Database: Set db = CurrentDb
     db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
     db.Close
 End Sub
 
 Public Function qryExists(strQryName As String)
-Dim db As DAO.Database: Dim qdf As DAO.QueryDef
+Dim db As dao.Database: Dim qdf As dao.QueryDef
     For Each qdf In CurrentDb.QueryDefs
         If qdf.Name = strQryName Then
             CurrentDb.QueryDefs.Delete strQryName
@@ -215,9 +283,9 @@ Dim db As DAO.Database: Dim qdf As DAO.QueryDef
 End Function
 
 Public Function carregarParametros(pConsulta As String, Optional pParametro As String) As Collection: Set carregarParametros = New Collection
-Dim db As DAO.Database: Set db = CurrentDb
+Dim db As dao.Database: Set db = CurrentDb
 Dim strSql As String: strSql = IIf(pParametro <> "", Replace(pConsulta, "strParametro", pParametro), pConsulta)
-Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(strSql)
+Dim rst As dao.Recordset: Set rst = db.OpenRecordset(strSql)
 Dim f As Variant
 
 Do While Not rst.EOF
@@ -232,8 +300,8 @@ Set db = Nothing
 End Function
 
 Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String, Optional pCampo As String) As String
-Dim db As DAO.Database: Set db = CurrentDb
-Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pTipoDeParametro))
+Dim db As dao.Database: Set db = CurrentDb
+Dim rst As dao.Recordset: Set rst = db.OpenRecordset(Replace(pConsulta, "strParametro", pTipoDeParametro))
 
     pegarValorDoParametro = rst.Fields(IIf(pCampo <> "", pCampo, "ValorDoParametro")).value
 
@@ -264,9 +332,9 @@ Dim i As Integer
 
 End Function
 
-Public Function getFileName(sFileIn As String) As String
+Public Function getFileName(sFileIn As String) As String ''#ExtrairNomeDoArquivo
 ' Essa função irá retornar apenas o nome do  arquivo de uma
-' string que contenha o path e o nome do arquiva
+' string que contenha o path e o nome do arquivo
 Dim i As Integer
 
   For i = Len(sFileIn) To 1 Step -1
@@ -318,4 +386,20 @@ Public Function PreventNullString(pText As Variant) As String
     Else
         PreventNullString = CStr(pText)
     End If
+End Function
+
+Public Function statusFinal(pDate As Date, strTitulo As String)
+    Debug.Print strTitulo & " - " & Format(Now - pDate, "hh:mm:ss")
+End Function
+
+Public Function strSplit(strValor As String, strSeparador As String, intPosicao As Integer) As String
+    If (strValor <> "") Then
+        strSplit = Split(strValor, strSeparador)(intPosicao)
+    Else
+        strSplit = ""
+    End If
+End Function
+
+Public Function Controle() As String
+    Controle = right(Year(Now()), 2) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & Format(Hour(Now()), "00") & Format(Minute(Now()), "00") & Format(Second(Now()), "00")
 End Function
