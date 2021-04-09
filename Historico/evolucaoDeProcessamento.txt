@@ -1,10 +1,23 @@
+## Analise de processamento
+
+-- 09/05/2021
+
+Quantidade de arquivos: 1086
+Processamento - ProcessarArquivosXml - 00:06:34
+Processamento - TransferirDadosProcessados - 00:00:51
+Processamento - CriarTipoDeArquivo(FlagLancadaERP) - 00:00:13
+Processamento - CriarTipoDeArquivo(Manifesto) - 00:00:12
+
+Processamento - ImportarDados ( tmpNatOp ) - 00:01:24
+Processamento - ImportarDados ( tmpEmpresa ) - 00:00:02
+Processamento - ImportarDados ( tmpClientes ) - 00:18:03
+
 -- 05/05/2021
 Quantidade de arquivos: 1086
 Processamento - ProcessarArquivosXml - 00:05:21
 Processamento - TransferirDadosProcessados - 00:00:57
 Processamento - CriarTipoDeArquivo - 00:00:13
 Processamento - CriarTipoDeArquivo - 00:00:11
-
 
 -- 05/05/2021
 

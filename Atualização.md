@@ -1,18 +1,14 @@
 
-
 ## Itens em desenvolvimento
 
-* 06/04/2021
-	* PENDENTE  | FiltroCFOP | tblDadosConexaoNFeCTe.ID_EMPRESA
-	* PENDENTE  | formatarCampos
+* 09/04/2021
+	* TESTES  | FiltroCFOP | tblDadosConexaoNFeCTe.ID_EMPRESA
+	* TESTES  | formatarCampos
 
-* 07/04/2021
+* 10/04/2021
 	* PENDENTE  | EnviarDadosParaServidor | Ajustar Campos conforme - "formatarCampos"
-	* PENDENTE | tmpClientes
-	* PENDENTE | tmpEmpresa
-	* PENDENTE | tmpNatOp
 
-* 08/04/2021
+* 10/04/2021
 	* PENDENTE  | frmControleDados | Em estudo
 
 
@@ -34,9 +30,9 @@
 	* CONCLUIDO | BancoDados_Banco
 
 * IMPORTAÇÃO
-	* PENDENTE | tmpClientes
-	* PENDENTE | tmpEmpresa
-	* PENDENTE | tmpNatOp
+	* CONCLUIDO | tmpClientes
+	* CONCLUIDO | tmpEmpresa
+	* CONCLUIDO | tmpNatOp
 
 * carregarDadosGerais
 	* CONCLUIDO | ProcessarArquivosXml
