@@ -1,9 +1,0 @@
-Finalidades
-0;CT-e
-1;NF-e Importação
-2;NF-e Consumo
-3;NF-e com código Sisparts
-4;NF-e Retorno Armazém
-5;NF-e 
-6;NF-e Transferência com código Sisparts
-7;NF-e Transferência Uso/Consumo com código Sisparts

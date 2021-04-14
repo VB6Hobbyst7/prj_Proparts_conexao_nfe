@@ -1,5 +1,26 @@
 ## Analise de processamento
 
+Quantidade de arquivos: 1086
+Processamento - ProcessarArquivosXml - 00:04:51
+Processamento - TransferirDadosProcessados - 00:01:06
+Processamento - CriarTipoDeArquivo - 00:00:09
+Processamento - CriarTipoDeArquivo - 00:00:09
+
+
+Quantidade de arquivos: 1086
+Processamento - ProcessarArquivosXml - 00:04:19
+Processamento - TransferirDadosProcessados - 00:00:52
+Processamento - CriarTipoDeArquivo - 00:00:03
+Processamento - CriarTipoDeArquivo - 00:00:02
+
+
+Quantidade de arquivos: 1086
+Processamento - ProcessarArquivosXml - 00:03:48
+Processamento - TransferirDadosProcessados - 00:00:43
+Processamento - CriarTipoDeArquivo - 00:00:02
+Processamento - CriarTipoDeArquivo - 00:00:02
+
+
 * 09/05/2021
 
 	* Dados
