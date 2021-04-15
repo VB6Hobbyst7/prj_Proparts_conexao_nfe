@@ -1,0 +1,88 @@
+<Nfse versao="2.02">
+   <InfNfse>
+      <Numero>42931</Numero>
+      <CodigoVerificacao>J6KNQDHV</CodigoVerificacao>
+      <DataEmissao>2021-02-12T09:32:23</DataEmissao>
+      <ValoresNfse>
+         <BaseCalculo>890.05</BaseCalculo>
+         <Aliquota>0.029</Aliquota>
+         <ValorIss>25.81</ValorIss>
+         <ValorLiquidoNfse>890.05</ValorLiquidoNfse>
+      </ValoresNfse>
+      <ValorCredito>0</ValorCredito>
+      <PrestadorServico>
+         <IdentificacaoPrestador>
+            <CpfCnpj>
+               <Cnpj>19337462000127</Cnpj>
+            </CpfCnpj>
+         </IdentificacaoPrestador>
+         <RazaoSocial>INTELIPOST CONSULTORIA E TECNOLOGIA DE LOGISTICA S.A</RazaoSocial>
+         <NomeFantasia>INTELIPOST CONSULTORIA E TECNOLOGIA DE LOGISTICA S.A</NomeFantasia>
+         <Endereco>
+            <Endereco>R BELA CINTRA</Endereco>
+            <Numero>1149</Numero>
+            <Complemento>ANDAR 13</Complemento>
+            <Bairro>CONSOLACAO</Bairro>
+            <CodigoMunicipio>3550308</CodigoMunicipio>
+            <Uf>SP</Uf>
+            <Cep>1415907</Cep>
+         </Endereco>
+         <Contato>
+            <Email>nfe@proparts.esp.br</Email>
+         </Contato>
+      </PrestadorServico>
+      <OrgaoGerador>
+         <CodigoMunicipio>3550308</CodigoMunicipio>
+         <Uf>SP</Uf>
+      </OrgaoGerador>
+      <DeclaracaoPrestacaoServico>
+         <InfDeclaracaoPrestacaoServico>
+            <Servico>
+               <Valores>
+                  <ValorServicos>890.05</ValorServicos>
+                  <ValorIss>25.81</ValorIss>
+                  <Aliquota>0.029</Aliquota>
+               </Valores>
+               <IssRetido>false</IssRetido>
+               <Discriminacao>Intelipost TMS - Mensalidade
+Competência: Janeiro/2021
+
+Itens:
+Mensalidade Intelipost TMS
+Lei da transparência N° 12.741/2012
+ISS: 2,90%
+PIS/COFINS: 3,65%</Discriminacao>
+               <CodigoMunicipio>3550308</CodigoMunicipio>
+               <MunicipioIncidencia>3550308</MunicipioIncidencia>
+            </Servico>
+            <Prestador>
+               <CpfCnpj>
+                  <Cnpj>19337462000127</Cnpj>
+               </CpfCnpj>
+               <InscricaoMunicipal>48738034</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+               <IdentificacaoTomador>
+                  <CpfCnpj>
+                     <Cnpj>68365501000105</Cnpj>
+                  </CpfCnpj>
+                  <InscricaoMunicipal>20951230</InscricaoMunicipal>
+               </IdentificacaoTomador>
+               <RazaoSocial>PROPARTS COMERCIO DE ARTIGOS ESPORTIVOS E TECNOLOGIA EIRELI</RazaoSocial>
+               <Endereco>
+                  <Endereco>R ENG     MESQUITA SAMPAIO</Endereco>
+                  <Numero>00329</Numero>
+                  <Bairro>CHACARA SANTO ANTONIO</Bairro>
+                  <CodigoMunicipio>3550308</CodigoMunicipio>
+                  <Uf>SP</Uf>
+                  <Cep>4711000</Cep>
+               </Endereco>
+               <Contato>
+                  <Email>nfe@proparts.esp.br</Email>
+               </Contato>
+            </Tomador>
+            <OptanteSimplesNacional>0</OptanteSimplesNacional>
+         </InfDeclaracaoPrestacaoServico>
+      </DeclaracaoPrestacaoServico>
+   </InfNfse>
+</Nfse>

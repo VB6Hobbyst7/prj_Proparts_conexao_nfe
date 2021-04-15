@@ -1,0 +1,81 @@
+<Nfse versao="2.02">
+   <InfNfse>
+      <Numero>891</Numero>
+      <CodigoVerificacao>SULV2IXD</CodigoVerificacao>
+      <DataEmissao>2021-03-02T13:13:55</DataEmissao>
+      <ValoresNfse>
+         <BaseCalculo>2429.12</BaseCalculo>
+         <Aliquota>0</Aliquota>
+         <ValorIss>0</ValorIss>
+         <ValorLiquidoNfse>2429.12</ValorLiquidoNfse>
+      </ValoresNfse>
+      <ValorCredito>0</ValorCredito>
+      <PrestadorServico>
+         <IdentificacaoPrestador>
+            <CpfCnpj>
+               <Cnpj>22356230000120</Cnpj>
+            </CpfCnpj>
+         </IdentificacaoPrestador>
+         <RazaoSocial>MARCOS DA CONCEICAO MOURA - ME</RazaoSocial>
+         <NomeFantasia>MARCOS DA CONCEICAO MOURA - ME</NomeFantasia>
+         <Endereco>
+            <Endereco>R CONSTANTINO DE SOUSA</Endereco>
+            <Numero>512</Numero>
+            <Bairro>CAMPO BELO</Bairro>
+            <CodigoMunicipio>3550308</CodigoMunicipio>
+            <Uf>SP</Uf>
+            <Cep>4605001</Cep>
+         </Endereco>
+         <Contato>
+            <Email>fiscal@proparts.esp.br</Email>
+         </Contato>
+      </PrestadorServico>
+      <OrgaoGerador>
+         <CodigoMunicipio>3550308</CodigoMunicipio>
+         <Uf>SP</Uf>
+      </OrgaoGerador>
+      <DeclaracaoPrestacaoServico>
+         <InfDeclaracaoPrestacaoServico>
+            <Servico>
+               <Valores>
+                  <ValorServicos>2429.12</ValorServicos>
+                  <ValorIss>0</ValorIss>
+                  <Aliquota>0</Aliquota>
+               </Valores>
+               <IssRetido>false</IssRetido>
+               <Discriminacao>Serviços de Limpeza Profissional
+Março 2021</Discriminacao>
+               <CodigoMunicipio>3550308</CodigoMunicipio>
+               <MunicipioIncidencia>3550308</MunicipioIncidencia>
+            </Servico>
+            <Prestador>
+               <CpfCnpj>
+                  <Cnpj>22356230000120</Cnpj>
+               </CpfCnpj>
+               <InscricaoMunicipal>52374556</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+               <IdentificacaoTomador>
+                  <CpfCnpj>
+                     <Cnpj>68365501000105</Cnpj>
+                  </CpfCnpj>
+                  <InscricaoMunicipal>20951230</InscricaoMunicipal>
+               </IdentificacaoTomador>
+               <RazaoSocial>PROPARTS COMERCIO DE ARTIGOS ESPORTIVOS E TECNOLOGIA EIRELI</RazaoSocial>
+               <Endereco>
+                  <Endereco>R ENG     MESQUITA SAMPAIO</Endereco>
+                  <Numero>00329</Numero>
+                  <Bairro>CHACARA SANTO ANTONIO</Bairro>
+                  <CodigoMunicipio>3550308</CodigoMunicipio>
+                  <Uf>SP</Uf>
+                  <Cep>4711000</Cep>
+               </Endereco>
+               <Contato>
+                  <Email>fiscal@proparts.esp.br</Email>
+               </Contato>
+            </Tomador>
+            <OptanteSimplesNacional>4</OptanteSimplesNacional>
+         </InfDeclaracaoPrestacaoServico>
+      </DeclaracaoPrestacaoServico>
+   </InfNfse>
+</Nfse>
