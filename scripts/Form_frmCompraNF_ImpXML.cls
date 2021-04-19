@@ -361,7 +361,10 @@ If Me.Finalidade = 0 Then 'CT-e
     '' #AILTON - qryInsertCompra - #VALOR_VARIAVEL
     rsCompraNF!Fil_CompraNF = Me.FiltroFil
     rsCompraNF!NumNF_CompraNF = XMLNumNF
+    
+    '' #EnviarDadosParaServidor
     rsCompraNF!NumPed_CompraNF = Format(IIf(IsNull(DMax("NumPed_CompraNF", "tblCompraNF")), "000001", DMax("NumPed_CompraNF", "tblCompraNF") + 1), "000000") '' CONTROLE DO NUMERO DO PEDIDO
+    
     rsCompraNF!ID_NatOp_CompraNF = Me.FiltroCFOP.Column(0)
     rsCompraNF!CFOP_CompraNF = Me.FiltroCFOP.Column(1)
     rsCompraNF!Serie_CompraNF = XMLSerie
@@ -409,7 +412,10 @@ If Me.Finalidade = 0 Then 'CT-e
     
     '' #AILTON - qryInsertCompraItens
     rsCompraNFItem!ID_CompraNF_CompraNFItem = IDCompraNF
+    
+    '' #EnviarDadosParaServidor
     rsCompraNFItem!ID_Prod_CompraNFItem = DLookup("[Código]", "[Cadastro de Produtos]", "[Modelo]='TRANSPORTE'")
+    
     rsCompraNFItem!Almox_CompraNFItem = Forms!frmCompraNF_ImpXML!FiltroAlmox
     rsCompraNFItem!VUnt_CompraNFItem = XMLValNF
     rsCompraNFItem!ICMS_CompraNFItem = XMLPerICMS
@@ -498,7 +504,10 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
     '' #AILTON - qryInsertCompra - #VALOR_VARIAVEL
     rsCompraNF!Fil_CompraNF = Me.FiltroFil
     rsCompraNF!NumNF_CompraNF = XMLNumNF
+    
+    '' #EnviarDadosParaServidor
     rsCompraNF!NumPed_CompraNF = Format(NumPed + 1, "000000")
+    
     rsCompraNF!Serie_CompraNF = XMLSerie
     rsCompraNF!ID_NatOp_CompraNF = Me.FiltroCFOP.Column(0)
     rsCompraNF!CFOP_CompraNF = Me.FiltroCFOP.Column(1)
@@ -506,6 +515,8 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
     rsCompraNF!DTEntd_CompraNF = XMLDTEmi
     
     '' #BUG - PONTO DE QUEBRA
+    
+    '' #EnviarDadosParaServidor
     rsCompraNF!Obs_CompraNF = Mid(XMLinfAdFisco, 1, 255)
         
     Dim parts() As String
@@ -513,6 +524,8 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
    
     '' #BUG - PONTO DE QUEBRA
     '' #PEGAR APENAS O NUMERO DO PEDIDO - #PONTO DE ATENÇÃO
+    
+    '' #EnviarDadosParaServidor
     If XMLinfAdFisco <> "" Then
         parts = Split((XMLinfAdFisco), ",")
         NumAtual = parts(LBound(parts))

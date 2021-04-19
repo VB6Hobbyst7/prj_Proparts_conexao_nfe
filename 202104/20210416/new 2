@@ -1,0 +1,31 @@
+Function getValorDoParametro(pTipoDeParametro As String) As String
+
+getValorDoParametro DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='" & pTipoDeParametro & "'")
+
+End Function
+
+
+Function teste_getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido() As String
+
+'' chave
+Dim pChvAcesso As String: pChvAcesso = "42210312680452000302550020000897611617746185"
+
+'' dados
+Dim pDados As String: pDados = "PEDIDO: 322382, . RETORNO SIMBOLICO DE ARMAZENAGEM DE SUA(S) NF-E(S) 4027 SERIE 0 DE 08/01/2021 CHAVE: 42210168365501000377550000000040271001314575 LOTE: , , 5359 SERIE 0 DE 04/02/2021. REFERENTE SUA(S) NF-E(S) DE Venda NUMERO 5735 SERIE 0 DE 15/02/2021, "
+
+'' tipo de cadastro
+Dim tTipoCadastro As String: tTipoCadastro = DLookup("[ID_Tipo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & pChvAcesso & "'")
+
+'' limpar dado inicial
+Dim tValor() As Variant: tValor = Array("PEDIDO:", "PEDIDO ")
+
+getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido = 0
+
+If tTipoCadastro = getValorDoParametro("RetornoArmazem") Then
+    getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido = left(Trim(Replace(Replace(tDados, tValor(0), ""), tValor(1), "")), 6)
+End If
+
+
+Debug.Print getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido
+
+End Function

@@ -1,0 +1,41 @@
+INFO 04/16/2021 10:11:26 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 10:16:20 - Processamento - ProcessarArquivosXml - 00:04:54
+INFO 04/16/2021 10:17:38 - Processamento - TransferirDadosProcessados - 00:01:17
+INFO 04/16/2021 10:22:06 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 10:26:53 - Processamento - ProcessarArquivosXml - 00:04:47
+INFO 04/16/2021 10:28:10 - Processamento - TransferirDadosProcessados - 00:01:17
+INFO 04/16/2021 10:28:16 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 10:33:31 - Processamento - ProcessarArquivosXml - 00:05:15
+INFO 04/16/2021 10:34:38 - Processamento - TransferirDadosProcessados - 00:01:07
+INFO 04/16/2021 10:35:24 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 10:40:38 - Processamento - ProcessarArquivosXml - 00:05:14
+INFO 04/16/2021 10:41:43 - Processamento - TransferirDadosProcessados - 00:01:05
+INFO 04/16/2021 11:09:45 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 11:10:58 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 11:14:14 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 11:20:00 - Processamento - ProcessarArquivosXml - 00:05:46
+INFO 04/16/2021 11:21:15 - Processamento - TransferirDadosProcessados - 00:01:15
+INFO 04/16/2021 11:43:38 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/16/2021 11:52:00 - Processamento - ProcessarArquivosXml - 00:08:22
+INFO 04/16/2021 12:51:46 - Processamento - TransferirDadosProcessados - 00:02:04
+INFO 04/16/2021 12:54:01 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:11
+INFO 04/16/2021 12:54:11 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:10
+INFO 04/16/2021 13:31:18 - Processamento - TransferirDadosProcessados - 00:01:05
+INFO 04/16/2021 13:37:48 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 13:44:39 - Processamento - ProcessarArquivosXml - 00:06:51
+INFO 04/16/2021 13:45:54 - Processamento - TransferirDadosProcessados - 00:01:15
+INFO 04/16/2021 13:57:48 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/16/2021 14:03:31 - Processamento - ProcessarArquivosXml - 00:05:43
+INFO 04/16/2021 14:10:02 - Processamento - TransferirDadosProcessados - 00:01:15
+INFO 04/16/2021 14:32:58 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/16/2021 14:32:58 - Processamento - ProcessarArquivosXml - 00:00:00
+INFO 04/16/2021 14:32:59 - Processamento - TransferirDadosProcessados - 00:00:01
+INFO 04/16/2021 14:36:11 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/16/2021 14:36:12 - Processamento - ProcessarArquivosXml - 00:00:01
+INFO 04/16/2021 14:37:31 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/16/2021 14:37:32 - Processamento - ProcessarArquivosXml - 00:00:01
+INFO 04/16/2021 14:37:32 - Processamento - TransferirDadosProcessados - 00:00:00
+INFO 04/16/2021 14:58:34 - Processamento - TransferirDadosProcessados - 00:00:01
+INFO 04/16/2021 15:02:43 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/16/2021 15:02:43 - Processamento - ProcessarArquivosXml - 00:00:00
+INFO 04/16/2021 15:02:44 - Processamento - TransferirDadosProcessados - 00:00:01

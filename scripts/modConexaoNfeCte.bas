@@ -1,41 +1,9 @@
 Attribute VB_Name = "modConexaoNfeCte"
 Option Compare Database
 
-'Sub teste_cadastroProcessamento()
-'
-'Dim strTemp As String: strTemp = _
-'    "INSERT INTO tblProcessamento (valor, NomeTabela, NomeCampo, formatacao, NomeCampo) " & _
-'    "SELECT tblorigemDestino.valorPadrao    ,tblorigemDestino.tabela ,tblorigemDestino.campo ,tblorigemDestino.formatacao ,tblorigemDestino.campo " & _
-'    "FROM tblorigemDestino " & _
-'    "WHERE (((tblorigemDestino.tabela) = 'tblCompraNF')  " & _
-'    "AND ((tblorigemDestino.formatacao) = 'opMoeda')  " & _
-'    "AND ((tblorigemDestino.campo)  " & _
-'    "NOT IN (SELECT DISTINCT tblProcessamento.nomecampo,tblProcessamento.pk FROM tblProcessamento WHERE (((tblProcessamento.nomecampo) IS NOT NULL) AND ((tblProcessamento.[pk]) EXISTS (SELECT DISTINCT tblProcessamento.pk FROM tblProcessamento))))));"
-'
-'Application.CurrentDb.Execute strTemp
-'
-'End Sub
 
-Sub TESTE_TransferirDadosProcessados()
-Dim strProcessamento As String: strProcessamento = "tblCompraNF"
-Dim s As New clsConexaoNfeCte
 
-    '' #CARREGAR DADOS
-    For Each t In Array(strProcessamento)
-        
-        '' #TRANSFERIR DADOS PROCESSADOS - COMPRAS
-        s.TransferirDadosProcessados strProcessamento
-
-    Next
-
-    '' #VALIDAR_DADOS
-    criarConsultasParaTestes
-    
-    MsgBox "Fim!", vbOKOnly + vbExclamation, "carregarCompras"
-
-End Sub
-
-'' 02.CARREGAR COMPRAS ANTES DE VENVIAR PARA O SERVIDOR
+'' 02.CARREGAR COMPRAS ANTES DE ENVIAR PARA O SERVIDOR
 Sub carregarCompras()
 Dim strProcessamento As String: strProcessamento = "tblCompraNF"
 Dim s As New clsConexaoNfeCte

@@ -1,0 +1,25 @@
+INFO 04/19/2021 07:17:55 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/19/2021 07:27:33 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/19/2021 07:31:03 - Processamento - ProcessarArquivosXml - 00:03:30
+INFO 04/19/2021 07:33:43 - tblCompraNF - Quantidade de arquivos: 1 - 00:00:00
+INFO 04/19/2021 07:33:43 - Processamento - ProcessarArquivosXml - 00:00:00
+INFO 04/19/2021 07:42:15 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/19/2021 07:46:29 - Processamento - ProcessarArquivosXml - 00:04:14
+INFO 04/19/2021 07:47:58 - Processamento - TransferirDadosProcessados - 00:01:29
+INFO 04/19/2021 07:48:06 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:08
+INFO 04/19/2021 07:48:14 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:08
+INFO 04/19/2021 12:00:07 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/19/2021 12:06:44 - Processamento - ProcessarArquivosXml - 00:06:37
+INFO 04/19/2021 12:08:42 - Processamento - TransferirDadosProcessados - 00:01:58
+INFO 04/19/2021 12:08:53 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:11
+INFO 04/19/2021 12:09:03 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:10
+INFO 04/19/2021 12:30:16 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/19/2021 12:36:38 - Processamento - ProcessarArquivosXml - 00:06:22
+INFO 04/19/2021 12:37:58 - Processamento - TransferirDadosProcessados - 00:01:20
+INFO 04/19/2021 12:38:08 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:09
+INFO 04/19/2021 12:38:18 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:10
+INFO 04/19/2021 12:44:10 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/19/2021 12:48:58 - Processamento - ProcessarArquivosXml - 00:04:48
+INFO 04/19/2021 12:54:32 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/19/2021 12:59:30 - Processamento - ProcessarArquivosXml - 00:04:58
+INFO 04/19/2021 13:01:42 - Processamento - TransferirDadosProcessados - 00:02:12

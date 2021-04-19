@@ -176,9 +176,74 @@ Private Const qryUpdateCTe As String = _
 
 Private Const qryUpdateFilCompraNF As String = _
         "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF, tmpEmpresa.CNPJ_Empresa FROM tmpEmpresa WHERE (((tmpEmpresa.CNPJ_Empresa) Is Not Null))) AS qryEmpresas INNER JOIN tblCompraNF ON qryEmpresas.strCNPJ_CPF = tblCompraNF.CNPJ_CPF_CompraNF SET tblCompraNF.Fil_CompraNF = qryEmpresas.ID_Empresa;"
+    
+Private Const qryUpdateIDVDCompraNF As String = _
+        "UPDATE tblCompraNF SET tblCompraNF.IDVD_CompraNF = getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido([tblCompraNF].[ChvAcesso_CompraNF],[tblCompraNF].[IDVD_CompraNF]);"
 
 
 
+''#######################################################################################
+''### EM DESENVOLVIMENTO
+''#######################################################################################
+
+''' ENVIAR DADOS PARA SERVIDOR
+'Public Sub EnviarDadosParaServidor(pDestino As String)
+'
+''' VARIAVEIS AUXILIARES
+'Dim fldDestino As Variant
+'
+''' BANCO LOCAL
+'Dim db As dao.Database: Set db = CurrentDb
+'Dim rstOrigem As dao.Recordset: Set rstOrigem = db.OpenRecordset("Select top 1 * from " & pDestino)
+'
+''' BANCO DESTINO
+'Dim strUsuarioNome As String: strUsuarioNome = pegarValorDoParametro(qryParametros, "BancoDados_Usuario")
+'Dim strUsuarioSenha As String: strUsuarioSenha = pegarValorDoParametro(qryParametros, "BancoDados_Senha")
+'Dim strOrigem As String: strOrigem = pegarValorDoParametro(qryParametros, "BancoDados_Origem")
+'Dim strBanco As String: strBanco = pegarValorDoParametro(qryParametros, "BancoDados_Banco")
+'
+'Dim dbDestino As New Banco: dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
+'dbDestino.SqlSelect "SELECT * FROM " & pDestino
+'
+'
+''' LISTAGEM DE CAMPOS DA TABELA ORIGEM/DESTINO
+'Dim strCampo As String
+'Dim rstCampos As dao.Recordset: Set rstCampos = db.OpenRecordset("Select * from tblOrigemDestino where tabela = '" & pDestino & "' and tagOrigem = 1")
+'
+'Do While Not rstOrigem.EOF
+'
+'    dbDestino.rs.AddNew
+'
+'    Do While Not rstCampos.EOF
+'
+'        strCampo = strSplit(rstCampos.Fields("destino").value, ".", 1)
+'
+'        For Each fldDestino In dbDestino.rs.Fields
+'            If fldDestino.Name = strCampo Then
+'                ' dbDestino.rs(StrCampo).value = rstOrigem.Fields(StrCampo).value
+'                If rstOrigem.Fields(strCampo).value <> "" Then dbDestino.SqlExecute "Insert into tblCompraNF (" & strCampo & ") values (" & rstOrigem.Fields(strCampo).value & ")"
+'                Exit For
+'            End If
+'        Next fldDestino
+'
+'        rstCampos.MoveNext
+'    Loop
+'
+'    dbDestino.rs.Update
+'
+'    rstOrigem.MoveNext
+'
+'Loop
+'
+'dbDestino.CloseConnection
+'db.Close: Set db = Nothing
+'
+'End Sub
+
+
+''#######################################################################################
+''### MÉTODOS
+''#######################################################################################
 
 Public Sub FormatarCampos()
 Dim qryProcessos() As Variant: qryProcessos = Array( _
@@ -215,44 +280,6 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
 
 End Sub
 
-
-''#######################################################################################
-''### EM DESENVOLVIMENTO
-''#######################################################################################
-
-Private Sub teste_FiltrarCompraItens()
-Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
-Dim QRY() As Variant: QRY = Array("chCTe")
-Dim Item As Variant
-Dim lists As Variant
-Dim fieldnode As Variant
-Dim childNode As Variant
-
-'' cte
-'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\32210204884082000569570000039548351039548356-cteproc.xml"
-
-'' nfe
-'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\29210220961864000187550010000001891138200000-nfeproc.xml"
-
-For Each Item In QRY
-    Set lists = XDoc.SelectNodes("//" & Item)
-    For Each fieldnode In lists
-        If (fieldnode.HasChildNodes) Then
-            For Each childNode In fieldnode.ChildNodes
-                Debug.Print fieldnode.text
-            Next childNode
-        End If
-    Next fieldnode
-Next Item
-
-Set XDoc = Nothing
-
-End Sub
-
-''#######################################################################################
-''### MÉTODOS
-''#######################################################################################
-
 Public Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collection)
 Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
 Dim cadastro As clsProcessamento
@@ -287,7 +314,7 @@ Dim contadorDeArquivos As Long: contadorDeArquivos = 1
         SysCmd acSysCmdUpdateMeter, contadorDeArquivos
         
         '' 01.CRIAR CHAVE UNICA DE REGISTRO PARA CONTROLE DE DADOS
-        strPk = Controle & getFileName(CStr(fileName))
+        strPk = IIf(IsNull(DLookup("[chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & fileName & "'")), Controle & getFileName(CStr(fileName)), DLookup("[chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & fileName & "'"))
         col.add strPk & "|" & "CaminhoDoArquivo" & "|" & fileName
         
         '' 02.CARREGAR CAMPOS DE ORIGEM X DESTINO DO REGISTRO
@@ -350,11 +377,12 @@ Dim contadorDeArquivos As Long: contadorDeArquivos = 1
 End Sub
 
 
-'' #TRANSFERIR
+'' #TRANSFERIR DADOS PROCESSADOS PARA A TABELA DE TRANSITO - ( tblProcessamento -> tblDadosConexaoNFeCTe/tblCompraNF/tblCompraNFItem )
 Public Sub TransferirDadosProcessados(pDestino As String)
 
 '' CONTROLE DE CADASTRO DE REGISTRO
 Dim t As Integer
+Dim tmpSqlOrigem As String
 
 '' #BANCO_LOCAL
 Dim db As dao.Database: Set db = CurrentDb
@@ -373,22 +401,38 @@ Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
 Dim contadorDeRegistros As Long: contadorDeRegistros = 1
 SysCmd acSysCmdInitMeter, "Transferindo Dados...", rstPendentes.RecordCount
 
+'' #VALIDAR_INFORMACAO
+'Debug.Print "--------------------------------"
+
 Do While Not rstPendentes.EOF
 
     '' #BARRA_PROGRESSO
     SysCmd acSysCmdUpdateMeter, contadorDeRegistros
 
     '' listar itens de registro para cadastro
-    Set rstOrigem = db.OpenRecordset("Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0 Order by ID ")
+    tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0 Order by ID "
+        
+    '' #VALIDAR_INFORMACAO
+'    Debug.Print tmpSqlOrigem
+    
+    Set rstOrigem = db.OpenRecordset(tmpSqlOrigem)
     Do While Not rstOrigem.EOF
     
         '' CONTROLE DE CADASTRO
         If t = 0 Then rstDestino.AddNew: t = 1
+        
+        '' #VALIDAR_INFORMACAO
+        Debug.Print rstOrigem.Fields("NomeCampo").value
+        
         rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
         
+        '' #CAMPO_CHAVE_RELACIONAMENO
+        If (pDestino = "tblDadosConexaoNFeCTe") Then rstDestino.Fields("Chave").value = rstOrigem.Fields("pk").value
+    
         rstOrigem.MoveNext
         DoEvents
     Loop
+        
     rstDestino.Update
     t = 0
     
@@ -416,61 +460,8 @@ statusFinal DT_PROCESSO, "Processamento - TransferirDadosProcessados"
 
 End Sub
 
-'' ENVIAR DADOS PARA SERVIDOR
-Public Sub EnviarDadosParaServidor(pDestino As String)
 
-'' VARIAVEIS AUXILIARES
-Dim fldDestino As Variant
-
-'' BANCO LOCAL
-Dim db As dao.Database: Set db = CurrentDb
-Dim rstOrigem As dao.Recordset: Set rstOrigem = db.OpenRecordset("Select top 1 * from " & pDestino)
-
-'' BANCO DESTINO
-Dim strUsuarioNome As String: strUsuarioNome = pegarValorDoParametro(qryParametros, "BancoDados_Usuario")
-Dim strUsuarioSenha As String: strUsuarioSenha = pegarValorDoParametro(qryParametros, "BancoDados_Senha")
-Dim strOrigem As String: strOrigem = pegarValorDoParametro(qryParametros, "BancoDados_Origem")
-Dim strBanco As String: strBanco = pegarValorDoParametro(qryParametros, "BancoDados_Banco")
-
-Dim dbDestino As New Banco: dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
-dbDestino.SqlSelect "SELECT * FROM " & pDestino
-
-
-'' LISTAGEM DE CAMPOS DA TABELA ORIGEM/DESTINO
-Dim strCampo As String
-Dim rstCampos As dao.Recordset: Set rstCampos = db.OpenRecordset("Select * from tblOrigemDestino where tabela = '" & pDestino & "' and tagOrigem = 1")
-
-Do While Not rstOrigem.EOF
-
-    dbDestino.rs.AddNew
-    
-    Do While Not rstCampos.EOF
-    
-        strCampo = strSplit(rstCampos.Fields("destino").value, ".", 1)
-    
-        For Each fldDestino In dbDestino.rs.Fields
-            If fldDestino.Name = strCampo Then
-                ' dbDestino.rs(StrCampo).value = rstOrigem.Fields(StrCampo).value
-                If rstOrigem.Fields(strCampo).value <> "" Then dbDestino.SqlExecute "Insert into tblCompraNF (" & strCampo & ") values (" & rstOrigem.Fields(strCampo).value & ")"
-                Exit For
-            End If
-        Next fldDestino
-        
-        rstCampos.MoveNext
-    Loop
-    
-    dbDestino.rs.Update
-    
-    rstOrigem.MoveNext
-    
-Loop
-
-dbDestino.CloseConnection
-db.Close: Set db = Nothing
-
-End Sub
-
-
+'' CRIAÇÃO DE ARQUIVOS JSON
 Public Sub CriarTipoDeArquivo(pArquivo As enumTipoArquivo)
 Dim db As dao.Database: Set db = CurrentDb
 Dim rst As dao.Recordset: Set rst = db.OpenRecordset(sqyDadosJson)
