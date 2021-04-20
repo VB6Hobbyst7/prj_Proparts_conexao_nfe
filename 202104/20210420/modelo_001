@@ -1,0 +1,15 @@
+On Error GoTo adm_Err
+Dim retVal As Variant: retVal = MsgBox("Deseja carregar dados do servidor?", vbQuestion + vbYesNo, "ADM_carregarDadosDoServidor")
+
+    If retVal = vbYes Then
+    
+
+    
+    End If
+
+adm_Exit:
+    Exit Function
+
+adm_Err:
+    MsgBox Error$
+    Resume adm_Exit
