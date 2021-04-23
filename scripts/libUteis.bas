@@ -14,7 +14,7 @@ Public Const strComando As String = "Comando"
 '' #carregarCompras
 '' PROCESSAMENTO DAS COMPRAS COM BASE EM REGISTROS VALIDOS PROCESSADOS PELA #CAPTURA_DADOS_GERAIS
 Public Const qrySelectProcessamentoPendente As String = _
-            "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0));"
+            "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo, tblDadosConexaoNFeCTe.ID_Tipo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0))"
 
 'Public Const qryUpdateProcessamentoConcluido As String = _
 '            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) " & _
@@ -103,7 +103,7 @@ Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
 
 '' #BARRA_PROGRESSO
 Dim contadorDeRegistros As Long: contadorDeRegistros = 1
-SysCmd acSysCmdInitMeter, "Transferindo Dados...", dboOrigem.rs.RecordCount
+SysCmd acSysCmdInitMeter, "Transferindo " & pOrigem & " ...", dboOrigem.rs.RecordCount
 
 Do While Not dboOrigem.rs.EOF
 
@@ -433,7 +433,7 @@ Function createTable(pTabelaDestino As String) As String
 Dim db As dao.Database: Set db = CurrentDb
 Dim rstCampos As dao.Recordset: Set rstCampos = db.OpenRecordset("Select distinct campo from tblOrigemDestino where tabela = '" & pTabelaDestino & "' and len(formatacao)>0 order by campo;")
 
-Dim tmpScript As String: tmpScript = "CREATE TABLE tblCompraNF ("
+Dim tmpScript As String: tmpScript = "CREATE TABLE " & pTabelaDestino & " ("
 
 Do While Not rstCampos.EOF
     tmpScript = tmpScript + rstCampos.Fields("campo").value + " text(255),"
@@ -443,4 +443,21 @@ Loop
 
 createTable = left(tmpScript, Len(tmpScript) - 1) + ");"
 
+End Function
+
+
+Public Function PickFolder(pPath As String, pTitle As String, Optional pSubFolder As String) As String
+    With Application.FileDialog(msoFileDialogFolderPicker)
+        .Title = pTitle
+        .InitialFileName = pPath
+        .Show
+            If .SelectedItems.Count > 0 Then
+                If Trim(pSubFolder) <> "" Then
+                    If Dir(.SelectedItems(1) & pSubFolder, vbDirectory) = "" Then
+                        MkDir path:=.SelectedItems(1) & pSubFolder
+                    End If
+                End If
+                PickFolder = .SelectedItems(1) & pSubFolder
+            End If
+    End With
 End Function

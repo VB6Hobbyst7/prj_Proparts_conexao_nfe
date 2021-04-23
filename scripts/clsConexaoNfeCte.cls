@@ -79,10 +79,6 @@ Private Const qryUpdateProcessamento_opData As String = _
 
 Private Const qryUpdateProcessamento_opTime As String = _
                 "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
-'''-- NumberToSql
-'Private Const qryUpdateProcessamento_opMoeda As String = _
-'                "UPDATE tblProcessamento SET tblProcessamento.valor = NumberToSql([tblProcessamento].[valor]) WHERE formatacao = 'opMoeda';"
-'                '' "UPDATE tblProcessamento SET tblProcessamento.valor = Format(Replace([tblProcessamento].[valor], '.', ','), '#,##0.00') WHERE formatacao = 'opMoeda';"
 
 
 '' ########################################
@@ -112,9 +108,10 @@ Private Const qryUpdateRegistrosValidos As String = _
 
 
 '' -- EXCLUSAO DE REGISTROS INVALIDOS
+'' DESCONTINUADO - ( PODEMOS USAR DEPOIS )
 '' #tblDadosConexaoNFeCTe.registroValido
-Private Const qryDeleteRegistrosInvalidos As String = _
-        "DELETE * FROM tblDadosConexaoNFeCTe WHERE tblDadosConexaoNFeCTe.registroValido = 0;"
+'Private Const qryDeleteRegistrosInvalidos As String = _
+'        "DELETE * FROM tblDadosConexaoNFeCTe WHERE tblDadosConexaoNFeCTe.registroValido = 0;"
 
 
 '' -- TIPOS DE CADASTRO - tblTipos
@@ -125,8 +122,18 @@ Private Const qryUpdateIdTipo As String = _
 
 '' -- FiltroFil
 '' #tblDadosConexaoNFeCTe.ID_EMPRESA
+'' -- CTE
 Private Const qryUpdateIdEmpresa As String = _
-        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa;"
+        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas " & _
+        " INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_Rem " & _
+        " SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa;"
+
+Private Const qryUpdateIdEmpresa_TransferenciaEntreFiliais As String = _
+        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas " & _
+        " INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CPNJ_Dest " & _
+        " SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa" & _
+        " WHERE (((tblDadosConexaoNFeCTe.CFOP) = '6152'));"
+
 
 '' -- FiltroCFOP
 Private Const qryUpdateCFOP_PSC_PES As String = _
@@ -154,7 +161,7 @@ Private Const qryUpdateCFOP_PSC_PES As String = _
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 4 - NF-e Retorno Armazém
 '' #tblDadosConexaoNFeCTe.ID_Tipo
 Private Const qryUpdateRetornoArmazem As String = _
-        "UPDATE (Select ValorDoParametro,TipoDeParametro from tblParametros where TipoDeParametro = 'RetornoArmazem') as tmpRetornoArmazem INNER JOIN ((select top 1 cInt('55') as strMod, '12680452000302' as strCNPJ_CPF, 'RetornoArmazem' as strTipoDeParametro from tblParametros)  AS qryRetornoArmazem INNER JOIN tblDadosConexaoNFeCTe ON (qryRetornoArmazem.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit) AND (qryRetornoArmazem.strMod = tblDadosConexaoNFeCTe.codMod)) ON (tmpRetornoArmazem.TipoDeParametro = qryRetornoArmazem.strTipoDeParametro) AND (tmpRetornoArmazem.TipoDeParametro = qryRetornoArmazem.strTipoDeParametro) SET tblDadosConexaoNFeCTe.ID_Tipo = [tmpRetornoArmazem].[ValorDoParametro] WHERE (((tblDadosConexaoNFeCTe.ID_Tipo)=0));"
+        "UPDATE (Select ValorDoParametro,TipoDeParametro from tblParametros where TipoDeParametro = 'RetornoArmazem') as tmpRetornoArmazem INNER JOIN ((select top 1 cInt('55') as strMod, '12680452000302' as strCNPJ_CPF, 'RetornoArmazem' as strTipoDeParametro from tblParametros)  AS qryRetornoArmazem INNER JOIN tblDadosConexaoNFeCTe ON (qryRetornoArmazem.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit) AND (qryRetornoArmazem.strMod = tblDadosConexaoNFeCTe.codMod)) ON (tmpRetornoArmazem.TipoDeParametro = qryRetornoArmazem.strTipoDeParametro) AND (tmpRetornoArmazem.TipoDeParametro = qryRetornoArmazem.strTipoDeParametro) SET tblDadosConexaoNFeCTe.ID_Tipo = [tmpRetornoArmazem].[ValorDoParametro] WHERE (((tblDadosConexaoNFeCTe.ID_Tipo)=0))  AND (((tblDadosConexaoNFeCTe.CFOP) = '5907'));"
 
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 6 - NF-e Transferência com código Sisparts
@@ -166,84 +173,53 @@ Private Const qryUpdateTransferenciaSisparts As String = _
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 0 - CT-e
 '' #tblDadosConexaoNFeCTe.ID_Tipo
 Private Const qryUpdateCTe As String = _
-        "UPDATE (Select ValorDoParametro,TipoDeParametro from tblParametros where TipoDeParametro = 'CTe') as tmpCTe INNER JOIN ((select top 1 cInt('57') as strMod, '68365501000377' as strCNPJ_CPF, 'CTe' as strTipoDeParametro from tblParametros)  AS qryCTe INNER JOIN tblDadosConexaoNFeCTe ON (qryCTe.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit) AND (qryCTe.strMod = tblDadosConexaoNFeCTe.codMod)) ON (tmpCTe.TipoDeParametro = qryCTe.strTipoDeParametro) AND (tmpCTe.TipoDeParametro = qryCTe.strTipoDeParametro) SET tblDadosConexaoNFeCTe.ID_Tipo = [tmpCTe].[ValorDoParametro] WHERE (((tblDadosConexaoNFeCTe.ID_Tipo)=0));"
+        "UPDATE (SELECT ValorDoParametro,TipoDeParametro FROM tblParametros WHERE TipoDeParametro = 'CTe') AS tmpCTe INNER JOIN ((SELECT TOP 1 cInt('57') AS strMod,'CTe' AS strTipoDeParametro FROM tblParametros) AS qryCTe INNER JOIN tblDadosConexaoNFeCTe ON (qryCTe.strMod = tblDadosConexaoNFeCTe.codMod)) ON (tmpCTe.TipoDeParametro = qryCTe.strTipoDeParametro) AND (tmpCTe.TipoDeParametro = qryCTe.strTipoDeParametro) SET tblDadosConexaoNFeCTe.ID_Tipo = [tmpCTe].[ValorDoParametro] WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0));"
 
 
 '' ########################################
 '' #TratamentoDeRegistros - COMPRAS
 '' ########################################
 
+Private Const qryUpdateBaseCalcICMS As String = _
+    "UPDATE tblCompraNF SET tblCompraNF.BaseCalcICMS_CompraNF = [tblCompraNF].[BaseCalcICMS_CompraNF]/100 WHERE (((tblCompraNF.BaseCalcICMS_CompraNF)>""0"")) OR (((tblCompraNF.BaseCalcICMS_CompraNF) Is Not Null));"
+
+Private Const qryUpdate_IDVD As String = _
+                "UPDATE tblCompraNF " & _
+                "SET tblCompraNF.IDVD_CompraNF = Left(Trim(Replace(Replace([tblCompraNF].[Obs_CompraNF], 'PEDIDO: ', ''), 'PEDIDO ', '')), 6) " & _
+                "WHERE (((Left([Obs_CompraNF], 6)) = 'PEDIDO ')  " & _
+                "       AND ((tblCompraNF.CNPJ_CPF_CompraNF) = '12680452000302') " & _
+                "       AND ((Val(Left(Trim(Replace(Replace([tblCompraNF].[Obs_CompraNF], 'PEDIDO: ', ''), 'PEDIDO ', '')), 6))) > 0));"
+
+Private Const qryUpdateCFOP_FilCompra As String = _
+    "UPDATE tblCompraNF SET tblCompraNF.CFOP_CompraNF = DLookUp(""[FiltroCFOP]"",""[tblDadosConexaoNFeCTe]"",""[ChvAcesso]='"" & [tblCompraNF].[ChvAcesso_CompraNF] & ""'""), tblCompraNF.Fil_CompraNF = DLookUp(""[ID_EMPRESA]"",""[tblDadosConexaoNFeCTe]"",""[ChvAcesso]='"" & [tblCompraNF].[ChvAcesso_CompraNF] & ""'"");"
 
 Private Const qryUpdateFilCompraNF As String = _
         "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF, tmpEmpresa.CNPJ_Empresa FROM tmpEmpresa WHERE (((tmpEmpresa.CNPJ_Empresa) Is Not Null))) AS qryEmpresas INNER JOIN tblCompraNF ON qryEmpresas.strCNPJ_CPF = tblCompraNF.CNPJ_CPF_CompraNF SET tblCompraNF.Fil_CompraNF = qryEmpresas.ID_Empresa;"
-    
-Private Const qryUpdateIDVDCompraNF As String = _
-        "UPDATE tblCompraNF SET tblCompraNF.IDVD_CompraNF = getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido([tblCompraNF].[ChvAcesso_CompraNF],[tblCompraNF].[IDVD_CompraNF]);"
 
+Private Const qryUpdateIdFornCompraNF As String = _
+        "UPDATE (SELECT STRPontos(tmpClientes.CNPJ_CPF) AS strCNPJ_CPF, tmpClientes.CÓDIGOClientes FROM tmpClientes) AS qryClientesFornecedor " & _
+        " INNER JOIN tblCompraNF ON tblCompraNF.CNPJ_CPF_CompraNF = qryClientesFornecedor.strCNPJ_CPF " & _
+        " SET tblCompraNF.ID_Forn_CompraNF = qryClientesFornecedor.CÓDIGOClientes;"
 
-
-''#######################################################################################
-''### EM DESENVOLVIMENTO
-''#######################################################################################
-
-''' ENVIAR DADOS PARA SERVIDOR
-'Public Sub EnviarDadosParaServidor(pDestino As String)
-'
-''' VARIAVEIS AUXILIARES
-'Dim fldDestino As Variant
-'
-''' BANCO LOCAL
-'Dim db As dao.Database: Set db = CurrentDb
-'Dim rstOrigem As dao.Recordset: Set rstOrigem = db.OpenRecordset("Select top 1 * from " & pDestino)
-'
-''' BANCO DESTINO
-'Dim strUsuarioNome As String: strUsuarioNome = pegarValorDoParametro(qryParametros, "BancoDados_Usuario")
-'Dim strUsuarioSenha As String: strUsuarioSenha = pegarValorDoParametro(qryParametros, "BancoDados_Senha")
-'Dim strOrigem As String: strOrigem = pegarValorDoParametro(qryParametros, "BancoDados_Origem")
-'Dim strBanco As String: strBanco = pegarValorDoParametro(qryParametros, "BancoDados_Banco")
-'
-'Dim dbDestino As New Banco: dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
-'dbDestino.SqlSelect "SELECT * FROM " & pDestino
-'
-'
-''' LISTAGEM DE CAMPOS DA TABELA ORIGEM/DESTINO
-'Dim strCampo As String
-'Dim rstCampos As dao.Recordset: Set rstCampos = db.OpenRecordset("Select * from tblOrigemDestino where tabela = '" & pDestino & "' and tagOrigem = 1")
-'
-'Do While Not rstOrigem.EOF
-'
-'    dbDestino.rs.AddNew
-'
-'    Do While Not rstCampos.EOF
-'
-'        strCampo = strSplit(rstCampos.Fields("destino").value, ".", 1)
-'
-'        For Each fldDestino In dbDestino.rs.Fields
-'            If fldDestino.Name = strCampo Then
-'                ' dbDestino.rs(StrCampo).value = rstOrigem.Fields(StrCampo).value
-'                If rstOrigem.Fields(strCampo).value <> "" Then dbDestino.SqlExecute "Insert into tblCompraNF (" & strCampo & ") values (" & rstOrigem.Fields(strCampo).value & ")"
-'                Exit For
-'            End If
-'        Next fldDestino
-'
-'        rstCampos.MoveNext
-'    Loop
-'
-'    dbDestino.rs.Update
-'
-'    rstOrigem.MoveNext
-'
-'Loop
-'
-'dbDestino.CloseConnection
-'db.Close: Set db = Nothing
-'
-'End Sub
+Private Const qryUpdate_ModeloDoc_CFOP As String = _
+        "UPDATE tblCompraNF INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.NumNF_CompraNF = tblDadosConexaoNFeCTe.NumNF SET tblCompraNF.ModeloDoc_CompraNF = [tblDadosConexaoNFeCTe].[codMod], tblCompraNF.CFOP_CompraNF = [tblDadosConexaoNFeCTe].[FiltroCFOP];"
 
 
 ''#######################################################################################
 ''### MÉTODOS
 ''#######################################################################################
+
+Public Sub compras_atualizarCampos()
+Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                    qryUpdateCFOP_FilCompra, _
+                                                    qryUpdate_IDVD, _
+                                                    qryUpdateBaseCalcICMS, _
+                                                    qryUpdateIdFornCompraNF, _
+                                                    qryUpdate_ModeloDoc_CFOP)
+    '' ATUALIZAR CAMPOS
+    executarComandos qryProcessos
+
+End Sub
 
 Public Sub FormatarCampos()
 Dim qryProcessos() As Variant: qryProcessos = Array( _
@@ -267,12 +243,12 @@ Public Sub TratamentoDeDadosGerais()
 Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                 qryUpdateFornecedoresValidos, _
                                                 qryUpdateRegistrosValidos, _
-                                                qryDeleteRegistrosInvalidos, _
                                                 qryUpdateIdTipo, _
                                                 qryUpdateRetornoArmazem, _
                                                 qryUpdateTransferenciaSisparts, _
                                                 qryUpdateCTe, _
                                                 qryUpdateIdEmpresa, _
+                                                qryUpdateIdEmpresa_TransferenciaEntreFiliais, _
                                                 qryUpdateCFOP_PSC_PES)
 
     '' REFINAMENTO DE DADOS
@@ -422,7 +398,7 @@ Do While Not rstPendentes.EOF
         If t = 0 Then rstDestino.AddNew: t = 1
         
         '' #VALIDAR_INFORMACAO
-        Debug.Print rstOrigem.Fields("NomeCampo").value
+'        Debug.Print rstOrigem.Fields("NomeCampo").value
         
         rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
         

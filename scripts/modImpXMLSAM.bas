@@ -112,6 +112,8 @@ Set XMLdoc = CreateObject("Microsoft.XMLDOM")
 XMLdoc.async = False
 XMLdoc.Load (DocXML)
 
+
+'' -- sBn / Qual o objetivo dessa variavel ?
 qtdProd = XMLdoc.getElementsByTagName(sBn & "infNFe/det").Length 'Contando quantos itens tem o nó det (detalhes)
 
 p = 0

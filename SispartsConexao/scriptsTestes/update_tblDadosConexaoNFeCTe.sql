@@ -6,7 +6,6 @@ UPDATE (
 		FROM tmpEmpresa
 		) AS qryEmpresas
 INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_Rem
-
 SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa;
 
 
@@ -38,7 +37,6 @@ UPDATE (
 		AND (qryRetornoArmazem.strMod = tblDadosConexaoNFeCTe.codMod)
 	) ON (tmpRetornoArmazem.TipoDeParametro = qryRetornoArmazem.strTipoDeParametro)
 	AND (tmpRetornoArmazem.TipoDeParametro = qryRetornoArmazem.strTipoDeParametro)
-
 SET tblDadosConexaoNFeCTe.ID_Tipo = [tmpRetornoArmazem].[ValorDoParametro]
 WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0)) AND (((tblDadosConexaoNFeCTe.CFOP) = '5907'));
 
@@ -81,6 +79,10 @@ SET tblCompraNF.ID_Forn_CompraNF = qryClientesFornecedor.CÓDIGOClientes;
 -- '' #DUVIDA - QUAL O OBJETIVO ?
 -- '' #ENTENDIMENTO - NÃO GERAR DUPLICIDADE NO CADASTRO DE COMPRA VERIFICANDO A EXISTENCIA DA MESMA PELOS SEGUINTES CAMPOS: XMLCNPJEmi E XMLNumNF
 SELECT Clientes.CNPJ_CPF, tblCompraNF.ID_Forn_CompraNF, tblCompraNF.NumNF_CompraNF, tblCompraNF.DTEntd_CompraNF FROM tblCompraNF INNER JOIN Clientes ON tblCompraNF.ID_Forn_CompraNF = Clientes.CÓDIGOClientes WHERE  (Clientes.CNPJ_CPF='" & Format(XMLCNPJEmi, "00\.000\.000/0000\-00") & "') AND (tblCompraNF.NumNF_CompraNF=" & XMLNumNF & ");
+
+-- ** NOVO **
+-- '' #AILTON - qryExpurgoDeComprasJaCadastradas - ( ChvAcesso )
+-- '' NÃO PROCESSAR REGISTROS JÁ CADASTRADOS ( RELACIONAMENTO POR ChvAcesso )
 
 
 -- chave ( itensCompra )
