@@ -1,0 +1,6 @@
+INFO 04/29/2021 15:14:38 - tblCompraNFItem - Quantidade de arquivos: 0 - 00:00:00
+INFO 04/29/2021 15:14:38 - Processamento - ProcessarArquivosXml - 00:00:00
+INFO 04/29/2021 15:14:38 - Processamento - TransferirDadosProcessados - 00:00:00
+INFO 04/29/2021 15:22:31 - tblCompraNF - Quantidade de arquivos: 562 - 00:00:00
+INFO 04/29/2021 15:26:49 - Processamento - ProcessarArquivosXml - 00:04:18
+INFO 04/29/2021 15:27:46 - Processamento - TransferirDadosProcessados - 00:00:56

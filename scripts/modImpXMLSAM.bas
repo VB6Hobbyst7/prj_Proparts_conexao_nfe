@@ -49,6 +49,7 @@ End Function
 
 '' #DUVIDA - QUAL O OBJETIVO ?
 '' #ENTENDIMENTO_01 - CARREGAR TODOS OS ITENS DA COMPRA
+'' #AILTON - qryInsertCompraItens
 Function PegaTagProdXML(DocXML As String, IDCompraNF As Double, IDForn As Long)
 On Error GoTo Err_PegaTagProdXML
 

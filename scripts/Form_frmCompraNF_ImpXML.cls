@@ -362,6 +362,7 @@ If Me.Finalidade = 0 Then 'CT-e
     rsCompraNF!Fil_CompraNF = Me.FiltroFil
     rsCompraNF!NumNF_CompraNF = XMLNumNF
     
+    '' #AILTON - NumPed_CompraNF
     '' #EnviarDadosParaServidor
     rsCompraNF!NumPed_CompraNF = Format(IIf(IsNull(DMax("NumPed_CompraNF", "tblCompraNF")), "000001", DMax("NumPed_CompraNF", "tblCompraNF") + 1), "000000") '' CONTROLE DO NUMERO DO PEDIDO
     
@@ -416,20 +417,21 @@ If Me.Finalidade = 0 Then 'CT-e
     '' #EnviarDadosParaServidor
     rsCompraNFItem!ID_Prod_CompraNFItem = DLookup("[Código]", "[Cadastro de Produtos]", "[Modelo]='TRANSPORTE'")
     
+    '' #AILTON - qryInsertCompraItens - #VALOR_VARIAVEL
     rsCompraNFItem!Almox_CompraNFItem = Forms!frmCompraNF_ImpXML!FiltroAlmox
-    rsCompraNFItem!VUnt_CompraNFItem = XMLValNF
-    rsCompraNFItem!ICMS_CompraNFItem = XMLPerICMS
-    rsCompraNFItem!CFOP_CompraNFItem = Me.FiltroCFOP.Column(1)
-    rsCompraNFItem!ST_CompraNFItem = "0" & Me.FiltroCFOP.Column(4)
-    rsCompraNFItem!DTEmi_CompraNFItem = XMLDTEmi
-    rsCompraNFItem!Num_CompraNFItem = XMLNumNF
-    rsCompraNFItem!VTot_CompraNFItem = XMLValNF
-    rsCompraNFItem!DebICMS_CompraNFItem = XMLValICMS
-    rsCompraNFItem!VTotBaseCalcICMS_CompraNFItem = XMLBCICMS
-    rsCompraNFItem!ID_NatOp_CompraNFItem = Me.FiltroCFOP.Column(0)
-    rsCompraNFItem!STPIS_CompraNFItem = Me.FiltroCFOP.Column(6)
-    rsCompraNFItem!STCOFINS_CompraNFItem = Me.FiltroCFOP.Column(6)
-    rsCompraNFItem!STIPI_CompraNFItem = Me.FiltroCFOP.Column(5)
+    rsCompraNFItem!VUnt_CompraNFItem = XMLValNF                                 '' | OK
+    rsCompraNFItem!ICMS_CompraNFItem = XMLPerICMS                               '' | carregarItens
+    rsCompraNFItem!CFOP_CompraNFItem = Me.FiltroCFOP.Column(1)                  '' | tblNatOp.CFOP_NatOper
+    rsCompraNFItem!ST_CompraNFItem = "0" & Me.FiltroCFOP.Column(4)              '' | tblNatOp.STICMS_NatOper
+    rsCompraNFItem!DTEmi_CompraNFItem = XMLDTEmi                                '' | OK
+    rsCompraNFItem!Num_CompraNFItem = XMLNumNF                                  '' | OK
+    rsCompraNFItem!VTot_CompraNFItem = XMLValNF                                 '' | OK
+    rsCompraNFItem!DebICMS_CompraNFItem = XMLValICMS                            '' | OK
+    rsCompraNFItem!VTotBaseCalcICMS_CompraNFItem = XMLBCICMS                    '' | OK
+    rsCompraNFItem!ID_NatOp_CompraNFItem = Me.FiltroCFOP.Column(0)              '' | OK
+    rsCompraNFItem!STPIS_CompraNFItem = Me.FiltroCFOP.Column(6)                 '' | tblNatOp.STPC_NatOper
+    rsCompraNFItem!STCOFINS_CompraNFItem = Me.FiltroCFOP.Column(6)              '' | tblNatOp.STPC_NatOper
+    rsCompraNFItem!STIPI_CompraNFItem = Me.FiltroCFOP.Column(5)                 '' | tblNatOp.STIPI_NatOper
     
     '' #AILTON - qryInsertCompraItens - #VALOR_FIXO
     rsCompraNFItem!Item_CompraNFItem = 1
@@ -568,9 +570,6 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
 '    Else
 '        rsCompraNF!VTotFrete_CompraNF = 0
 '    End If
-    
-    
-    '' #AILTON - qryInsertCompraItens - #VALOR_FIXO
     
     rsCompraNF!VTotFrete_CompraNF = 0
     

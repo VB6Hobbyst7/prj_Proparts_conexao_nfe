@@ -112,9 +112,14 @@ WHERE (Clientes.CNPJ_CPF = '" & Format(XMLCNPJEmi, "00\.000\.000/0000\-00") & "'
 -- chave ( itensCompra ) - ( ChvAcesso ) -- NumNF_CompraNF + ID_Forn_CompraNF
 
 -- ** NOVO ** -- COMPRAS
--- tmpCompraNF.ModeloDoc_CompraNF = tblDadosConexaoNFeCTe.codMod 
--- tmpCompraNF.CFOP_CompraNF = tmpDadosConexaoNFeCTe.FiltroCFOP
--- UPDATE tblCompraNF INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.NumNF_CompraNF = tblDadosConexaoNFeCTe.NumNF SET tblCompraNF.ModeloDoc_CompraNF = [tblDadosConexaoNFeCTe].[codMod], tblCompraNF.CFOP_CompraNF = [tblDadosConexaoNFeCTe].[FiltroCFOP];
+tmpCompraNF.ModeloDoc_CompraNF = tblDadosConexaoNFeCTe.codMod 
+tmpCompraNF.CFOP_CompraNF = tmpDadosConexaoNFeCTe.FiltroCFOP
+
+UPDATE tblCompraNF 
+	INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.NumNF_CompraNF = tblDadosConexaoNFeCTe.NumNF 
+	SET 
+		tblCompraNF.ModeloDoc_CompraNF = [tblDadosConexaoNFeCTe].[codMod]
+		, tblCompraNF.CFOP_CompraNF = [tblDadosConexaoNFeCTe].[FiltroCFOP];
 
 
 

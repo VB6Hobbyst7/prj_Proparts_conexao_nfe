@@ -115,10 +115,6 @@ adm_Err:
     Resume adm_Exit
 
 
-
-
-
-
 End Function
 
 '' 02.CARREGAR COMPRAS ANTES DE ENVIAR PARA O SERVIDOR
@@ -137,10 +133,10 @@ Dim retVal As Variant: retVal = MsgBox("Deseja carregar as compras com base no p
         
             '' PROCESSAR APENAS ARQUIVOS VALIDOS
             s.ProcessarArquivosXml CStr(t), carregarParametros(qrySelectProcessamentoPendente)
-            
+
             '' FORMATAR CAMPOS
             s.FormatarCampos
-            
+
             '' #TRATAMENTO
             s.TratamentoDeCompras
             
