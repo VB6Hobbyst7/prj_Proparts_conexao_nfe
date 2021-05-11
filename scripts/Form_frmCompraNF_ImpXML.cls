@@ -411,13 +411,13 @@ If Me.Finalidade = 0 Then 'CT-e
     rsCompraNFItem.Open "SELECT TOP 1 * FROM tblCompraNFItem", CNN, , , adCmdText
     rsCompraNFItem.AddNew
     
-    '' #AILTON - qryInsertCompraItens
+    '' #AILTON - qryInsertItensCTe
     rsCompraNFItem!ID_CompraNF_CompraNFItem = IDCompraNF
     
     '' #EnviarDadosParaServidor
     rsCompraNFItem!ID_Prod_CompraNFItem = DLookup("[Código]", "[Cadastro de Produtos]", "[Modelo]='TRANSPORTE'")
     
-    '' #AILTON - qryInsertCompraItens - #VALOR_VARIAVEL
+    '' #AILTON - qryInsertItensCTe - #VALOR_VARIAVEL
     rsCompraNFItem!Almox_CompraNFItem = Forms!frmCompraNF_ImpXML!FiltroAlmox
     rsCompraNFItem!VUnt_CompraNFItem = XMLValNF                                 '' | OK
     rsCompraNFItem!ICMS_CompraNFItem = XMLPerICMS                               '' | carregarItens
@@ -433,7 +433,7 @@ If Me.Finalidade = 0 Then 'CT-e
     rsCompraNFItem!STCOFINS_CompraNFItem = Me.FiltroCFOP.Column(6)              '' | tblNatOp.STPC_NatOper
     rsCompraNFItem!STIPI_CompraNFItem = Me.FiltroCFOP.Column(5)                 '' | tblNatOp.STIPI_NatOper
     
-    '' #AILTON - qryInsertCompraItens - #VALOR_FIXO
+    '' #AILTON - qryInsertItensCTe - #VALOR_FIXO
     rsCompraNFItem!Item_CompraNFItem = 1
     rsCompraNFItem!ID_Grade_CompraNFItem = 1
     rsCompraNFItem!QtdFat_CompraNFItem = 1

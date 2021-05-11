@@ -1060,15 +1060,15 @@ If (XMLdoc.parseError.errorCode <> 0) Then
     MsgBox ("You have error " & myErr.reason)
 Else
     For i = 0 To qtdProd - 1 'Varrendo todos os itens
-        nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
-        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cProd").Item(0).text)
-        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xProd").Item(0).text)
+        nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)             '' Item_CompraNFItem
+        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cProd").Item(0).text)   '' ID_Prod_CompraNFItem
+        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xProd").Item(0).text)   ''
         cEAN = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cEAN").Item(0).text)
         NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/NCM").Item(0).text)
-        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/CFOP").Item(0).text)
+        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/CFOP").Item(0).text)     '' CFOP_CompraNFItem
         uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/uCom").Item(0).text)
         qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/qCom").Item(0).text)
-        vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vUnCom").Item(0).text)
+        vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vUnCom").Item(0).text) '' VUnt_CompraNFItem
         vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vProd").Item(0).text)
         cEANTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cEANTrib").Item(0).text)
         uTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/uTrib").Item(0).text)
@@ -1076,12 +1076,12 @@ Else
         indTot = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/indTot").Item(0).text)
         
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vFrete").Length > 0 Then
-            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vFrete").Item(0).text)
+            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vFrete").Item(0).text) '' VTotFrete_CompraNFItem
         Else
             VFrete = 0
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vDesc").Length > 0 Then
-            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vDesc").Item(0).text)
+            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vDesc").Item(0).text)   '' VTotDesc_CompraNFItem
         Else
             VDesc = 0
         End If
@@ -1089,7 +1089,7 @@ Else
             xPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xPed").Item(0).text)
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/nItemPed").Length > 0 Then
-            nItemPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/nItemPed").Item(0).text)
+            nItemPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/nItemPed").Item(0).text) '' Item_CompraNFItem
         End If
         
         Set gro = db.OpenRecordset("04_XML_prod", dbOpenDynaset)

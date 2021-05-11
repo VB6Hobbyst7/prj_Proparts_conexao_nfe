@@ -179,7 +179,7 @@ Function EstaAbertoForm(NomeFormulário As String) As Integer
 On Error GoTo Err_EstáAberto
 Dim NúmeroDeFormulários
 Dim x As Integer
-    NúmeroDeFormulários = Forms.Count                                            ' formulários.
+    NúmeroDeFormulários = Forms.count                                            ' formulários.
     For x = 0 To NúmeroDeFormulários - 1
         If Forms(x).Name = NomeFormulário Then
             EstaAbertoForm = -1
@@ -1110,7 +1110,7 @@ Dim wrkDefault As Workspace
 
             ' Enumera todos os objetos Group em cada
             ' coleção Groups do objeto User.
-            If usrLoop.Groups.Count <> 0 Then
+            If usrLoop.Groups.count <> 0 Then
                 For Each grpLoop In usrLoop.Groups
                     Debug.Print "            " & _
                         grpLoop.Name
@@ -1132,7 +1132,7 @@ End If
 
             ' Enumera todos os objetos User em cada
             ' coleção Users do objeto Group.
-            If grpLoop.Users.Count <> 0 Then
+            If grpLoop.Users.count <> 0 Then
                 For Each usrLoop In grpLoop.Users
                     Debug.Print "            " & usrLoop.Name
                 Next usrLoop
@@ -2370,7 +2370,7 @@ Function EstáAberto(NomeFormulário As String) As Integer
 On Error GoTo Err_EstáAberto
 Dim x As Integer
 Dim NúmeroDeFormulários
-    NúmeroDeFormulários = Forms.Count                                            ' formulários.
+    NúmeroDeFormulários = Forms.count                                            ' formulários.
     For x = 0 To NúmeroDeFormulários - 1
         If Forms(x).Name = NomeFormulário Then
             EstáAberto = -1

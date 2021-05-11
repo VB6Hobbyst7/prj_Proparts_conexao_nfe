@@ -18,6 +18,17 @@ Public Enum enumTipoArquivo
     opManifesto = 1
 End Enum
 
+
+'' #CONTROLE_PARAMETRO
+Private Const qryParametros As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
+Private Const strCaminhoDeColeta As String = "caminhoDeColeta"
+Private Const strCaminhoDeProcessados As String = "caminhoDeProcessados"
+Private Const strUsuarioErpCod As String = "UsuarioErpCod"
+Private Const strUsuarioErpNome As String = "UsuarioErpNome"
+Private Const strCodTipoEvento As String = "codTipoEvento"
+Private Const strComando As String = "Comando"
+
+
 '' ########################################
 '' #TratamentoDeRegistros - tblOrigemDestino
 '' ########################################
@@ -32,8 +43,13 @@ Private Const azsUpdateOrigemDestino_tabela_campo As String = _
 
 '' -- PROCESSAMENTO CONCLUIDO
 Private Const qryUpdateProcessamentoConcluido As String = _
-            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) " & _
-            " AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
+        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
+
+Private Const qryUpdateProcessamentoConcluido_CTE As String = _
+        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 3 WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1) AND ((tblDadosConexaoNFeCTe.ID_Tipo) = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro] = 'Cte'"")));"
+
+Private Const qryUpdateProcessamentoConcluido_ItensCompras As String = _
+        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 3 FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
 
 '' -- CARREGAR TAGs DE VINDAS DO XML
 '' #tblOrigemDestino.tabela
@@ -181,6 +197,15 @@ Private Const qryUpdateCTe As String = _
 '' #TratamentoDeRegistros - COMPRAS
 '' ########################################
 
+'' #carregarCompras
+'' PROCESSAMENTO DAS COMPRAS COM BASE EM REGISTROS VALIDOS PROCESSADOS PELA #CAPTURA_DADOS_GERAIS
+Private Const qrySelectProcessamentoPendente As String = _
+        "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo, tblDadosConexaoNFeCTe.ID_Tipo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
+
+Private Const qrySelectProcessamentoItensCompras As String = _
+        "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
+
+
 Private Const qryUpdateBaseCalcICMS As String = _
     "UPDATE tblCompraNF SET tblCompraNF.BaseCalcICMS_CompraNF = replace([tblCompraNF].[BaseCalcICMS_CompraNF] / 100,"","",""."") WHERE (((tblCompraNF.BaseCalcICMS_CompraNF)>""0"")) OR (((tblCompraNF.BaseCalcICMS_CompraNF) Is Not Null));"
     ''"UPDATE tblCompraNF SET tblCompraNF.BaseCalcICMS_CompraNF = [tblCompraNF].[BaseCalcICMS_CompraNF]/100 WHERE (((tblCompraNF.BaseCalcICMS_CompraNF)>""0"")) OR (((tblCompraNF.BaseCalcICMS_CompraNF) Is Not Null));"
@@ -211,241 +236,280 @@ Private Const qryInsertItensCTe As String = _
     "INSERT INTO tblCompraNFItem ( ChvAcesso_CompraNF, VUnt_CompraNFItem, DTEmi_CompraNFItem, Num_CompraNFItem, VTot_CompraNFItem, DebICMS_CompraNFItem, VTotBaseCalcICMS_CompraNFItem, ID_NatOp_CompraNFItem, Item_CompraNFItem, ID_Grade_CompraNFItem, QtdFat_CompraNFItem, ISS_CompraNFItem, IPI_CompraNFItem, FlagEst_CompraNFItem, BaseCalcICMS_CompraNFItem, IseICMS_CompraNFItem, OutICMS_CompraNFItem, BaseCalcIPI_CompraNFItem, DebIPI_CompraNFItem, IseIPI_CompraNFItem, OutIPI_CompraNFItem, TxMLSubsTrib_CompraNFItem, TxIntSubsTrib_CompraNFItem, TxExtSubsTrib_CompraNFItem, BaseCalcICMSSubsTrib_CompraNFItem, VTotICMSSubsTrib_compranfitem, VTotFrete_CompraNFItem, VTotDesc_CompraNFItem, VTotPIS_CompraNFItem, VTotBaseCalcPIS_CompraNFItem, VTotCOFINS_CompraNFItem, VTotIseICMS_CompraNFItem, VTotBaseCalcCOFINS_CompraNFItem, SNCredICMS_CompraNFItem, VTotSNCredICMS_CompraNFItem, VTotSeg_CompraNFItem, VTotOutDesp_CompraNFItem )  " & _
     "SELECT tblCompraNF.ChvAcesso_CompraNF, tblCompraNF.VTotNF_CompraNF, tblCompraNF.DTEmi_CompraNF, tblCompraNF.NumNF_CompraNF, tblCompraNF.VTotNF_CompraNF, IIf([VTotICMS_CompraNF]<>"""",replace(tblCompraNF.BaseCalcICMS_CompraNF/100,"","","".""),0) AS strVTotICMS, tblCompraNF.BaseCalcICMS_CompraNF, tblCompraNF.ID_NatOp_CompraNF, 1 AS strItem, 1 AS strIDGrade, 1 AS strQtdFat, 0 AS strISS, 0 AS strIPI, 0 AS strFlag, 100 AS strBaseCalcICMS, 0 AS strIseICMS, 0 AS strOutICMS, 0 AS strBaseCalcIPI, 0 AS strDebIPI, 0 AS strIseIPI, 0 AS strOutIPI, 0 AS strTxMLSubsTrib, 0 AS strTxIntSubsTrib, 0 AS strTxExtSubsTrib, 0 AS strBaseCalcICMSSubsTrib, 0 AS strVTotICMSSubsTrib, 0 AS strVTotFrete, 0 AS strVTotDesc, 0 AS strVTotPIS, 0 AS strVTotBaseCalcPIS, 0 AS strVTotCOFINS, 0 AS strVTotIseICMS, 0 AS strVTotBaseCalcCOFINS, 0 AS strSNCredICMS, 0 AS strVTotSNCredICMS, 0 AS strVTotSeg, 0 AS strVTotOutDesp  " & _
     "FROM tblCompraNF INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso  " & _
-    "WHERE (((tblDadosConexaoNFeCTe.ID_Tipo)=DLookUp(""[ValorDoParametro]"",""[tblParametros]"",""[TipoDeParametro]='Cte'""))); "
+    "WHERE (((tblDadosConexaoNFeCTe.ID_Tipo)=DLookUp(""[ValorDoParametro]"",""[tblParametros]"",""[TipoDeParametro]='Cte'""))) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1) ; "
 
 
 ''#######################################################################################
-''### MÉTODOS
+''### PRINCIPAL
 ''#######################################################################################
 
-Public Sub compras_atualizarCampos()
-Dim qryProcessos() As Variant: qryProcessos = Array( _
-                                                    qryUpdateCFOP_FilCompra, _
-                                                    qryUpdate_IDVD, _
-                                                    qryUpdateBaseCalcICMS, _
-                                                    qryUpdateIdFornCompraNF, _
-                                                    qryUpdate_ModeloDoc_CFOP, _
-                                                    qryInsertItensCTe)
-    '' ATUALIZAR CAMPOS
-    executarComandos qryProcessos
+'' 03.ENVIAR DADOS PARA SERVIDOR
+Public Function enviar_ComprasParaServidor()
+On Error GoTo adm_Err
 
-End Sub
+'' VARIAVEL DE PARAMETRO
+Dim pDestino As String: pDestino = "tblCompraNF"
 
-Public Sub FormatarCampos()
-Dim qryProcessos() As Variant: qryProcessos = Array( _
-                                                    qryUpdateProcessamento_opData, _
-                                                    qryUpdateProcessamento_opTime)
-    '' FORMATAR CAMPOS
-    executarComandos qryProcessos
+'' ---------------------
+'' VARIAVEIS GERAIS
+'' ---------------------
 
-End Sub
+'' LISTAGEM DE CAMPOS DA TABELA ORIGEM/DESTINO
+Dim strCampo As String
 
+'' SCRIPT
+Dim tmpScript As String
+Dim tmp As String
 
-Public Sub TratamentoDeCompras()
-Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateFilCompraNF)
-
-    '' REFINAMENTO DE DADOS
-    executarComandos qryProcessos
-
-End Sub
-
-Public Sub TratamentoDeDadosGerais()
-Dim qryProcessos() As Variant: qryProcessos = Array( _
-                                                qryUpdateFornecedoresValidos, _
-                                                qryUpdateRegistrosValidos, _
-                                                qryUpdateIdTipo, _
-                                                qryUpdateRetornoArmazem, _
-                                                qryUpdateTransferenciaSisparts, _
-                                                qryUpdateCTe, _
-                                                qryUpdateIdEmpresa, _
-                                                qryUpdateIdEmpresa_TransferenciaEntreFiliais, _
-                                                qryUpdateCFOP_PSC_PES)
-
-    '' REFINAMENTO DE DADOS
-    executarComandos qryProcessos
-
-End Sub
-
-Public Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collection)
-Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
-Dim cadastro As clsProcessamento
-Dim col As New Collection
-Dim colCampos As New Collection
-Dim strPk As String
-Dim i As Variant
-Dim fileName As Variant
-Dim Item As Variant
-Dim lists As Variant
-Dim fieldnode As Variant
-Dim childNode As Variant
-    
-'' #ANALISE_DE_PROCESSAMENTO
-Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
-Dim contadorDeArquivos As Long: contadorDeArquivos = 1
-
-    statusFinal DT_PROCESSO, pTabelaDestino & " - Quantidade de arquivos: " & pArquivos.Count
-
-    '' #BARRA_PROGRESSO
-    SysCmd acSysCmdInitMeter, "Processando arquivos...", pArquivos.Count
-        
-    '' LIMPAR TABELA DE PROCESSAMENTOS
-    Application.CurrentDb.Execute qryDeleteProcessamento
-        
-        
-    '' 01.Leitura e identificação do arquivo
-    For Each fileName In pArquivos
-        XDoc.Load fileName
-        
-        '' #BARRA_PROGRESSO
-        SysCmd acSysCmdUpdateMeter, contadorDeArquivos
-        
-        '' 01.CRIAR CHAVE UNICA DE REGISTRO PARA CONTROLE DE DADOS
-        strPk = IIf(IsNull(DLookup("[chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & fileName & "'")), Controle & getFileName(CStr(fileName)), DLookup("[chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & fileName & "'"))
-        col.add strPk & "|" & "CaminhoDoArquivo" & "|" & fileName
-        
-        '' 02.CARREGAR CAMPOS DE ORIGEM X DESTINO DO REGISTRO
-        For Each Item In carregarParametros(qryTags, pTabelaDestino)
-            Set lists = XDoc.SelectNodes("//" & Item)
-            For Each fieldnode In lists
-                If (fieldnode.HasChildNodes) Then
-                    For Each childNode In fieldnode.ChildNodes
-                        col.add strPk & "|" & Item & "|" & fieldnode.text
-                    Next childNode
-                End If
-            Next fieldnode
-            
-            DoEvents
-            
-        Next Item
-
-        '' 03. REALIZAR CADASTRO DE TODOS OS ITENS COLETADOS NA TABELA DE PROCESSAMENTO
-        If (col.Count > 2) Then
-            
-            '' CADASTRAR REGISTRO
-            Set cadastro = New clsProcessamento
-            For Each i In col
-                With cadastro
-                    .pk = Split(i, "|")(0)
-                    .Chave = Split(i, "|")(1)
-                    .valor = Mid(Split(i, "|")(2), 1, 255)
-                    .cadastrar
-                End With
-                
-                DoEvents
-            Next i
-            
-            '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
-            Application.CurrentDb.Execute Replace(qryUpdateProcessamento, "strParametro", pTabelaDestino)
-            
-        End If
-        
-        '' LIMPAR COLEÇÃO
-        ClearCollection col
-
-        '' #BARRA_PROGRESSO
-        contadorDeArquivos = contadorDeArquivos + 1
-        
-    Next fileName
-                
-                
-'    '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
-'    Application.CurrentDb.Execute qryUpdateProcessamento
-    
-
-    '' #BARRA_PROGRESSO
-    SysCmd acSysCmdRemoveMeter
-
-    Set XDoc = Nothing
-
-    '' #ANALISE_DE_PROCESSAMENTO
-    statusFinal DT_PROCESSO, "Processamento - ProcessarArquivosXml"
-        
-End Sub
-
-
-'' #TRANSFERIR DADOS PROCESSADOS PARA A TABELA DE TRANSITO - ( tblProcessamento -> tblDadosConexaoNFeCTe/tblCompraNF/tblCompraNFItem )
-Public Sub TransferirDadosProcessados(pDestino As String)
-
-'' CONTROLE DE CADASTRO DE REGISTRO
-Dim t As Integer
-Dim tmpSqlOrigem As String
-
-'' #BANCO_LOCAL
+'' ---------------------
+'' BANCO LOCAL
+'' ---------------------
 Dim db As dao.Database: Set db = CurrentDb
-Dim tmpSql As String: tmpSql = "Select Distinct pk from tblProcessamento where NomeTabela = '" & pDestino & "' Order by pk;"
-Dim rstPendentes As dao.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
 Dim rstOrigem As dao.Recordset
 
-'' #BANCO_DESTINO
-tmpSql = "Select * from " & pDestino
-Dim rstDestino As dao.Recordset: Set rstDestino = db.OpenRecordset(tmpSql)
+'' ---------------------
+'' BANCO DESTINO
+'' ---------------------
 
-'' #ANALISE_DE_PROCESSAMENTO
-Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
+Dim strUsuarioNome As String
+Dim strUsuarioSenha As String
+Dim strOrigem As String
+Dim strBanco As String
 
-'' #BARRA_PROGRESSO
-Dim contadorDeRegistros As Long: contadorDeRegistros = 1
-SysCmd acSysCmdInitMeter, "Transferindo Dados...", rstPendentes.RecordCount
+Dim dbDestino As New Banco
 
-''' #VALIDAR_INFORMACAO
-'Debug.Print "--------------------------------"
+Dim retVal As Variant: retVal = MsgBox("Deseja enviar compras para o servidor?", vbQuestion + vbYesNo, "ADM_enviarComprasParaServidor")
 
-Do While Not rstPendentes.EOF
-
-    '' #BARRA_PROGRESSO
-    SysCmd acSysCmdUpdateMeter, contadorDeRegistros
-
-    '' listar itens de registro para cadastro
-    tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0 Order by ID "
-        
-'    '' #VALIDAR_INFORMACAO
-'    Debug.Print tmpSqlOrigem
+    If retVal = vbYes Then
+        strUsuarioNome = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Usuario'")
+        strUsuarioSenha = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Senha'")
+        strOrigem = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Origem'")
+        strBanco = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Banco'")
     
-    Set rstOrigem = db.OpenRecordset(tmpSqlOrigem)
-    Do While Not rstOrigem.EOF
+        dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
+        dbDestino.SqlSelect "SELECT * FROM " & pDestino
     
-        '' CONTROLE DE CADASTRO
-        If t = 0 Then rstDestino.AddNew: t = 1
-        
-'        '' #VALIDAR_INFORMACAO
-'        Debug.Print rstOrigem.Fields("NomeCampo").value
-'        Debug.Print rstOrigem.Fields("Valor").value
-        
-        rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
-        
-        '' #CAMPO_CHAVE_RELACIONAMENO
-        If (pDestino = "tblDadosConexaoNFeCTe") Then rstDestino.Fields("Chave").value = rstOrigem.Fields("pk").value
+        tmpScript = "Insert into " & pDestino & " ("
     
-        rstOrigem.MoveNext
+        '' 1. cabeçalho
+        Dim rstCampos As dao.Recordset
+        Set rstCampos = db.OpenRecordset("Select distinct campo,formatacao,valorPadrao from tblOrigemDestino where tblOrigemDestino.tabela = '" & pDestino & "'")
+        Do While Not rstCampos.EOF
+            tmpScript = tmpScript & rstCampos.Fields("campo").value & ","
+            rstCampos.MoveNext
+            DoEvents
+        Loop
+        tmpScript = left(tmpScript, Len(tmpScript) - 1) & ") values ("
+        
+        
+        '' BANCO LOCAL
+        Set rstOrigem = db.OpenRecordset("Select * from " & pDestino)
+        Do While Not rstOrigem.EOF
+            tmp = ""
+            
+            '' LISTAGEM DE CAMPOS
+            rstCampos.MoveFirst
+            Do While Not rstCampos.EOF
+            
+                '' CRIAR SCRIPT DE INCLUSÃO DE DADOS NA TABELA DESTINO
+                '' 2. campos x formatação
+        
+                If rstCampos.Fields("formatacao").value = "opTexto" Then
+                    tmp = tmp & "'" & rstOrigem.Fields(rstCampos.Fields("campo").value).value & "',"
+                    
+                ElseIf rstCampos.Fields("formatacao").value = "opNumero" Or rstCampos.Fields("formatacao").value = "opMoeda" Then
+                    tmp = tmp & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", rstOrigem.Fields(rstCampos.Fields("campo").value).value, rstCampos.Fields("valorPadrao").value) & ","
+                    
+                ElseIf rstCampos.Fields("formatacao").value = "opTime" Or rstCampos.Fields("formatacao").value = "opData" Then
+                    tmp = tmp & "'" & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", rstOrigem.Fields(rstCampos.Fields("campo").value).value, rstCampos.Fields("valorPadrao").value) & "',"
+                    
+                End If
+                
+                rstCampos.MoveNext
+                DoEvents
+            Loop
+            
+            '' BANCO DESTINO
+            tmp = left(tmp, Len(tmp) - 1) & ")"
+            
+            'Debug.Print tmpScript & tmp
+            
+            rstOrigem.MoveNext
+            
+            dbDestino.SqlExecute tmpScript & tmp
+            
+            DoEvents
+        Loop
+        
+        dbDestino.CloseConnection
+        db.Close: Set db = Nothing
+        
+        
+        MsgBox "Fim!", vbOKOnly + vbExclamation, "enviarComprasParaServidor"
+    
+    End If
+
+adm_Exit:
+    Exit Function
+
+adm_Err:
+    MsgBox Error$
+    Resume adm_Exit
+
+
+End Function
+
+'' 02.CARREGAR COMPRAS ANTES DE ENVIAR PARA O SERVIDOR
+Public Function carregar_Compras()
+Dim strProcessamento As String: strProcessamento = "tblCompraNF"
+Dim s As New clsConexaoNfeCte
+Dim t As Variant
+
+On Error GoTo adm_Err
+Dim retVal As Variant: retVal = MsgBox("Deseja carregar as compras com base no processamento de dados gerais ?", vbQuestion + vbYesNo, "carregarCompras")
+
+    If retVal = vbYes Then
+    
+        '' #CARREGAR DADOS
+        For Each t In Array(strProcessamento)
+        
+            '' PROCESSAR APENAS ARQUIVOS VALIDOS
+            ProcessarArquivosXml CStr(t), carregarParametros(qrySelectProcessamentoPendente)
+
+            '' FORMATAR CAMPOS
+            FormatarCampos
+
+            '' #TRATAMENTO
+            TratamentoDeCompras
+            
+            '' #TRANSFERIR DADOS PROCESSADOS - COMPRAS
+            TransferirDadosProcessados strProcessamento
+            
+            '' ATUALIZAR CAMPOS DE COMPRAS
+            compras_atualizarCampos
+    
+        Next
+    
+        '' #VALIDAR_DADOS
+        criarConsultasParaTestes
+        
+        MsgBox "Fim!", vbOKOnly + vbExclamation, "carregarCompras"
+    
+    End If
+
+adm_Exit:
+    Exit Function
+
+adm_Err:
+    MsgBox Error$
+    Resume adm_Exit
+
+End Function
+
+Private Function carregar_ComprasItens(pPathFile As String)
+On Error Resume Next
+
+'' CHAVES DE CONTROLE
+Dim pPK As String: pPK = DLookup("[Chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & pPathFile & "'")
+Dim pChvAcesso As String: pChvAcesso = DLookup("[ChvAcesso]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & pPathFile & "'")
+
+'' controle do xml
+Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
+XDoc.Load pPathFile
+
+Dim cont As Integer: cont = XDoc.getElementsByTagName("infNFe/det").Length
+Dim Item As Variant
+
+Dim pDados As New Collection
+
+Dim idItem As String: idItem = ""
+
+    '' LIMPAR TABELA DE PROCESSAMENTOS
+    Application.CurrentDb.Execute qryDeleteProcessamento
+    
+    '' IDENTIFICAÇÃO DO ARQUIVO
+    pDados.add pPK & "|" & "CaminhoDoArquivo" & "|" & pPathFile
+    
+    '' CHAVE DE ACESSO
+    pDados.add pPK & "|" & "ChvAcesso_CompraNF" & "|" & pChvAcesso
+    
+    For i = 0 To cont - 1
+        '' ID
+        idItem = CStr(XDoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
+        pDados.add pPK & "_" & idItem & "|" & "Item_CompraNFItem" & "|" & idItem
+        pDados.add pPK & "_" & idItem & "|" & "ChvAcesso_CompraNF" & "|" & pChvAcesso
+        
+        '' CAMPOS DO REGISTRO
+        For Each Item In carregarParametros(qryTags, "tblCompraNFItem")
+            pDados.add pPK & "_" & idItem & "|" & Item & "|" & XDoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes(Item).Item(0).text
+        Next Item
+                
         DoEvents
-    Loop
         
-    rstDestino.Update
-    t = 0
+    Next i
     
-    '' #COMPRAS
-    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(qryUpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+    '' CADASTRAR DADOS
+    cadastroProcessamento pDados
     
-    '' #DADOS_GERAIS
-    '' qryUpdateRegistroValido - Valor padrao
-    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
+    '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
+    Application.CurrentDb.Execute Replace(qryUpdateProcessamento, "strParametro", "tblCompraNFItem")
     
-    '' #BARRA_PROGRESSO
-    contadorDeRegistros = contadorDeRegistros + 1
-    rstPendentes.MoveNext
-    DoEvents
-Loop
 
-'' #BARRA_PROGRESSO
-SysCmd acSysCmdRemoveMeter
 
-'dbDestino.CloseConnection
-db.Close: Set db = Nothing
+Set XDoc = Nothing
 
-'' #ANALISE_DE_PROCESSAMENTO
-statusFinal DT_PROCESSO, "Processamento - TransferirDadosProcessados"
+End Function
 
-End Sub
+'' 01.CARREGAR DADOS GERAIS - CONCLUIDO
+Public Function carregar_DadosGerais()
+On Error GoTo adm_Err
+
+Dim strProcessamento As String: strProcessamento = "tblDadosConexaoNFeCTe"
+Dim s As New clsConexaoNfeCte
+Dim t As Variant
+
+Dim retVal As Variant: retVal = MsgBox("Deseja carregar os dados gerais dos arquivos XML ?", vbQuestion + vbYesNo, "carregarDadosGerais")
+
+    If retVal = vbYes Then
+    
+        '' #LIMPAR_BASE_DE_TESTES
+        Application.CurrentDb.Execute "DELETE FROM tblDadosConexaoNFeCTe"
+        Application.CurrentDb.Execute "DELETE FROM tblCompraNF"
+        Application.CurrentDb.Execute "DELETE FROM tblCompraNFItem"
+    
+        '' #CARREGAR DADOS
+        For Each t In Array(strProcessamento)
+    
+            '' #PROCESSAMENTO DE ARQUIVO - ENVIO DE DADOS PARA tblProcessamento
+            ProcessarArquivosXml CStr(t), GetFilesInSubFolders(pegarValorDoParametro(qryParametros, strCaminhoDeColeta))
+    
+            '' FORMATAR CAMPOS
+            FormatarCampos
+    
+            '' #TRANSFERIR DADOS PROCESSADOS - DADOS GERAIS - ENVIO DE DADOS PARA tblDadosConexaoNFeCTe
+            TransferirDadosProcessados strProcessamento
+    
+            '' #TRATAMENTO
+            TratamentoDeDadosGerais
+    
+            '' #ARQUIVOS - GERAR ARQUIVOS
+            CriarTipoDeArquivo opFlagLancadaERP
+            CriarTipoDeArquivo opManifesto
+    
+        Next
+    
+        MsgBox "Fim!", vbOKOnly + vbExclamation, "carregarDadosGerais"
+    
+    End If
+
+adm_Exit:
+    Exit Function
+
+adm_Err:
+    MsgBox Error$
+    Resume adm_Exit
+
+End Function
 
 
 '' CRIAÇÃO DE ARQUIVOS JSON
@@ -503,5 +567,267 @@ Dim nomeArquivo As String
     statusFinal DT_PROCESSO, "Processamento - CriarTipoDeArquivo (" & nomeArquivo & ")"
     
 End Sub
+
+
+
+
+
+
+
+
+''#######################################################################################
+''### MÉTODOS
+''#######################################################################################
+
+
+
+Private Sub compras_atualizarItensCompras()
+
+    Application.CurrentDb.Execute qryUpdateProcessamentoConcluido_ItensCompras
+
+End Sub
+
+
+Private Sub compras_atualizarCampos()
+Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                    qryUpdateCFOP_FilCompra, _
+                                                    qryUpdate_IDVD, _
+                                                    qryUpdateBaseCalcICMS, _
+                                                    qryUpdateIdFornCompraNF, _
+                                                    qryUpdate_ModeloDoc_CFOP, _
+                                                    qryInsertItensCTe, _
+                                                    qryUpdateProcessamentoConcluido_CTE)
+    '' ATUALIZAR CAMPOS
+    executarComandos qryProcessos
+
+End Sub
+
+Private Sub FormatarCampos()
+Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                    qryUpdateProcessamento_opData, _
+                                                    qryUpdateProcessamento_opTime)
+    '' FORMATAR CAMPOS
+    executarComandos qryProcessos
+
+End Sub
+
+
+Private Sub TratamentoDeCompras()
+Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateFilCompraNF)
+
+    '' REFINAMENTO DE DADOS
+    executarComandos qryProcessos
+
+End Sub
+
+Private Sub TratamentoDeDadosGerais()
+Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                qryUpdateFornecedoresValidos, _
+                                                qryUpdateRegistrosValidos, _
+                                                qryUpdateIdTipo, _
+                                                qryUpdateRetornoArmazem, _
+                                                qryUpdateTransferenciaSisparts, _
+                                                qryUpdateCTe, _
+                                                qryUpdateIdEmpresa, _
+                                                qryUpdateIdEmpresa_TransferenciaEntreFiliais, _
+                                                qryUpdateCFOP_PSC_PES)
+
+    '' REFINAMENTO DE DADOS
+    executarComandos qryProcessos
+
+End Sub
+
+Private Sub ProcessarArquivosXml(pTabelaDestino As String, pArquivos As Collection)
+Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
+Dim cadastro As clsProcessamento
+Dim cRegistros As New Collection
+Dim colCampos As New Collection
+Dim strPk As String
+Dim i As Variant
+Dim fileName As Variant
+Dim Item As Variant
+Dim lists As Variant
+Dim fieldnode As Variant
+Dim childNode As Variant
+    
+'' #ANALISE_DE_PROCESSAMENTO
+Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
+Dim contadorDeArquivos As Long: contadorDeArquivos = 1
+
+    statusFinal DT_PROCESSO, pTabelaDestino & " - Quantidade de arquivos: " & pArquivos.count
+
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdInitMeter, "Processando arquivos...", pArquivos.count
+        
+    '' LIMPAR TABELA DE PROCESSAMENTOS
+    Application.CurrentDb.Execute qryDeleteProcessamento
+        
+        
+    '' 01.Leitura e identificação do arquivo
+    For Each fileName In pArquivos
+        XDoc.Load fileName
+        
+        '' #BARRA_PROGRESSO
+        SysCmd acSysCmdUpdateMeter, contadorDeArquivos
+        
+        '' 01.CRIAR CHAVE UNICA DE REGISTRO PARA CONTROLE DE DADOS
+        strPk = IIf(IsNull(DLookup("[chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & fileName & "'")), Controle & getFileName(CStr(fileName)), DLookup("[chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & fileName & "'"))
+        cRegistros.add strPk & "|" & "CaminhoDoArquivo" & "|" & fileName
+        
+        '' 02.CARREGAR CAMPOS DE ORIGEM X DESTINO DO REGISTRO
+        For Each Item In carregarParametros(qryTags, pTabelaDestino)
+            Set lists = XDoc.SelectNodes("//" & Item)
+            For Each fieldnode In lists
+                If (fieldnode.HasChildNodes) Then
+                    For Each childNode In fieldnode.ChildNodes
+                        cRegistros.add strPk & "|" & Item & "|" & fieldnode.text
+                    Next childNode
+                End If
+            Next fieldnode
+            
+            DoEvents
+            
+        Next Item
+
+        '' 03. REALIZAR CADASTRO DE TODOS OS ITENS COLETADOS NA TABELA DE PROCESSAMENTO
+        If (cRegistros.count > 2) Then
+            
+            '' CADASTRAR REGISTRO
+             cadastroProcessamento cRegistros
+            
+            '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
+            Application.CurrentDb.Execute Replace(qryUpdateProcessamento, "strParametro", pTabelaDestino)
+            
+        End If
+        
+        '' LIMPAR COLEÇÃO
+        ClearCollection cRegistros
+
+        '' ITENS DA COMPRA
+'        If (pTabelaDestino = "tblCompraNF") Then processar_ComprasItens CStr(fileName)
+
+
+        '' #BARRA_PROGRESSO
+        contadorDeArquivos = contadorDeArquivos + 1
+        
+    Next fileName
+                
+                
+'    '' ATUALIZAR CAMPOS DE RELACIONAMENTOS
+'    Application.CurrentDb.Execute qryUpdateProcessamento
+    
+
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdRemoveMeter
+
+    Set XDoc = Nothing
+
+    '' #ANALISE_DE_PROCESSAMENTO
+    statusFinal DT_PROCESSO, "Processamento - ProcessarArquivosXml"
+        
+End Sub
+
+
+'' #TRANSFERIR DADOS PROCESSADOS PARA A TABELA DE TRANSITO - ( tblProcessamento -> tblDadosConexaoNFeCTe/tblCompraNF/tblCompraNFItem )
+Private Sub TransferirDadosProcessados(pDestino As String)
+
+'' CONTROLE DE CADASTRO DE REGISTRO
+Dim t As Integer
+Dim tmpSqlOrigem As String
+
+'' #BANCO_LOCAL
+Dim db As dao.Database: Set db = CurrentDb
+Dim tmpSql As String: tmpSql = "Select Distinct pk from tblProcessamento where NomeTabela = '" & pDestino & "' Order by pk;"
+
+Dim rstPendentes As dao.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
+Dim rstOrigem As dao.Recordset
+
+'' #BANCO_DESTINO
+tmpSql = "Select * from " & pDestino
+Dim rstDestino As dao.Recordset: Set rstDestino = db.OpenRecordset(tmpSql)
+
+'' #ANALISE_DE_PROCESSAMENTO
+Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
+
+'' #BARRA_PROGRESSO
+Dim contadorDeRegistros As Long: contadorDeRegistros = 1
+SysCmd acSysCmdInitMeter, "Transferindo Dados...", rstPendentes.RecordCount
+
+'' PROCESSAMENTO PENDENTE
+Do While Not rstPendentes.EOF
+
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdUpdateMeter, contadorDeRegistros
+
+    '' listar itens de registro para cadastro
+    tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0 Order by ID "
+    
+    '' TRATAMENTO QUANDO ITENS DE COMPRAS
+    If (pDestino = "tblCompraNFItem") Then tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk LIKE '" & rstPendentes.Fields("pk").value & "*' and len(formatacao)>0 Order by ID, PK "
+    
+    '' REGISTROS DO PROCESSAMENTO PENDENTE
+    Set rstOrigem = db.OpenRecordset(tmpSqlOrigem)
+    Do While Not rstOrigem.EOF
+    
+        '' CONTROLE DE CADASTRO
+        If t = 0 Then rstDestino.AddNew: t = 1
+        Debug.Print rstOrigem.Fields("NomeCampo").value
+        rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
+        
+        '' #CAMPO_CHAVE_RELACIONAMENO
+        If (pDestino = "tblDadosConexaoNFeCTe") Then rstDestino.Fields("Chave").value = rstOrigem.Fields("pk").value
+    
+        rstOrigem.MoveNext
+        DoEvents
+    Loop
+        
+    rstDestino.Update
+    t = 0
+    
+    '' #COMPRAS
+    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(qryUpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+    
+    '' #DADOS_GERAIS
+    '' qryUpdateRegistroValido - Valor padrao
+    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
+    
+    '' #BARRA_PROGRESSO
+    contadorDeRegistros = contadorDeRegistros + 1
+    rstPendentes.MoveNext
+    DoEvents
+Loop
+
+'' #BARRA_PROGRESSO
+SysCmd acSysCmdRemoveMeter
+
+'dbDestino.CloseConnection
+db.Close: Set db = Nothing
+
+'' #ANALISE_DE_PROCESSAMENTO
+statusFinal DT_PROCESSO, "Processamento - TransferirDadosProcessados"
+
+End Sub
+
+
+
+
+
+Private Function cadastroProcessamento(pRegistros As Collection)
+Dim cadastro As New clsProcessamento
+Dim i As Variant
+
+    '' CADASTRAR REGISTRO
+    For Each i In pRegistros
+        With cadastro
+            .pk = Split(i, "|")(0)
+            .Chave = Split(i, "|")(1)
+            .valor = Mid(Split(i, "|")(2), 1, 255)
+            .cadastrar
+        End With
+        
+        DoEvents
+    Next i
+
+End Function
 
 

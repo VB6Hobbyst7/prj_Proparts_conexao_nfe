@@ -103,8 +103,8 @@ Public Sub all(ByVal rec As clsConexaoNfeCteDados)
     pCol.add rec
 End Sub
 
-Public Function Count() As Long
-    Count = pCol.Count
+Public Function count() As Long
+    count = pCol.count
 End Function
 
 Public Sub remove(ByVal i As Integer)

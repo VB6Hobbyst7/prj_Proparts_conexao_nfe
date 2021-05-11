@@ -2,23 +2,22 @@ Attribute VB_Name = "libUteis"
 Option Compare Database
 Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
-'' #CONTROLE_PARAMETRO
-Public Const qryParametros As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
-Public Const strCaminhoDeColeta As String = "caminhoDeColeta"
-Public Const strCaminhoDeProcessados As String = "caminhoDeProcessados"
-Public Const strUsuarioErpCod As String = "UsuarioErpCod"
-Public Const strUsuarioErpNome As String = "UsuarioErpNome"
-Public Const strCodTipoEvento As String = "codTipoEvento"
-Public Const strComando As String = "Comando"
+''' #CONTROLE_PARAMETRO
+'Public Const qryParametros As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
+'Public Const strCaminhoDeColeta As String = "caminhoDeColeta"
+'Public Const strCaminhoDeProcessados As String = "caminhoDeProcessados"
+'Public Const strUsuarioErpCod As String = "UsuarioErpCod"
+'Public Const strUsuarioErpNome As String = "UsuarioErpNome"
+'Public Const strCodTipoEvento As String = "codTipoEvento"
+'Public Const strComando As String = "Comando"
 
-'' #carregarCompras
-'' PROCESSAMENTO DAS COMPRAS COM BASE EM REGISTROS VALIDOS PROCESSADOS PELA #CAPTURA_DADOS_GERAIS
-Public Const qrySelectProcessamentoPendente As String = _
-            "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo, tblDadosConexaoNFeCTe.ID_Tipo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0))"
+''' #carregarCompras
+''' PROCESSAMENTO DAS COMPRAS COM BASE EM REGISTROS VALIDOS PROCESSADOS PELA #CAPTURA_DADOS_GERAIS
+'Public Const qrySelectProcessamentoPendente As String = _
+'        "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo, tblDadosConexaoNFeCTe.ID_Tipo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
 
-'Public Const qryUpdateProcessamentoConcluido As String = _
-'            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) " & _
-'            " AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
+'Public Const qrySelectProcessamentoItensCompras As String = _
+'        "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
 
 Public Enum enumOperacao
     opNone = 0
@@ -83,10 +82,10 @@ End Sub
 Sub ImportarDados(pOrigem As String, pDestino As String)
 
 '' #BANCO_ORIGEM
-Dim strUsuarioNome As String: strUsuarioNome = pegarValorDoParametro(qryParametros, "BancoDados_Usuario")
-Dim strUsuarioSenha As String: strUsuarioSenha = pegarValorDoParametro(qryParametros, "BancoDados_Senha")
-Dim strOrigem As String: strOrigem = pegarValorDoParametro(qryParametros, "BancoDados_Origem")
-Dim strBanco As String: strBanco = pegarValorDoParametro(qryParametros, "BancoDados_Banco")
+Dim strUsuarioNome As String: strUsuarioNome = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Usuario'")
+Dim strUsuarioSenha As String: strUsuarioSenha = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Senha'")
+Dim strOrigem As String: strOrigem = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Origem'")
+Dim strBanco As String: strBanco = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Banco'")
 Dim tmpOrigem As String: tmpOrigem = "Select * from " & pOrigem
 
 Dim dboOrigem As New Banco: dboOrigem.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
@@ -175,7 +174,7 @@ End Function
 
 '' EXECUÇÃO DE APLICATIVO EXTERNO
 Public Function execucao(pCol As Collection, strFileName As String, Optional strFilePath As String, Optional pOperacao As enumOperacao, Optional strApp As String) 'runUrl.au3
-Dim c As Variant, tmp As String: tmp = ""
+Dim C As Variant, tmp As String: tmp = ""
     
     '' Path
     If ((strFilePath) = "") Then
@@ -187,9 +186,9 @@ Dim c As Variant, tmp As String: tmp = ""
     If (Dir(strFilePath & strFileName) <> "") Then Kill strFilePath & strFileName
     
     '' Criação
-    For Each c In pCol
-        tmp = tmp + CStr(c) + vbNewLine
-    Next c
+    For Each C In pCol
+        tmp = tmp + CStr(C) + vbNewLine
+    Next C
     
     '' Saida para arquivo
     TextFile_Append strFilePath & strFileName, tmp
@@ -325,7 +324,7 @@ End Function
 '' LIMPAR COLEÇOES
 Public Sub ClearCollection(ByRef container As Collection)
     Dim index As Long
-    For index = 1 To container.Count
+    For index = 1 To container.count
         container.remove 1
     Next
 End Sub
@@ -451,7 +450,7 @@ Public Function PickFolder(pPath As String, pTitle As String, Optional pSubFolde
         .Title = pTitle
         .InitialFileName = pPath
         .Show
-            If .SelectedItems.Count > 0 Then
+            If .SelectedItems.count > 0 Then
                 If Trim(pSubFolder) <> "" Then
                     If Dir(.SelectedItems(1) & pSubFolder, vbDirectory) = "" Then
                         MkDir path:=.SelectedItems(1) & pSubFolder

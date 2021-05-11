@@ -7,6 +7,79 @@ Option Compare Database
 '' #####################################################################
 
 
+'Sub teste()
+'
+'Dim pRegistros As New Collection
+'
+'pRegistros.add "pk|chave|valor"
+'pRegistros.add "pk|chave|valor"
+'pRegistros.add "pk|chave|valor"
+'pRegistros.add "pk|chave|valor"
+'pRegistros.add "pk|chave|valor"
+'
+'
+'cadastroProcessamento pRegistros
+'
+'End Sub
+
+
+'Sub cadastroProcessamento(pRegistros As Collection)
+'Dim cadastro As New clsProcessamento
+'Dim i As Variant
+'
+'    '' CADASTRAR REGISTRO
+'    For Each i In pRegistros
+'        With cadastro
+'            .pk = Split(i, "|")(0)
+'            .Chave = Split(i, "|")(1)
+'            .valor = Mid(Split(i, "|")(2), 1, 255)
+'            .cadastrar
+'        End With
+'
+'        DoEvents
+'    Next i
+'
+'End Sub
+
+
+'Private Sub processar_ComprasItens()
+'
+''' parametros da função
+'Dim pPathFile As String: pPathFile = "C:\temp\Coleta\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\35210343283811001202550010087454051410067364-nfeproc.xml"
+'Dim pPK As String: pPK = DLookup("[Chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & pPathFile & "'")
+'Dim QRY() As Variant: QRY = Array("prod/cProd", "prod/cEAN", "prod/xProd", "prod/NCM", "prod/CFOP", "prod/uCom", "prod/qCom", "prod/vUnCom", "prod/vProd", "prod/cEANTrib", "prod/uTrib")
+'
+''' controle do xml
+'Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
+'XDoc.Load pPathFile
+'
+'Dim cont As Integer: cont = XDoc.getElementsByTagName(sBn & "infNFe/det").Length
+'Dim Item As Variant
+'
+'Dim pDados As New Collection
+'
+''' IDENTIFICAÇÃO DO ARQUIVO
+'pDados.add pPK & "|" & "CaminhoDoArquivo" & "|" & pPathFile
+'
+'For i = 0 To cont - 1
+'
+'    '' ID
+'    pDados.add pPK & "|" & "IdItem" & "|" & CStr(XDoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
+'
+'    '' CAMPOS DO REGISTRO
+'    For Each Item In QRY
+'        pDados.add pPK & "|" & Item & "|" & XDoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes(Item).Item(0).text
+'    Next Item
+'
+'Next i
+'
+'
+'cadastroProcessamento pDados
+'
+'
+'Set XDoc = Nothing
+'
+'End Sub
 
 
 '' #####################################################################
@@ -36,32 +109,109 @@ End Sub
 
 Private Sub teste_FiltrarCompraItens()
 Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
-Dim QRY() As Variant: QRY = Array("chCTe")
+Dim QRY() As Variant: QRY = Array("prod/cProd", "prod/cEAN", "prod/xProd", "prod/NCM", "prod/CFOP", "prod/uCom", "prod/qCom", "prod/vUnCom", "prod/vProd", "prod/cEANTrib", "prod/uTrib")
+
 Dim Item As Variant
 Dim lists As Variant
 Dim fieldnode As Variant
-Dim childNode As Variant
 
 '' cte
 'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\32210204884082000569570000039548351039548356-cteproc.xml"
 
 '' nfe
 'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\29210220961864000187550010000001891138200000-nfeproc.xml"
+XDoc.Load "C:\temp\Coleta\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\35210343283811001202550010087454051410067364-nfeproc.xml"
 
-For Each Item In QRY
-    Set lists = XDoc.SelectNodes("//" & Item)
-    For Each fieldnode In lists
-        If (fieldnode.HasChildNodes) Then
-            For Each childNode In fieldnode.ChildNodes
-                Debug.Print fieldnode.text
-            Next childNode
-        End If
-    Next fieldnode
-Next Item
+
+''################
+'' MODELO
+''################
+Dim cont As Integer: cont = XDoc.getElementsByTagName(sBn & "infNFe/det").Length
+'Dim tmp As String: tmp = XDoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(0).SelectNodes("prod/cProd").Item(0).text
+
+'nitem = CStr(XDoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
+
+For i = 0 To cont - 1
+    Debug.Print "----------------------"
+    Debug.Print "ITEM: " & CStr(XDoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
+    For Each Item In QRY
+        Debug.Print XDoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes(Item).Item(0).text
+    Next Item
+Next i
 
 Set XDoc = Nothing
 
 End Sub
+
+
+'Private Sub teste_FiltrarCompraItens()
+'Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
+'Dim QRY() As Variant: QRY = Array("prod/cProd", "prod/cEAN", "prod/xProd", "prod/NCM", "prod/CFOP", "prod/uCom", "prod/qCom", "prod/vUnCom", "prod/vProd", "prod/cEANTrib", "prod/uTrib")
+'
+'Dim Item As Variant
+'Dim lists As Variant
+'Dim fieldnode As Variant
+'
+''' cte
+''XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\32210204884082000569570000039548351039548356-cteproc.xml"
+'
+''' nfe
+''XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\29210220961864000187550010000001891138200000-nfeproc.xml"
+'XDoc.Load "C:\temp\Coleta\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\35210343283811001202550010087454051410067364-nfeproc.xml"
+'
+'
+'''################
+''' MODELO
+'''################
+'Dim cont As Integer: cont = XDoc.getElementsByTagName(sBn & "infNFe/det").Length
+''Dim tmp As String: tmp = XDoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(0).SelectNodes("prod/cProd").Item(0).text
+'
+'For Each Item In QRY
+'    For i = 0 To cont - 1
+'        Debug.Print XDoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes(Item).Item(0).text
+'    Next i
+'Next Item
+'
+'
+'Set XDoc = Nothing
+'
+'End Sub
+
+'Private Sub teste_FiltrarCompraItens()
+'Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = False: XDoc.validateOnParse = False
+'
+''Dim QRY() As Variant: QRY = Array("prod/cProd", "prod/cEAN", "prod/xProd", "prod/NCM", "prod/CFOP", "prod/uCom", "prod/qCom", "prod/vUnCom", "prod/vProd", "prod/cEANTrib", "prod/uTrib")
+'
+'Dim QRY() As Variant: QRY = Array("det nItem=1/prod/cProd")
+'
+'Dim Item As Variant
+'Dim lists As Variant
+'Dim fieldnode As Variant
+'Dim childNode As Variant
+'
+''' cte
+''XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\32210204884082000569570000039548351039548356-cteproc.xml"
+'
+''' nfe
+'XDoc.Load "C:\temp\Coleta\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\29210220961864000187550010000001891138200000-nfeproc.xml"
+'
+''' XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cProd").Item(0).text
+'
+'For Each Item In QRY
+'    Set lists = XDoc.SelectNodes("//" & Item)
+'    For Each fieldnode In lists
+'        If (fieldnode.HasChildNodes) Then
+'            For Each childNode In fieldnode.ChildNodes
+'                Debug.Print fieldnode.text
+'            Next childNode
+'        End If
+'    Next fieldnode
+'Next Item
+'
+'Set XDoc = Nothing
+'
+'End Sub
+
 
 
 Sub TESTE_IDVD()
@@ -92,7 +242,7 @@ End Sub
 '' Progress
 Sub ProgressMeter()
    Dim MyDB As dao.Database, MyTable As dao.Recordset
-   Dim Count As Long
+   Dim count As Long
    Dim Progress_Amount As Integer
     
    Set MyDB = CurrentDb()
@@ -100,16 +250,16 @@ Sub ProgressMeter()
  
    ' Move to last record of the table to get the total number of records.
    MyTable.MoveLast
-   Count = MyTable.RecordCount
+   count = MyTable.RecordCount
  
    ' Move back to first record.
    MyTable.MoveFirst
  
    ' Initialize the progress meter.
-    SysCmd acSysCmdInitMeter, "Reading Data...", Count
+    SysCmd acSysCmdInitMeter, "Reading Data...", count
  
    ' Enumerate through all the records.
-   For Progress_Amount = 1 To Count
+   For Progress_Amount = 1 To count
      ' Update the progress meter.
       SysCmd acSysCmdUpdateMeter, Progress_Amount
        

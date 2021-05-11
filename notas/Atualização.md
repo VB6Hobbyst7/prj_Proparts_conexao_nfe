@@ -1,6 +1,12 @@
 
 ## Itens em desenvolvimento
 
+* 11/05/2021
+	* PENDENTE  | EnviarDadosParaServidor | Ajustar Campos conforme - "formatarCampos"
+	* PENDENTE  | frmControleDados | Em estudo
+	* CONCLUIDO | FiltroCFOP | tblDadosConexaoNFeCTe.ID_EMPRESA
+	* CONCLUIDO | formatarCampos
+
 * 09/04/2021
 	* TESTES  | FiltroCFOP | tblDadosConexaoNFeCTe.ID_EMPRESA
 	* TESTES  | formatarCampos
