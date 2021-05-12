@@ -1,12 +1,4 @@
 Attribute VB_Name = "azsExportAllCodeMSAccess"
-'' 01. Add VBIDE (Microsoft Visual Basic for Applications Extensibility 5.3
-Private Sub AddRefGuid()
-On Error Resume Next
-
-    Application.VBE.VBProjects(1).References.AddFromGuid _
-        "{0002E157-0000-0000-C000-000000000046}", 2, 0
- 
-End Sub
 
 '' 02. EXPORT CODE
 Public Sub ExportAllCode()
@@ -50,3 +42,13 @@ Private Function CreateDir(strPath As String)
         If Len(Dir(strCheckPath, vbDirectory)) = 0 Then MkDir strCheckPath
     Next
 End Function
+
+'' 01. Add VBIDE (Microsoft Visual Basic for Applications Extensibility 5.3
+Private Sub AddRefGuid()
+On Error Resume Next
+
+    Application.VBE.VBProjects(1).References.AddFromGuid _
+        "{0002E157-0000-0000-C000-000000000046}", 2, 0
+ 
+End Sub
+

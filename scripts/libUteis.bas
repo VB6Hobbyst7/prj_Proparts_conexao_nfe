@@ -2,23 +2,6 @@ Attribute VB_Name = "libUteis"
 Option Compare Database
 Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
-''' #CONTROLE_PARAMETRO
-'Public Const qryParametros As String = "SELECT tblParametros.ValorDoParametro FROM tblParametros WHERE (((tblParametros.TipoDeParametro) = 'strParametro'))"
-'Public Const strCaminhoDeColeta As String = "caminhoDeColeta"
-'Public Const strCaminhoDeProcessados As String = "caminhoDeProcessados"
-'Public Const strUsuarioErpCod As String = "UsuarioErpCod"
-'Public Const strUsuarioErpNome As String = "UsuarioErpNome"
-'Public Const strCodTipoEvento As String = "codTipoEvento"
-'Public Const strComando As String = "Comando"
-
-''' #carregarCompras
-''' PROCESSAMENTO DAS COMPRAS COM BASE EM REGISTROS VALIDOS PROCESSADOS PELA #CAPTURA_DADOS_GERAIS
-'Public Const qrySelectProcessamentoPendente As String = _
-'        "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo, tblDadosConexaoNFeCTe.ID_Tipo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
-
-'Public Const qrySelectProcessamentoItensCompras As String = _
-'        "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
-
 Public Enum enumOperacao
     opNone = 0
     opExecutar = 1
@@ -43,7 +26,6 @@ Dim tTipoCadastro As String: tTipoCadastro = DLookup("[ID_Tipo]", "[tblDadosCone
 '' limpar dado inicial
 Dim tValor() As Variant: tValor = Array("PEDIDO:", "PEDIDO")
 
-    
     If tTipoCadastro = tTipo Then
         tRetorno = left(Trim(Replace(Replace(pDados, tValor(0), ""), tValor(1), "")), 6)
     End If
@@ -79,61 +61,6 @@ db.Close: Set db = Nothing
 
 End Sub
 
-Sub ImportarDados(pOrigem As String, pDestino As String)
-
-'' #BANCO_ORIGEM
-Dim strUsuarioNome As String: strUsuarioNome = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Usuario'")
-Dim strUsuarioSenha As String: strUsuarioSenha = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Senha'")
-Dim strOrigem As String: strOrigem = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Origem'")
-Dim strBanco As String: strBanco = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Banco'")
-Dim tmpOrigem As String: tmpOrigem = "Select * from " & pOrigem
-
-Dim dboOrigem As New Banco: dboOrigem.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
-dboOrigem.SqlSelect tmpOrigem
-
-'' #BANCO_LOCAL
-Dim db As dao.Database: Set db = CurrentDb
-Dim tmpDestino As String: tmpDestino = "Select * from " & pDestino
-Dim rstDestino As dao.Recordset: Set rstDestino = db.OpenRecordset(tmpDestino)
-Dim rstOrigem As dao.Recordset
-
-'' #ANALISE_DE_PROCESSAMENTO
-Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
-
-'' #BARRA_PROGRESSO
-Dim contadorDeRegistros As Long: contadorDeRegistros = 1
-SysCmd acSysCmdInitMeter, "Transferindo " & pOrigem & " ...", dboOrigem.rs.RecordCount
-
-Do While Not dboOrigem.rs.EOF
-
-    '' #BARRA_PROGRESSO
-    SysCmd acSysCmdUpdateMeter, contadorDeRegistros
-
-    '' listar campos da tabela
-    For Each fld In rstDestino.Fields
-        If t = 0 Then rstDestino.AddNew: t = 1
-        rstDestino.Fields(fld.Name).value = dboOrigem.rs.Fields(fld.Name).value
-        DoEvents
-    Next
-    rstDestino.Update
-    t = 0
-    
-    '' #BARRA_PROGRESSO
-    contadorDeRegistros = contadorDeRegistros + 1
-    dboOrigem.rs.MoveNext
-    DoEvents
-Loop
-
-'' #BARRA_PROGRESSO
-SysCmd acSysCmdRemoveMeter
-
-'dbDestino.CloseConnection
-db.Close: Set db = Nothing
-
-'' #ANALISE_DE_PROCESSAMENTO
-statusFinal DT_PROCESSO, "Processamento - ImportarDados ( " & pDestino & " )"
-
-End Sub
 
 Public Function GetFilesInSubFolders(pFolder As String) As Collection
 Set GetFilesInSubFolders = New Collection
@@ -229,7 +156,7 @@ Public Sub executarComandos(comandos() As Variant) ''#ExecutarConsultas
 Dim Comando As Variant
 
     For Each Comando In comandos
-        Application.CurrentDb.Execute Comando
+        Application.CurrentDb.Execute Comando, dbSeeChanges
     Next Comando
 
 End Sub
