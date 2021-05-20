@@ -1,3 +1,13 @@
+~~~~
+#Previsão
+#Replanejado
+#EmPausa
+#EmDesenvolvimento
+#EmTestes
+#Concluido
+~~~~
+___
+
 # Proparts ( Conexão NF-e )
 
 Leitura de arquivos do tipo xml (NF-e ou CT-e) para importação em banco de dados e criação de dois arquivos do tipo json dos seguintes modelos: Atualizada no ERP (lançada) e Envio do manifesto pelo ERP.
@@ -18,14 +28,6 @@ https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=33ol5hhSYZ
 [Basic writing and formatting syntax](https://docs.github.com/pt/github/writing-on-github/basic-writing-and-formatting-syntax)
 
 
-## Tags
-
-#### #Previsão
-#### #Replanejado
-#### #EmPausa
-#### #EmDesenvolvimento
-#### #EmTestes
-#### #Concluido
 
 
 

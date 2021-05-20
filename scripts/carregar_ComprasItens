@@ -1,17 +1,6 @@
 Public Function carregar_ComprasItens(pPathFile As String)
 On Error Resume Next
 
-
-    '' carregarParametros (qrySelectProcessamentoItensCompras)
-Dim t As Variant
-
-For Each t In carregarParametros(qrySelectProcessamentoItensCompras)
-
-    Debug.Print CStr(t)
-
-Next t
-
-
 '' CHAVES DE CONTROLE
 Dim pPK As String: pPK = DLookup("[Chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & pPathFile & "'")
 Dim pChvAcesso As String: pChvAcesso = DLookup("[ChvAcesso]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & pPathFile & "'")

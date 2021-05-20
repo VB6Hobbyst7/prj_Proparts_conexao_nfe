@@ -1,0 +1,47 @@
+C:\temp\Coleta\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\42210312680452000302550020000895841453583169-nfeproc.xml
+
+* Kalunga
+C:\temp\Coleta\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\35210343283811001202550010087454051410067364-nfeproc.xml
+
+2021042612021632210368365501000296550000000638981001363410-nfeproc	
+
+32210368365501000296550000000638981001363410
+
+SQLServerManager14.msc
+
+
+--------------------
+
+Sub teste01()
+Dim t As Variant
+
+For Each t In carregarParametros("SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));")
+
+    Debug.Print CStr(t)
+
+Next t
+
+
+End Sub
+
+
+Function proc_TESTE()
+On Error GoTo adm_Err
+Dim s As New clsConexaoNfeCte
+
+    
+    s.carregar_ComprasItens "C:\temp\Coleta\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\35210343283811001202550010087454051410067364-nfeproc.xml"
+    
+'    s.TransferirDadosProcessados_v02 "tblCompraNFItem"
+    
+    MsgBox "Fim!", vbOKOnly + vbExclamation, "proc_01"
+    
+
+adm_Exit:
+    Exit Function
+
+adm_Err:
+    MsgBox Error$
+    Resume adm_Exit
+
+End Function

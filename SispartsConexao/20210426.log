@@ -1,0 +1,26 @@
+INFO 04/26/2021 11:05:19 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/26/2021 11:10:13 - Processamento - ProcessarArquivosXml - 00:04:54
+INFO 04/26/2021 11:11:11 - Processamento - TransferirDadosProcessados - 00:00:58
+INFO 04/26/2021 11:11:20 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:09
+INFO 04/26/2021 11:11:29 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:09
+INFO 04/26/2021 11:13:38 - tblCompraNF - Quantidade de arquivos: 562 - 00:00:00
+INFO 04/26/2021 11:17:11 - Processamento - ProcessarArquivosXml - 00:03:33
+INFO 04/26/2021 11:17:55 - Processamento - TransferirDadosProcessados - 00:00:44
+INFO 04/26/2021 11:47:35 - tblCompraNF - Quantidade de arquivos: 0 - 00:00:00
+INFO 04/26/2021 11:47:35 - Processamento - ProcessarArquivosXml - 00:00:00
+INFO 04/26/2021 11:47:35 - Processamento - TransferirDadosProcessados - 00:00:00
+INFO 04/26/2021 11:48:35 - tblCompraNF - Quantidade de arquivos: 562 - 00:00:00
+INFO 04/26/2021 11:52:20 - Processamento - ProcessarArquivosXml - 00:03:45
+INFO 04/26/2021 11:53:06 - Processamento - TransferirDadosProcessados - 00:00:46
+INFO 04/26/2021 12:00:35 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/26/2021 12:06:23 - Processamento - ProcessarArquivosXml - 00:05:48
+INFO 04/26/2021 12:07:33 - Processamento - TransferirDadosProcessados - 00:01:10
+INFO 04/26/2021 12:07:45 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:12
+INFO 04/26/2021 12:07:55 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:10
+INFO 04/26/2021 12:10:05 - tblCompraNF - Quantidade de arquivos: 562 - 00:00:00
+INFO 04/26/2021 12:13:59 - Processamento - ProcessarArquivosXml - 00:03:54
+INFO 04/26/2021 12:14:51 - Processamento - TransferirDadosProcessados - 00:00:52
+INFO 04/26/2021 12:56:16 - Processamento - TransferirDadosProcessados - 00:03:33
+INFO 04/26/2021 13:27:23 - tblCompraNF - Quantidade de arquivos: 562 - 00:00:00
+INFO 04/26/2021 13:31:15 - Processamento - ProcessarArquivosXml - 00:03:52
+INFO 04/26/2021 13:32:04 - Processamento - TransferirDadosProcessados - 00:00:49

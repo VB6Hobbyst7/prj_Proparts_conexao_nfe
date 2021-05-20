@@ -1,0 +1,9 @@
+INFO 04/20/2021 13:39:14 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/20/2021 13:51:54 - tblCompraNF - Quantidade de arquivos: 577 - 00:00:00
+INFO 04/20/2021 13:57:31 - Processamento - ProcessarArquivosXml - 00:05:37
+INFO 04/20/2021 13:58:50 - Processamento - TransferirDadosProcessados - 00:01:19
+INFO 04/20/2021 16:24:56 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
+INFO 04/20/2021 16:38:39 - Processamento - ProcessarArquivosXml - 00:13:43
+INFO 04/20/2021 16:42:20 - Processamento - TransferirDadosProcessados - 00:03:41
+INFO 04/20/2021 16:43:00 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:40
+INFO 04/20/2021 16:43:38 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:38
