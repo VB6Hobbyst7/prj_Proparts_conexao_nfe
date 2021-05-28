@@ -9,7 +9,6 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-
 Private Type ClassType
         pk As String
         Chave As String
@@ -17,9 +16,10 @@ Private Type ClassType
 End Type
 Private This As ClassType
 
+
+
 Private Const queryName As String = "azsCreateQueryInserttblProcessamento"
 Private Const queryScript As String = "INSERT INTO tblProcessamento ( pk, chave, valor ) SELECT [pk] AS strpk, [chave] AS strchave, [valor] AS strvalor;"
-
 
 Property Get pk() As String: pk = This.pk: End Property
 Property Let pk(pValue As String): This.pk = pValue: End Property
@@ -28,25 +28,24 @@ Property Let Chave(pValue As String): This.Chave = pValue: End Property
 Property Get valor() As String: valor = This.valor: End Property
 Property Let valor(pValue As String): This.valor = pValue: End Property
 
+Public Sub cadastrar()
+Dim db As DAO.Database: Set db = CurrentDb
 
-Sub cadastrar()
-Dim db As dao.Database: Set db = CurrentDb
-
-qryDeleteExists queryName
-qryCreate queryName, queryScript
-
-Dim qdf As dao.QueryDef: Set qdf = db.QueryDefs(queryName)
-
-With qdf
-        .Parameters("pk") = pk
-        .Parameters("chave") = Chave
-        .Parameters("valor") = valor
-        .Execute
-End With
-
-qryDeleteExists queryName
-
-db.Close: Set db = Nothing
+    qryDeleteExists queryName
+    qryCreate queryName, queryScript
+    
+    Dim qdf As DAO.QueryDef: Set qdf = db.QueryDefs(queryName)
+    
+    With qdf
+            .Parameters("pk") = pk
+            .Parameters("chave") = Chave
+            .Parameters("valor") = valor
+            .Execute
+    End With
+    
+    qryDeleteExists queryName
+    
+    db.Close: Set db = Nothing
 
 End Sub
 

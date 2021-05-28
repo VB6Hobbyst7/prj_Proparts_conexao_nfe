@@ -159,3 +159,5 @@ INFO 05/24/2021 13:58:04 - Processamento - C:\temp\Coleta\68.365.5010003-77 - Pr
 INFO 05/24/2021 13:58:35 - Processamento - C:\temp\Coleta\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\42210312680452000302550020000897501841372354-nfeproc.xml - 00:00:31
 INFO 05/24/2021 13:59:59 - tblDadosConexaoNFeCTe - Quantidade de arquivos: 1086 - 00:00:00
 INFO 05/24/2021 14:12:43 - Processamento - ProcessarArquivosXml - 00:12:44
+INFO 05/24/2021 15:28:12 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:32
+INFO 05/24/2021 15:30:45 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:28

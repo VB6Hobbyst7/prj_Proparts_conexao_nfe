@@ -1239,12 +1239,12 @@ Err_OpenGetFileDialog:
 End Function
 Function STRMaiuscula(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim x
   Dim nova As String
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "á", "Á", "ã", "Ã", "â", "Â", "à", "À", "ä", "Ä"
         x = "a"
@@ -1266,9 +1266,9 @@ Function STRMaiuscula(campo As Variant) As String
       x = x
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRMaiuscula = nova
@@ -1280,12 +1280,12 @@ Err_STR:
 End Function
 Function STRMaiusculaSINT(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim x
   Dim nova As String
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "á", "Á", "ã", "Ã", "â", "Â", "à", "À", "ä", "Ä"
         x = "a"
@@ -1310,9 +1310,9 @@ Function STRMaiusculaSINT(campo As Variant) As String
       x = x
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRMaiusculaSINT = nova
@@ -1324,12 +1324,12 @@ Err_STR:
 End Function
 Function STREspeciais(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim x
   Dim nova As String
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "ä"
         x = "a"
@@ -1359,9 +1359,9 @@ Function STREspeciais(campo As Variant) As String
       x = x
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STREspeciais = nova
@@ -1374,12 +1374,12 @@ End Function
 
 Function STRAcentos(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim x
   Dim nova As String
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "á", "ã", "â", "à", "ä"
         x = "a"
@@ -1413,9 +1413,9 @@ Function STRAcentos(campo As Variant) As String
       x = x
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRAcentos = nova
@@ -1725,7 +1725,7 @@ Public Function GerarSQLUpdate(Optional ForAddNew As Boolean = False) As String
 On Error GoTo NoBug
 Dim i As Integer
 Dim str As String
-Dim a, b As String
+Dim A, b As String
 
 'Gerando a string de INSERT OU UPDATE
 'Se for INSERT, gerar no formato --> (Campo1, Campo2, Campo3...) VALUES (Valor1, Valor2, Valor3)
@@ -1739,12 +1739,12 @@ If Not ForAddNew Then
  GerarSQLUpdate = "SET " & str
 Else
  For i = 0 To UBound(Campos)
-  a = a & Campos(i).campo & ", "
+  A = A & Campos(i).campo & ", "
   b = b & Campos(i).valor & ", "
  Next i
- a = Mid(a, 1, Len(a) - 2)
+ A = Mid(A, 1, Len(A) - 2)
  b = Mid(b, 1, Len(b) - 2)
- GerarSQLUpdate = "(" & a & ") VALUES(" & b & ")"
+ GerarSQLUpdate = "(" & A & ") VALUES(" & b & ")"
 End If
 
 Exit Function
@@ -1815,12 +1815,12 @@ End Sub
 
 Function STRNome(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim x
   Dim nova As String
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "@", "#", "&", "*", "_", ":", ";", "'", "|", "\", "/"
         x = " "
@@ -1828,9 +1828,9 @@ Function STRNome(campo As Variant) As String
       x = x
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRNome = nova
@@ -1861,7 +1861,7 @@ Public Function TestarVinculosSQL() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -1930,7 +1930,7 @@ Public Function TestarVinculosCEP() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -1989,7 +1989,7 @@ Public Function TestarVinculosWH() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -2049,7 +2049,7 @@ Public Function TestarVinculosTABSQL() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -2117,7 +2117,7 @@ Public Function TestarVinculosSISSQL() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -2340,12 +2340,12 @@ End Function
 
 Function STRArroba(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim nova As Double
   Dim x
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "@"
         x = 1
@@ -2353,9 +2353,9 @@ Function STRArroba(campo As Variant) As String
       x = 0
     End Select
     nova = nova + x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRArroba = nova
@@ -2420,12 +2420,12 @@ End Function
 
 Function STRTiraAcentos(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim x
   Dim nova As String
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case "á", "ã", "â", "à", "ä"
         x = "a"
@@ -2457,9 +2457,9 @@ Function STRTiraAcentos(campo As Variant) As String
       x = (x)
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRTiraAcentos = nova
@@ -2533,7 +2533,7 @@ Public Function TestarVinculosSQLSP() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -2593,7 +2593,7 @@ Public Function TestarVinculosSQLES() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 
@@ -2653,7 +2653,7 @@ Public Function TestarVinculosSQLSC() As Boolean
 'Esta rotina verifica se os vínculos das tabelas estão corretos
 On Error GoTo NoBug
 Dim ConnX As String
-Dim RecX As dao.Recordset
+Dim RecX As DAO.Recordset
 Dim QDef As QueryDef
 Dim TDef As TableDef
 

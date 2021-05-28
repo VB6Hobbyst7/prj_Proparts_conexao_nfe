@@ -213,7 +213,7 @@ Else
         uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/uCom").Item(0).text)
         qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/qCom").Item(0).text)
         
-        'IPI
+        '#05_XML_IPI
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 -
         Set rsIPI = db.OpenRecordset("SELECT [05_XML_IPI].nID, [05_XML_IPI].cEnq, [05_XML_IPI].CST, [05_XML_IPI].vBC, [05_XML_IPI].pIPI, [05_XML_IPI].vIPI FROM 05_XML_IPI WHERE ([05_XML_IPI].nID=" & nitem & ") AND ([05_XML_IPI].vIPI Is Not Null) ;")
@@ -253,11 +253,17 @@ Else
             vOutro = 0
         End If
         
-        'ICMS
+        
+        
+        
+        '' #05_XML_ICMS
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 -
         Set rsICMS = db.OpenRecordset("SELECT [05_XML_ICMS].nID, [05_XML_ICMS].orig, [05_XML_ICMS].CST, [05_XML_ICMS].modBC, [05_XML_ICMS].vBC, [05_XML_ICMS].pICMS, [05_XML_ICMS].vICMS, [05_XML_ICMS].pRedBC, [05_XML_ICMS].vBCSTRet, [05_XML_ICMS].vICMSSTRet, [05_XML_ICMS].modBCST, [05_XML_ICMS].vBCST, [05_XML_ICMS].pICMSST, [05_XML_ICMS].vICMSST, [05_XML_ICMS].[pMVAST] FROM 05_XML_ICMS WHERE ([05_XML_ICMS].nID=" & nitem & ") AND ([05_XML_ICMS].vICMS Is Not Null) ;")
         If rsICMS.RecordCount > 0 Then
+        '' #05_XML_ICMS_Orig
+        '' #05_XML_ICMS_CST
+        
             CST = rsICMS!Orig & rsICMS!CST
             If Forms!frmCompraNF_ImpXML!Finalidade = 2 Then
                 vBC = 0
@@ -294,6 +300,8 @@ Else
             Else
                 pICMS = rsICMS!pICMS
             End If
+            
+            '' #05_XML_ICMS_CST_VICMS
             If rsICMS!VICMS = 0 Then
                 VICMS = 0
             Else
@@ -355,6 +363,7 @@ Else
         End If
         rsIPI.Close
        
+        '' #AILTON - VALIDAR
        
         '' #AILTON - ITENS DA COMPRANF ( CONSULTA NFE )
         '' #DUVIDA - QUAL O OBJETIVO ?
@@ -910,7 +919,7 @@ Else
             End If
         End If
         
-        '' #
+        '' #05_XML_ICMS
         CurrentDb.Execute "INSERT INTO 05_XML_ICMS ( id, nID, orig, CST, modBC, vBC, pICMS, vICMS, pRedBC, " _
         & "modBCST, vBCST, pICMSST, vICMSST, pMVAST )" _
         & "SELECT '" & nitem & "' AS Expr1, '" & nitem & "' AS Expr2, '" & Orig & "' AS Expr3, '" & CST & "' AS Expr4, '" & modBC & "' AS Expr5, " _

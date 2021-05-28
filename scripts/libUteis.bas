@@ -38,8 +38,8 @@ End Function
 
 '' #VALIDAR_DADOS
 Sub criarConsultasParaTestes()
-Dim db As dao.Database: Set db = CurrentDb
-Dim rstOrigem As dao.Recordset
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rstOrigem As DAO.Recordset
 Dim strSql As String
 Dim qrySelectTabelas As String: qrySelectTabelas = "Select Distinct tabela from tblOrigemDestino order by tabela"
 Dim tabela As Variant
@@ -152,7 +152,7 @@ ErrorHandler:
 End Function
 
 '' EXECUTAR CONSULTAS
-Public Sub executarComandos(comandos() As Variant) ''#ExecutarConsultas
+Public Sub executarComandos(comandos() As Variant)
 Dim Comando As Variant
 
     For Each Comando In comandos
@@ -163,14 +163,14 @@ End Sub
 
 '' CRIACAO DE CONSULTAS EM TEMPO DE EXECUCAO
 Public Sub qryCreate(nomeDaConsulta As String, scriptDaConsulta As String)
-Dim db As dao.Database: Set db = CurrentDb
+Dim db As DAO.Database: Set db = CurrentDb
     db.CreateQueryDef nomeDaConsulta, scriptDaConsulta
     db.Close
 End Sub
 
 '' VERIFICAR A EXISTENCIA DE CONSULTAS E EXCLUI CASO EXISTA
 Public Function qryDeleteExists(strQryName As String)
-Dim db As dao.Database: Dim qdf As dao.QueryDef
+Dim db As DAO.Database: Dim qdf As DAO.QueryDef
     For Each qdf In CurrentDb.QueryDefs
         If qdf.Name = strQryName Then
             CurrentDb.QueryDefs.Delete strQryName
@@ -181,9 +181,10 @@ End Function
 
 '' CARREGAR PARAMETROS COMPOSTOS
 Public Function carregarParametros(pConsulta As String, Optional pParametro As String) As Collection: Set carregarParametros = New Collection
-Dim db As dao.Database: Set db = CurrentDb
-Dim strSql As String: strSql = IIf(pParametro <> "", Replace(pConsulta, "strParametro", pParametro), pConsulta)
-Dim rst As dao.Recordset: Set rst = db.OpenRecordset(strSql)
+Dim db As DAO.Database: Set db = CurrentDb
+
+pConsulta = IIf(pParametro <> "", Replace(pConsulta, "strParametro", pParametro), pConsulta)
+Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(pConsulta)
 Dim f As Variant
 
 Do While Not rst.EOF
@@ -197,11 +198,30 @@ Set db = Nothing
 
 End Function
 
+
+'Public Function carregarParametros(pConsulta As String, Optional pParametro As String) As Collection: Set carregarParametros = New Collection
+'Dim db As dao.Database: Set db = CurrentDb
+'Dim strSql As String: strSql = IIf(pParametro <> "", Replace(pConsulta, "strParametro", pParametro), pConsulta)
+'Dim rst As dao.Recordset: Set rst = db.OpenRecordset(pConsulta)
+'Dim f As Variant
+'
+'Do While Not rst.EOF
+'    carregarParametros.add rst.Fields(0).value
+'    rst.MoveNext
+'Loop
+'
+'db.Close
+'
+'Set db = Nothing
+'
+'End Function
+
+
 '' CARREGAR PARAMETROS UNICOS
 Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String, Optional pCampo As String) As String
-Dim db As dao.Database: Set db = CurrentDb
+Dim db As DAO.Database: Set db = CurrentDb
 Dim strTmp As String: strTmp = Replace(pConsulta, "strParametro", pTipoDeParametro)
-Dim rst As dao.Recordset: Set rst = db.OpenRecordset(strTmp)
+Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(strTmp)
 
     pegarValorDoParametro = rst.Fields(IIf(pCampo <> "", pCampo, "ValorDoParametro")).value
 
@@ -288,12 +308,12 @@ End Function
 '' LIMPAR PONTOS
 Public Function STRPontos(campo As Variant) As String
   On Error GoTo Err_STR
-  Dim a As Integer
+  Dim A As Integer
   Dim nova As String
   Dim x
-  a = 1
-  x = Mid(campo, a, 1)
-  While (a <= Len(campo))
+  A = 1
+  x = Mid(campo, A, 1)
+  While (A <= Len(campo))
     Select Case x
       Case ".", ",", "-", " ", "/", "\"
         x = ""
@@ -301,9 +321,9 @@ Public Function STRPontos(campo As Variant) As String
       x = UCase$(x)
     End Select
     nova = nova & x
-    a = a + 1
-    If (a <= Len(campo)) Then
-      x = Mid(campo, a, 1)
+    A = A + 1
+    If (A <= Len(campo)) Then
+      x = Mid(campo, A, 1)
     End If
   Wend
   STRPontos = nova
@@ -354,22 +374,7 @@ Public Function NumberToSql(pNumber As Variant) As String
     End If
 End Function
 
-Function createTable(pTabelaDestino As String) As String
 
-Dim db As dao.Database: Set db = CurrentDb
-Dim rstCampos As dao.Recordset: Set rstCampos = db.OpenRecordset("Select distinct campo from tblOrigemDestino where tabela = '" & pTabelaDestino & "' and len(formatacao)>0 order by campo;")
-
-Dim tmpScript As String: tmpScript = "CREATE TABLE " & pTabelaDestino & " ("
-
-Do While Not rstCampos.EOF
-    tmpScript = tmpScript + rstCampos.Fields("campo").value + " text(255),"
-    rstCampos.MoveNext
-    DoEvents
-Loop
-
-createTable = left(tmpScript, Len(tmpScript) - 1) + ");"
-
-End Function
 
 
 Public Function PickFolder(pPath As String, pTitle As String, Optional pSubFolder As String) As String

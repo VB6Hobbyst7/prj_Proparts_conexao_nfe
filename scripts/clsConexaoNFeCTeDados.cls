@@ -19,7 +19,7 @@ Private Type ClassType
         ChvAcesso As String
         codUsuarioErp As String
         nomeUsuarioErp As String
-        CaminhoDeProcessados As String
+        caminhoDeProcessados As String
         strFileName As String
 End Type
 Private This As ClassType
@@ -42,8 +42,8 @@ Property Let codUsuarioErp(pValue As String): This.codUsuarioErp = pValue: End P
 Property Get nomeUsuarioErp() As String: nomeUsuarioErp = This.nomeUsuarioErp: End Property
 Property Let nomeUsuarioErp(pValue As String): This.nomeUsuarioErp = pValue: End Property
 
-Property Get CaminhoDeProcessados() As String: CaminhoDeProcessados = This.CaminhoDeProcessados: End Property
-Property Let CaminhoDeProcessados(pValue As String): This.CaminhoDeProcessados = pValue: End Property
+Property Get caminhoDeProcessados() As String: caminhoDeProcessados = This.caminhoDeProcessados: End Property
+Property Let caminhoDeProcessados(pValue As String): This.caminhoDeProcessados = pValue: End Property
 
 Property Get strFileName() As String: strFileName = This.strFileName: End Property
 Property Let strFileName(pValue As String): This.strFileName = pValue: End Property
@@ -62,7 +62,7 @@ Dim objERP As Collection: Set objERP = New Collection
 
 This.strFileName = This.ChvAcesso & ".erp.json"
 
-execucao objERP, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.CaminhoDeProcessados
+execucao objERP, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.caminhoDeProcessados
 
 End Function
 
@@ -79,7 +79,7 @@ Dim objManifesto As Collection: Set objManifesto = New Collection
 
 This.strFileName = This.ChvAcesso & "-" & codTipoEvento & ".man.json"
 
-execucao objManifesto, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.CaminhoDeProcessados
+execucao objManifesto, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.caminhoDeProcessados
 
 End Function
 
