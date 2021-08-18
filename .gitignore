@@ -1,2 +1,3 @@
 *.bat
-/docs/
+docs/*
+*.xml
