@@ -1,2 +1,2 @@
 *.bat
-**/docs
+/docs/
