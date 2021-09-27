@@ -1,0 +1,14 @@
+'' ### EXEMPLOS DE FUNÇÕES
+''
+'' 01. processamento_dados_gerais - [ tblDadosConexaoNFeCTe ]
+'' 02. processamento_compras_por_arquivos_pendentes
+'' 03. exemplos_criacao_arquivos_json
+
+
+01. Criar Tabela Temporaria Para Relacionar IdCompra Com ChvAcesso
+02. Relacionar IdCompra Com ChvAcesso
+03. Enviar Dados Para Servidor
+
+
+
+qryInsertItensCTe
