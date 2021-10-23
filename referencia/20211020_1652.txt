@@ -1,0 +1,178 @@
+--
+-- qryCompras_Update_Dados
+--
+UPDATE tblDadosConexaoNFeCTe
+INNER JOIN tblCompraNF ON tblDadosConexaoNFeCTe.ChvAcesso = tblCompraNF.ChvAcesso_CompraNF
+
+SET tblCompraNF.CFOP_CompraNF = [tblDadosConexaoNFeCTe].[FiltroCFOP]
+	,tblCompraNF.ID_NatOp_CompraNF = [tblDadosConexaoNFeCTe].[ID_NatOp_CompraNF]
+	,tblCompraNF.ModeloDoc_CompraNF = [tblDadosConexaoNFeCTe].[codMod]
+	,tblCompraNF.Sit_CompraNF = [tblDadosConexaoNFeCTe].[Sit_CompraNF]
+	,tblCompraNF.Fil_CompraNF = [tblDadosConexaoNFeCTe].[ID_Empresa]
+	,tblCompraNF.VTotNF_CompraNF = replace(Nz([tblCompraNF].[VTotNF_CompraNF], 0) / 100, ",", ".")
+	,tblCompraNF.VTotProd_CompraNF = replace(Nz([tblCompraNF].[VTotNF_CompraNF], 0) / 100, ",", ".")
+	,tblCompraNF.BaseCalcICMS_CompraNF = replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, ",", ".")
+	,tblCompraNF.HoraEntd_CompraNF = NULL
+	,tblCompraNF.DTEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,DATE (),tblCompraNF.DTEntd_CompraNF)
+	,tblCompraNF.TPNF_CompraNF = 1
+	,tblCompraNF.VTotICMS_CompraNF = 0
+	,tblCompraNF.VTotIPI_CompraNF = 0
+WHERE (
+		((tblDadosConexaoNFeCTe.registroValido) = 1)
+		AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		)
+	AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0);
+
+
+
+--
+-- qryCompras_Update_Dados_NFe
+--
+
+-- UPDATE tblCompraNF
+-- INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso
+
+-- SET tblCompraNF.ModeloDoc_CompraNF = 55 -- OK
+	-- ,tblCompraNF.HoraEntd_CompraNF = NULL -- OK
+	-- ,tblCompraNF.TPNF_CompraNF = 1 -- OK
+	-- ,tblCompraNF.Sit_CompraNF = tblDadosConexaoNFeCTe.Sit_CompraNF -- OK
+	-- ,tblCompraNF.VTotICMS_CompraNF = 0 -- OK
+	-- ,tblCompraNF.VTotIPI_CompraNF = 0 -- OK
+-- WHERE (
+		-- ((tblDadosConexaoNFeCTe.codMod) = 55)
+		-- AND ((tblDadosConexaoNFeCTe.registroValido) = 1)
+		-- AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		-- );
+
+--
+-- qryCompras_Update_Dados_CTe
+--
+
+-- UPDATE tblCompraNF
+-- INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso
+
+-- SET tblCompraNF.ModeloDoc_CompraNF = 57
+	-- ,tblCompraNF.DTEntd_CompraNF = DATE ()
+	-- ,tblCompraNF.HoraEntd_CompraNF = NULL
+	-- ,tblCompraNF.TPNF_CompraNF = 1
+	-- ,tblCompraNF.Sit_CompraNF = tblDadosConexaoNFeCTe.Sit_CompraNF
+	-- ,tblCompraNF.IDVD_CompraNF = NULL
+	-- ,tblCompraNF.VTotIPI_CompraNF = 0
+-- WHERE (
+		-- ((tblDadosConexaoNFeCTe.codMod) = 57)
+		-- AND ((tblDadosConexaoNFeCTe.registroValido) = 1)
+		-- AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		-- );
+
+--
+-- qryComprasItens_Insert_Dados_CTeItens
+--
+INSERT INTO tblCompraNFItem (
+	ChvAcesso_CompraNF
+	,VUnt_CompraNFItem
+	,Num_CompraNFItem
+	,VTot_CompraNFItem
+	,DebICMS_CompraNFItem
+	,VTotBaseCalcICMS_CompraNFItem
+	,ID_NatOp_CompraNFItem
+	,Item_CompraNFItem
+	,ID_Grade_CompraNFItem
+	,QtdFat_CompraNFItem
+	,IPI_CompraNFItem
+	,FlagEst_CompraNFItem
+	,BaseCalcICMS_CompraNFItem
+	)
+SELECT tblCompraNF.ChvAcesso_CompraNF
+	,tblCompraNF.VTotNF_CompraNF AS VUnt_CompraNFItem
+	,tblCompraNF.NumNF_CompraNF
+	,tblCompraNF.VTotNF_CompraNF
+	,IIf([VTotICMS_CompraNF] <> "", Replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, ",", "."), 0) AS strVTotICMS
+	,tblCompraNF.BaseCalcICMS_CompraNF
+	,tblCompraNF.ID_NatOp_CompraNF
+	,1 AS strItem
+	,1 AS strIDGrade
+	,1 AS strQtdFat
+	,0 AS strIPI
+	,0 AS strFlag
+	,100 AS strBaseCalcICMS
+FROM tblCompraNF
+INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso
+WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = DLookUp("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='Cte'")));
+
+--
+-- qryComprasItens_Update_CFOP_CompraNF
+--
+UPDATE (
+		tblDadosConexaoNFeCTe INNER JOIN tblCompraNF ON tblDadosConexaoNFeCTe.ChvAcesso = tblCompraNF.ChvAcesso_CompraNF
+		)
+INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF
+
+SET tblCompraNFItem.CFOP_CompraNFItem = [tblCompraNF].[CFOP_CompraNF]
+WHERE (
+		((tblDadosConexaoNFeCTe.registroValido) = 1)
+		AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0)
+		);
+
+--
+-- qryComprasItens_Update_Dados_CTeItens
+--
+UPDATE tblCompraNFItem
+INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNFItem.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso
+
+SET tblCompraNFItem.Item_CompraNFItem = 1
+	,tblCompraNFItem.ID_Grade_CompraNFItem = 1
+	,tblCompraNFItem.QtdFat_CompraNFItem = 1
+	,tblCompraNFItem.IPI_CompraNFItem = 0
+	,tblCompraNFItem.FlagEst_CompraNFItem = 0
+	,tblCompraNFItem.BaseCalcICMS_CompraNFItem = 100
+	,tblCompraNFItem.IseICMS_CompraNFItem = 0
+	,tblCompraNFItem.BaseCalcIPI_CompraNFItem = 0
+	,tblCompraNFItem.DebIPI_CompraNFItem = 0
+	,tblCompraNFItem.IseIPI_CompraNFItem = 0
+	,tblCompraNFItem.TxMLSubsTrib_CompraNFItem = 0
+	,tblCompraNFItem.BaseCalcICMSSubsTrib_CompraNFItem = 0
+	,tblCompraNFItem.VTotICMSSubsTrib_compranfitem = 0
+	,tblCompraNFItem.VTotDesc_CompraNFItem = 0
+	,tblCompraNFItem.VTotFrete_CompraNFItem = 0
+	,tblCompraNFItem.VTotPIS_CompraNFItem = 0
+	,tblCompraNFItem.VTotBaseCalcPIS_CompraNFItem = 0
+	,tblCompraNFItem.VTotCOFINS_CompraNFItem = 0
+	,tblCompraNFItem.VTotIseICMS_CompraNFItem = 0
+	,tblCompraNFItem.VTotBaseCalcCOFINS_CompraNFItem = 0
+	,tblCompraNFItem.VTotSNCredICMS_CompraNFItem = 0
+	,tblCompraNFItem.VTotSeg_CompraNFItem = 0
+	,tblCompraNFItem.VTotOutDesp_CompraNFItem = 0
+	,tblCompraNFItem.VUnt_CompraNFItem = DLookUp("[VTotNF_CompraNF]", "[tblCompraNF]", "[ChvAcesso_CompraNF] = '" & [tblCompraNFItem].[ChvAcesso_CompraNF] & "'")
+	,tblCompraNFItem.VTot_CompraNFItem = DLookUp("[VTotNF_CompraNF]", "[tblCompraNF]", "[ChvAcesso_CompraNF] = '" & [tblCompraNFItem].[ChvAcesso_CompraNF] & "'")
+	,tblCompraNFItem.ID_Prod_CompraNFItem = DLookUp("[Código]", "[tmpProdutos]", "[Modelo] = 'TRANSPORTE'")
+WHERE (
+		((tblDadosConexaoNFeCTe.codMod) = 57)
+		AND ((tblDadosConexaoNFeCTe.registroValido) = 1)
+		AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		);
+
+--
+-- qryComprasItens_Update_Dados_ID_Prod_CompraNFItem
+--
+UPDATE tblDadosConexaoNFeCTe
+INNER JOIN (
+	tblCompraNF INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF
+	) ON tblDadosConexaoNFeCTe.ChvAcesso = tblCompraNF.ChvAcesso_CompraNF
+
+SET tblCompraNFItem.ID_Prod_CompraNFItem = DLookUp("CodigoProd_Grade", "tmpGradeProdutos", "CodigoForn_Grade='" & [tblCompraNFItem].[ID_Prod_CompraNFItem] & "'")
+WHERE (
+		((tblDadosConexaoNFeCTe.registroValido) = 1)
+		AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		);
+
+--
+-- qryDadosGerais_Update_ProcessamentoConcluido_CTE
+--
+UPDATE tblDadosConexaoNFeCTe
+SET tblDadosConexaoNFeCTe.registroProcessado = 1
+WHERE (
+		((tblDadosConexaoNFeCTe.registroValido) = 1)
+		AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)
+		AND ((tblDadosConexaoNFeCTe.ID_Tipo) = DLookUp("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro] = 'Cte'"))
+		);

@@ -1,0 +1,5 @@
+INFO 10/04/2021 17:54:41 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1088 ) - 00:03:50
+INFO 10/04/2021 18:03:40 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 563 ) - 00:08:59
+INFO 10/04/2021 18:05:04 - enviarDadosServidor - 00:01:24
+INFO 10/04/2021 18:05:09 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:05
+INFO 10/04/2021 18:05:14 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:05

@@ -1,0 +1,119 @@
+ID_CompraNF	10174
+CFOP_CompraNF	0
+Fil_CompraNF	
+NumPed_CompraNF	000050
+NumNF_CompraNF	88630
+BaseCalcICMS_CompraNF	0
+ChvAcesso_CompraNF	42210212680452000302550020000886301507884230
+CNPJ_CPF_CompraNF	12680452000302
+DTEmi_CompraNF	2021-02-16
+DTEntd_CompraNF	
+HoraEntd_CompraNF	
+ID_Forn_CompraNF	56856
+ID_NatOp_CompraNF	
+ModeloDoc_CompraNF	55
+NomeCompleto_CompraNF	PLATINUM LOG ARMAZENS GERAIS LTDA
+Obs_CompraNF	PEDIDO: 322382, . RETORNO SIMBOLICO DE ARMAZENAGEM DE SUA(S) NF-E(S) 4027 SERIE 0 DE 08/01/2021 CHAVE: 42210168365501000377550000000040271001314575 LOTE: , , 5359 SERIE 0 DE 04/02/2021. REFERENTE SUA(S) NF-E(S) DE Venda NUMERO 5735 SERIE 0 DE 15/02/2021, 
+Serie_CompraNF	2
+Sit_CompraNF	0
+TPNF_CompraNF	1
+VTotICMS_CompraNF	0
+VTotIPI_CompraNF	0
+VTotNF_CompraNF	1223.31
+VTotProd_CompraNF	1223.31
+IDVD_CompraNF	322382
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	50
+BaseCalcIPI_CompraNFItem	
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	42210212680452000302550020000886301507884230
+DebICMS_CompraNFItem	
+DebIPI_CompraNFItem	
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	
+ID_CompraNF_CompraNFItem	24734
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	21551
+IPI_CompraNFItem	
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	1
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	4.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	558.54
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	139.6349000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	50
+BaseCalcIPI_CompraNFItem	
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	42210212680452000302550020000886301507884230
+DebICMS_CompraNFItem	
+DebIPI_CompraNFItem	
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	
+ID_CompraNF_CompraNFItem	24734
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	34152
+IPI_CompraNFItem	
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	2
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	2.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	664.77
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	332.3860000000
+VUntDesc_CompraNFItem	
+
+#############################
+

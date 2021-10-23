@@ -1,0 +1,73 @@
+ID_CompraNF	10128
+CFOP_CompraNF	2353
+Fil_CompraNF	PES
+NumPed_CompraNF	000004
+NumNF_CompraNF	4007383
+BaseCalcICMS_CompraNF	0
+ChvAcesso_CompraNF	32210304884082000569570000040073831040073834
+CNPJ_CPF_CompraNF	04884082000569
+DTEmi_CompraNF	
+DTEntd_CompraNF	14/10/2021
+HoraEntd_CompraNF	
+ID_Forn_CompraNF	42176
+ID_NatOp_CompraNF	214
+ModeloDoc_CompraNF	57
+NomeCompleto_CompraNF	JADLOG LOGISTICA S.A.
+Obs_CompraNF	
+Serie_CompraNF	0
+Sit_CompraNF	6
+TPNF_CompraNF	1
+VTotICMS_CompraNF	0
+VTotIPI_CompraNF	0
+VTotNF_CompraNF	36.52
+VTotProd_CompraNF	36.52
+IDVD_CompraNF	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	100
+BaseCalcICMSSubsTrib_CompraNFItem	
+BaseCalcIPI_CompraNFItem	
+CFOP_CompraNFItem	
+ChvAcesso_CompraNF	32210304884082000569570000040073831040073834
+DebICMS_CompraNFItem	0
+DebIPI_CompraNFItem	
+FlagEst_CompraNFItem	0
+ICMS_CompraNFItem	
+ID_CompraNF_CompraNFItem	24688
+ID_Grade_CompraNFItem	1
+ID_NatOp_CompraNFItem	214
+ID_Prod_CompraNFItem	14526
+IPI_CompraNFItem	0
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	1
+Num_CompraNFItem	4007383
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	36.52
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	0
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	36.52
+VUntDesc_CompraNFItem	
+
+#############################
+

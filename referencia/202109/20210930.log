@@ -1,0 +1,14 @@
+INFO 09/30/2021 16:48:36 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1 ) - 00:00:12
+INFO 09/30/2021 17:17:06 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1089 ) - 00:03:45
+INFO 09/30/2021 17:24:52 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 564 ) - 00:06:47
+INFO 09/30/2021 17:25:53 - enviarDadosServidor - 00:01:01
+INFO 09/30/2021 17:26:12 - TratamentoDeArquivosValidos - 00:00:19
+INFO 09/30/2021 17:26:28 - TratamentoDeArquivosInvalidos - 00:00:16
+INFO 09/30/2021 17:26:31 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:03
+INFO 09/30/2021 17:26:35 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:04
+INFO 09/30/2021 17:53:17 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 17 ) - 00:00:04
+INFO 09/30/2021 17:58:53 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1089 ) - 00:04:02
+INFO 09/30/2021 18:08:27 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 564 ) - 00:07:31
+INFO 09/30/2021 18:16:57 - enviarDadosServidor - 00:00:58
+INFO 09/30/2021 18:24:14 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:02
+INFO 09/30/2021 18:26:33 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:02

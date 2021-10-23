@@ -1,0 +1,1085 @@
+ID_CompraNF	10167
+CFOP_CompraNF	0
+Fil_CompraNF	
+NumPed_CompraNF	000043
+NumNF_CompraNF	63881
+BaseCalcICMS_CompraNF	15141.76
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+CNPJ_CPF_CompraNF	68365501000296
+DTEmi_CompraNF	2021-03-01
+DTEntd_CompraNF	
+HoraEntd_CompraNF	
+ID_Forn_CompraNF	
+ID_NatOp_CompraNF	
+ModeloDoc_CompraNF	55
+NomeCompleto_CompraNF	PROPARTS COM ART ESPORTIVOS E TECN EIRELI
+Obs_CompraNF	PEDIDO 324638   ;
+Serie_CompraNF	0
+Sit_CompraNF	5
+TPNF_CompraNF	1
+VTotICMS_CompraNF	0
+VTotIPI_CompraNF	0
+VTotNF_CompraNF	16749.48
+VTotProd_CompraNF	16749.48
+IDVD_CompraNF	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	22.94
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	0.92
+DebIPI_CompraNFItem	2.29
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	18430
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	1
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	22.94
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	22.94
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	22.9364000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	156.33
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	6.25
+DebIPI_CompraNFItem	15.63
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	18459
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	2
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	6.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	156.33
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	156.33
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	26.0545000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	244.58
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	9.78
+DebIPI_CompraNFItem	24.46
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	18739
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	3
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	8.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	244.58
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	244.58
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	30.5727000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	7445.38
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	297.82
+DebIPI_CompraNFItem	744.54
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	18798
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	4
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	68.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	7445.38
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	7445.38
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	109.4909000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	404.55
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	16.18
+DebIPI_CompraNFItem	40.46
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	19100
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	5
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	4.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	404.55
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	404.55
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	101.1364000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	85.56
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	3.42
+DebIPI_CompraNFItem	8.56
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	19103
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	6
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	85.56
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	85.56
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	85.5636000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	394.09
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	15.76
+DebIPI_CompraNFItem	39.41
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	19449
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	7
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	15.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	394.09
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	394.09
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	26.2727000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	54.74
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	2.19
+DebIPI_CompraNFItem	5.47
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	19468
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	8
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	54.74
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	54.74
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	54.7364000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	150.60
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	6.02
+DebIPI_CompraNFItem	15.06
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	21209
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	9
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	3.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	150.60
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	150.60
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	50.2000000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	525.60
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	21.02
+DebIPI_CompraNFItem	52.56
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	21210
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	10
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	11.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	525.60
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	525.60
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	47.7818000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	143.51
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	5.74
+DebIPI_CompraNFItem	14.35
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	24000
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	11
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	3.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	143.51
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	143.51
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	47.8364000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	348.30
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	13.93
+DebIPI_CompraNFItem	34.83
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	29827
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	12
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	11.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	348.30
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	348.30
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	31.6636000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	31.15
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	1.25
+DebIPI_CompraNFItem	3.12
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	29828
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	13
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	31.15
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	31.15
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	31.1545000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	69.82
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	2.79
+DebIPI_CompraNFItem	6.98
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	29830
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	14
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	2.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	69.82
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	69.82
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	34.9091000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	36.55
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	1.46
+DebIPI_CompraNFItem	3.66
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	30311
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	15
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	3.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	36.55
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	36.55
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	12.1818000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	96.98
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	3.88
+DebIPI_CompraNFItem	9.70
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	30385
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	16
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	3.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	96.98
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	96.98
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	32.3273000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	161.64
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	6.47
+DebIPI_CompraNFItem	16.16
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	30386
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	17
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	5.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	161.64
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	161.64
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	32.3273000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	201.80
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	8.07
+DebIPI_CompraNFItem	20.18
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	30748
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	18
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	2.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	201.80
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	201.80
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	100.9000000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	2575.80
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	103.03
+DebIPI_CompraNFItem	257.58
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	31840
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	19
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	22.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	2575.80
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	2575.80
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	117.0818000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	15.83
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	0.63
+DebIPI_CompraNFItem	1.58
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	31841
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	20
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	15.83
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	15.83
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	15.8273000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	105.38
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	4.22
+DebIPI_CompraNFItem	10.54
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	31924
+IPI_CompraNFItem	10.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	21
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	3.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	105.38
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	105.38
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	35.1273000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	1644.37
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	65.77
+DebIPI_CompraNFItem	246.66
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	34801
+IPI_CompraNFItem	15.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	22
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	6.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	1644.37
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	1644.37
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	274.0609000000
+VUntDesc_CompraNFItem	
+
+#############################
+
+Almox_CompraNFItem	
+BaseCalcICMS_CompraNFItem	
+BaseCalcICMSSubsTrib_CompraNFItem	00
+BaseCalcIPI_CompraNFItem	226.26
+CFOP_CompraNFItem	0
+ChvAcesso_CompraNF	32210368365501000296550000000638811001361356
+DebICMS_CompraNFItem	9.05
+DebIPI_CompraNFItem	33.94
+FlagEst_CompraNFItem	
+ICMS_CompraNFItem	4.00
+ID_CompraNF_CompraNFItem	24727
+ID_Grade_CompraNFItem	
+ID_NatOp_CompraNFItem	
+ID_Prod_CompraNFItem	34854
+IPI_CompraNFItem	15.00
+IseICMS_CompraNFItem	
+IseIPI_CompraNFItem	
+Item_CompraNFItem	23
+Num_CompraNFItem	
+PIS_CompraNFItem	
+QtdFat_CompraNFItem	1.0000
+ST_CompraNFItem	
+STCOFINS_CompraNFItem	
+STIPI_CompraNFItem	
+STPIS_CompraNFItem	
+TxDesc_CompraNFItem	
+TxMLSubsTrib_CompraNFItem	
+VTot_CompraNFItem	226.26
+VTotBaseCalcCOFINS_CompraNFItem	
+VTotBaseCalcICMS_CompraNFItem	226.26
+VTotBaseCalcPIS_CompraNFItem	
+VTotCOFINS_CompraNFItem	
+VTotDesc_CompraNFItem	
+VTotFrete_CompraNFItem	
+VTotICMSSubsTrib_compranfitem	
+VTotIseICMS_CompraNFItem	
+VTotOutDesp_CompraNFItem	
+VTotOutICMS_CompraNFItem	
+VTotPIS_CompraNFItem	
+VTotSeg_CompraNFItem	
+VTotSNCredICMS_CompraNFItem	
+VUnt_CompraNFItem	226.2609000000
+VUntDesc_CompraNFItem	
+
+#############################
+
