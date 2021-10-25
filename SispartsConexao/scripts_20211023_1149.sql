@@ -1,6 +1,31 @@
 -- CadastroDeComprasEmServidor
 -- CHAVE_COMPRA_ITEM
--- ID_Prod_CompraNFItem,Item_CompraNFItem,QtdFat_CompraNFItem,VTot_CompraNFItem
+-- Item_CompraNFItem,ID_Prod_CompraNFItem,QtdFat_CompraNFItem,VTot_CompraNFItem
+
+select 
+Item_CompraNFItem & ID_Prod_CompraNFItem & QtdFat_CompraNFItem & VTot_CompraNFItem as pk
+,Item_CompraNFItem
+,ID_CompraNF_CompraNFItem
+,ID_Prod_CompraNFItem
+,CFOP_CompraNFItem
+,BaseCalcICMS_CompraNFItem
+,BaseCalcICMSSubsTrib_CompraNFItem
+,BaseCalcIPI_CompraNFItem
+,DebICMS_CompraNFItem
+,DebIPI_CompraNFItem
+,ICMS_CompraNFItem
+,IPI_CompraNFItem
+,QtdFat_CompraNFItem
+,VUnt_CompraNFItem
+,TxMLSubsTrib_CompraNFItem
+,VTot_CompraNFItem
+,VTotBaseCalcICMS_CompraNFItem
+,VTotDesc_CompraNFItem
+,VTotFrete_CompraNFItem
+,VTotICMSSubsTrib_CompraNFItem
+,VTotOutDesp_CompraNFItem
+from tblCompraNFItem
+
 
 SELECT ChvAcesso
 	,CNPJ_CPF
