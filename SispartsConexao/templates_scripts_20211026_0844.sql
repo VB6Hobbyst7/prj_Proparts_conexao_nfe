@@ -1,7 +1,7 @@
 SELECT COUNT(*) 
 	-- DELETE
 	-- SELECT * 
-	-- SELECT ChvAcesso_CompraNF,NumPed_CompraNF
+	-- SELECT ChvAcesso_CompraNF,NumPed_CompraNF,ID_Forn_CompraNF
 	-- SELECT max(NumPed_CompraNF)
 FROM tblCompraNF
 -- where ChvAcesso_CompraNF = '32210204884082000569570000039547081039547081'
