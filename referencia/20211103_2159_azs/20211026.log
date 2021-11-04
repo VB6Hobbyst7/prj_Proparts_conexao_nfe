@@ -1,0 +1,5 @@
+INFO 10/26/2021 10:46:07 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:01:54
+INFO 10/26/2021 10:53:01 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:06:54
+Concluido! - testeDeFuncionamentoGeral
+INFO 10/26/2021 11:38:31 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 563 ) - 00:01:24
+INFO 10/26/2021 11:44:21 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 563 ) - 00:01:12
