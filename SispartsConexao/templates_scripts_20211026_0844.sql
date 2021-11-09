@@ -1,3 +1,18 @@
+
+SELECT COUNT(*) 
+	-- DELETE
+	-- SELECT * 
+	-- SELECT ChvAcesso_CompraNF,NumPed_CompraNF,ID_Forn_CompraNF
+	-- SELECT max(NumPed_CompraNF)
+FROM tblCompraNF
+-- where ChvAcesso_CompraNF = '32210204884082000569570000039547081039547081'
+
+SELECT COUNT(*) 
+	-- DELETE
+	-- SELECT DISTINCT(ID_Prod_CompraNFItem)
+FROM tblCompraNFItem;
+
+
 SELECT DISTINCT * FROM (VALUES (1), (1), (1), (2), (5), (1), (6)) AS X(a);
 
 
@@ -240,3 +255,16 @@ select ChvAcesso from ( values
 left join tblCompraNF on tblCompraNF.ChvAcesso_CompraNF = tmp.ChvAcesso  where tblCompraNF.ChvAcesso_CompraNF is null;
 
 ---###################################################################################
+
+
+
+SELECT tmp.strArquivo
+FROM (
+	VALUES (
+("C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210348740351012767570000021186701559009401-cteproc.xml")
+,("C:\xmls\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210348740351015359570000000443691303812742-cteproc.xml")
+,("C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210307872326000158550040001550831011035318-nfeproc.xml")
+,("C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210312680452000302550020000902331810472980-nfeproc.xml")
+,("C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210320147617000494570010009658691999034138-cteproc.xml")
+,("C:\xmls\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210268365501000296550000000637741001351624-nfeproc.xml")
+) AS TMP(strArquivo);

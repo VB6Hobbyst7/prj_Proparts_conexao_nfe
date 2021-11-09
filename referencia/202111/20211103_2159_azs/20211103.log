@@ -1,0 +1,14 @@
+INFO 11/03/2021 10:12:28 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:04:41
+INFO 11/03/2021 10:40:57 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 1 ) - 00:00:01
+INFO 11/03/2021 10:43:21 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 1 ) - 00:00:01
+INFO 11/03/2021 18:56:01 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 1 ) - 00:00:00
+INFO 11/03/2021 19:21:05 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 1 ) - 00:00:00
+INFO 11/03/2021 19:31:33 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 1 ) - 00:00:00
+Concluido! - testeDeFuncionamentoGeral
+INFO 11/03/2021 20:10:45 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:02:18
+INFO 11/03/2021 20:16:34 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:05:49
+Concluido! - testeDeFuncionamentoGeral
+INFO 11/03/2021 20:26:51 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 428 ) - 00:05:20
+INFO 11/03/2021 20:47:23 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:02:00
+INFO 11/03/2021 20:53:19 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:05:56
+Concluido! - testeDeFuncionamentoGeral
