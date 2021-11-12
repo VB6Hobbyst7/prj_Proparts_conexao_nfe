@@ -1,3 +1,84 @@
+INSERT INTO tblCompraNF (
+	ChvAcesso_CompraNF
+	,CNPJ_CPF_CompraNF
+	,NomeCompleto_CompraNF
+	,NumNF_CompraNF
+	,DTEmi_CompraNF
+	,HoraEntd_CompraNF
+	,Obs_CompraNF
+	,Serie_CompraNF
+	,TPNF_CompraNF
+	,BaseCalcICMS_CompraNF
+	,VTotICMS_CompraNF
+	,VTotNF_CompraNF
+	,IDVD_CompraNF
+	)
+SELECT (
+		'32210268365501000296550000000637741001351624'
+		,'68365501000296'
+		,'PROPARTS COM ART ESPORTIVOS E TECN EIRELI'
+		,63774
+		,'2021/02/15'
+		,'1899/12/30 09:44:00'
+		,'PEDIDO 322295    TICKET TRANSF'
+		,'0'
+		,'1'
+		,4527.48
+		,181.10
+		,4980.23
+		,'322295'
+		);
+
+	
+	
+	
+
+select 
+BaseCalcICMS_CompraNF
+	,ChvAcesso_CompraNF
+	,CNPJ_CPF_CompraNF
+	,DTEmi_CompraNF
+	,HoraEntd_CompraNF
+	,NomeCompleto_CompraNF
+	,NumNF_CompraNF
+	,Obs_CompraNF
+	,Serie_CompraNF
+	,TPNF_CompraNF
+	,VTotICMS_CompraNF
+	,VTotNF_CompraNF
+from tblCompraNF;
+
+
+INSERT INTO tblCompraNF (
+	BaseCalcICMS_CompraNF
+	,ChvAcesso_CompraNF
+	,CNPJ_CPF_CompraNF
+	,DTEmi_CompraNF
+	,HoraEntd_CompraNF
+	,NomeCompleto_CompraNF
+	,NumNF_CompraNF
+	,Obs_CompraNF
+	,Serie_CompraNF
+	,TPNF_CompraNF
+	,VTotICMS_CompraNF
+	,VTotNF_CompraNF
+	)
+SELECT 1972.30
+	,'42210368365501000377550000000064281001362494'
+	,'68365501000377'
+	,'2021/03/02'
+	,'1899/12/30 16:18:00'
+	,'PROPARTS COM ART ESPORTIVOS E TECN EIRELI'
+	,6428
+	,'PEDIDO 324862    TICKET -;'
+	,'0'
+	,'1'
+	,78.89
+	,2169.53;
+
+
+
+
 
 SELECT COUNT(*) 
 	-- DELETE

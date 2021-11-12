@@ -1,0 +1,25 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: SispartsConexao_20211109-2057.7z
+
+Testing     SispartsConexao\00_AreaDeTestes.bas
+Testing     SispartsConexao\00_Info.bas
+Testing     SispartsConexao\20211105.sql
+Testing     SispartsConexao\20211109.sql
+Testing     SispartsConexao\templates_scripts_20211026_0844.sql
+Testing     SispartsConexao\parseXmlInDirectory03.py
+Testing     SispartsConexao\20211105_1514.txt
+Testing     SispartsConexao\ListagemDeArquivosColetados.txt
+Testing     SispartsConexao\SispartsConexao.accdb
+Testing     SispartsConexao\20211103.log
+Testing     SispartsConexao\CarregarArquivosDeColeta.log
+Testing     SispartsConexao\CarregarArquivosParaProcessamento.log
+Testing     SispartsConexao
+
+Everything is Ok
+
+Folders: 1
+Files: 12
+Size:       4940531
+Compressed: 466330
