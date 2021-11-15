@@ -72,19 +72,19 @@ Private Const qryDadosGerais_Update_IdTipo As String = _
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 0 - CT-e -> ( ID_Tipo: 1 )
 '' #tblDadosConexaoNFeCTe.ID_Tipo
-Private Const qryDadosGerais_Update_CTe As String = _
+Private Const qryDadosGerais_Update_IdTipo_CTe As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_Tipo = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='CTe'"") WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0) AND ((tblDadosConexaoNFeCTe.codMod) = CInt('57')));"
 
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 4 - NF-e Retorno Armazém -> ( ID_Tipo: 5 )
 '' #tblDadosConexaoNFeCTe.ID_Tipo
-Private Const qryDadosGerais_Update_RetornoArmazem As String = _
+Private Const qryDadosGerais_Update_IdTipo_RetornoArmazem As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_Tipo = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='RetornoArmazem'"") WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0) AND ((tblDadosConexaoNFeCTe.codMod) = CInt('55')) AND ((tblDadosConexaoNFeCTe.CNPJ_emit) IN ('12680452000302')));"
 
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 6 - NF-e Transferência com código Sisparts -> ( ID_Tipo: 7 )
 '' #tblDadosConexaoNFeCTe.ID_Tipo
-Private Const qryDadosGerais_Update_TransferenciaSisparts As String = _
+Private Const qryDadosGerais_Update_IdTipo_TransferenciaSisparts As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_Tipo = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='TransferenciaSisparts'"") WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0) AND ((tblDadosConexaoNFeCTe.codMod) = CInt('55')) AND ((tblDadosConexaoNFeCTe.CNPJ_emit) IN (SELECT CNPJ_Empresa FROM [tmpEmpresa])));"
 
 
@@ -469,9 +469,9 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                 qryDadosGerais_Update_FornecedoresValidos, _
                                                 qryDadosGerais_Update_RegistrosValidos, _
                                                 qryDadosGerais_Update_IdTipo, _
-                                                qryDadosGerais_Update_RetornoArmazem, _
-                                                qryDadosGerais_Update_TransferenciaSisparts, _
-                                                qryDadosGerais_Update_CTe, _
+                                                qryDadosGerais_Update_IdTipo_RetornoArmazem, _
+                                                qryDadosGerais_Update_IdTipo_TransferenciaSisparts, _
+                                                qryDadosGerais_Update_IdTipo_CTe, _
                                                 qryDadosGerais_Update_Sit_CompraNF, _
                                                 qryDadosGerais_Update_IdEmpresa, _
                                                 qryDadosGerais_Update_IdEmpresa_TransferenciaEntreFiliais, _

@@ -133,7 +133,7 @@ End Sub
 Public Function ProcessamentoDeArquivo(pPathFile As String, pTipoProcessamento As enumTipoProcessamento)
 On Error Resume Next
 
-Dim s As New clsConexaoNfeCte
+Dim DadosGerais As New clsConexaoNfeCte
 
 '' CHAVES DE CONTROLE
 Dim pPK As String: pPK = ""
@@ -159,6 +159,10 @@ Dim repositorioDadosGerais As String: repositorioDadosGerais = "tblDadosConexaoN
 '' COMPRAS
 Dim repositorioCompras As String: repositorioCompras = "tblCompraNF"
 Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFItem"
+    
+    
+    '' #LIMPAR REPOSITORIO DE COLETA
+    Application.CurrentDb.Execute qryDeleteProcessamento
     
     Select Case pTipoProcessamento
         
@@ -266,6 +270,50 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
     
     '' AJUSTAR CAMPO CHAVE
     Application.CurrentDb.Execute qryUpdateProcessamento_Chave
+    
+    
+    '' #IDENTIFICA플O - CAMPOS
+    Select Case pTipoProcessamento
+        
+        '' DADOS GERAIS
+        Case opDadosGerais
+            
+            '' #IDENTIFICA플O - CAMPOS
+            UpdateProcessamentoIdentificarCampos repositorioDadosGerais
+            
+            '' #FORMATA플O
+            UpdateProcessamentoFormatarDados
+    
+            '' #ARQUIVO
+            ProcessamentoTransferir repositorioDadosGerais
+            
+            '' #CLASSIFICA플O
+            DadosGerais.TratamentoDeDadosGerais
+            
+        '' COMPRAS
+        Case opCompras
+            
+            '' #IDENTIFICA플O - CAMPOS
+            UpdateProcessamentoIdentificarCampos repositorioCompras
+            UpdateProcessamentoIdentificarCampos repositorioComprasItens
+            
+            '' #CORRE플O DE DADOS MARCADOS ERRADOS EM ITENS DE COMPRAS
+            UpdateProcessamentoLimparItensMarcadosErrados
+            
+            '' #FORMATA플O
+            UpdateProcessamentoFormatarDados
+            
+'            '' #ARQUIVO
+'            ProcessamentoTransferir repositorioCompras
+'            ProcessamentoTransferir repositorioComprasItens
+            
+            '' #CLASSIFICA플O
+            DadosGerais.compras_atualizarCampos
+            
+        Case Else
+    End Select
+    
+
 
 Set XDoc = Nothing
 
