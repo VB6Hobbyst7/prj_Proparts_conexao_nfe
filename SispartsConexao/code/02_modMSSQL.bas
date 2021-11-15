@@ -131,17 +131,6 @@ Debug.Print "Concluido!"
 
 End Sub
 
-'' #AILTON - DESEVENVOLVIMENTO
-'' file:///C:/XMLS/68.365.5010003-77%20-%20Proparts%20Com%C3%A9rcio%20de%20Artigos%20Esportivos%20e%20Tecnologia%20Ltda/recebimento/42210300634453001303570010001139451001171544-cteproc.xml
-Sub teste_carregarCamposValores_PROCESSAMENTO()
-
-'For Each item In carregarCamposValores("tblProcessamento", "42210348740351012767570000021186731952977908-cteproc")
-'
-'Next
-
-End Sub
-
-
 Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As Collection
 Set carregarCamposValores = New Collection
 Dim Scripts As New clsConexaoNfeCte
@@ -177,7 +166,7 @@ Dim sqlOrigem As String: sqlOrigem = _
             '' 2. campos x formatacao
             If InStr(rstCampos.Fields("campo").value, tmpValidarCampo) Then
     
-                If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo pulo
+                If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo PULO
     
                 If rstCampos.Fields("formatacao").value = "opTexto" Then
                     tmpScript = tmpScript & "'" & rstOrigem.Fields(rstCampos.Fields("campo").value).value & "',"
@@ -195,7 +184,7 @@ Dim sqlOrigem As String: sqlOrigem = _
     
             End If
             
-pulo:
+PULO:
             rstCampos.MoveNext
             DoEvents
         Loop
@@ -212,6 +201,13 @@ pulo:
 
 End Function
 
+
+Sub teste_carregarCamposNomes()
+
+    carregarCamposNomes "tblCompraNF"
+
+End Sub
+
 Function carregarCamposNomes(pRepositorio As String) As String
 Dim Scripts As New clsConexaoNfeCte
 
@@ -223,9 +219,15 @@ Dim rstCampos As DAO.Recordset
 Dim tmpScript As String
 
     '' MONTAR STRING DE NOME DE COLUNAS
+    
+'    Debug.Print Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio)
+    
     Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
     Do While Not rstCampos.EOF
         tmpScript = tmpScript & rstCampos.Fields("campo").value & ","
+        
+'        Debug.Print tmpScript
+        
         rstCampos.MoveNext
         DoEvents
     Loop

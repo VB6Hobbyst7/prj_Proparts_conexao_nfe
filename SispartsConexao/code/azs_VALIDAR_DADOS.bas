@@ -1,18 +1,20 @@
 Attribute VB_Name = "azs_VALIDAR_DADOS"
 Option Compare Database
 
+'' file:///C:/XMLS/68.365.5010003-77%20-%20Proparts%20Com%C3%A9rcio%20de%20Artigos%20Esportivos%20e%20Tecnologia%20Ltda/recebimento/42210300634453001303570010001139451001171544-cteproc.xml
 
-Function renameColumn(pRepositorio As String, pColumns As String) As String
-'Dim pRepositorio As String: pRepositorio = "tblCompraNF"
-Dim tmp As String
 
-    For Each item In Split(pColumns, ",")
-        tmp = tmp & ",str" & CStr(item)
-    Next
-    
-    renameColumn = right(tmp, Len(tmp) - 1)
+Sub teste_cadastro()
 
-End Function
+Dim qryInsert As String: qryInsert = _
+    "INSERT INTO tblCompraNF ([""89.28""],[""42210348740351012767570000021186731952977908""],[""48740351012767""],[""1899/12/30 20:14:07""],[""BRASPRESS TRANSPORTES URGENTES LTDA""],[""2118673""],[""0""],[""0""],[""10.71""],[""89.28""]) SELECT BaseCalcICMS_CompraNF,ChvAcesso_CompraNF,CNPJ_CPF_CompraNF,HoraEntd_CompraNF,NomeCompleto_CompraNF,NumNF_CompraNF,Serie_CompraNF,TPNF_CompraNF,VTotICMS_CompraNF,VTotNF_CompraNF FROM tblCompraNF;"
+    '    "INSERT INTO tblCompraNF ('89.28','42210348740351012767570000021186731952977908','48740351012767','1899/12/30 20:14:07','BRASPRESS TRANSPORTES URGENTES LTDA','2118673','0','0','10.71','89.28') SELECT BaseCalcICMS_CompraNF,ChvAcesso_CompraNF,CNPJ_CPF_CompraNF,HoraEntd_CompraNF,NomeCompleto_CompraNF,NumNF_CompraNF,Serie_CompraNF,TPNF_CompraNF,VTotICMS_CompraNF,VTotNF_CompraNF FROM tblCompraNF;"
+
+
+Application.CurrentDb.Execute _
+    qryInsert
+
+End Sub
 
 
 Sub teste_carregar()
@@ -21,9 +23,10 @@ Dim pChave As String: pChave = "42210348740351012767570000021186731952977908-cte
 Dim pRepositorio As String: pRepositorio = "tblCompraNF"
 
 Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pRepositorio) - 3)
-Dim tmpScript As String: tmpScript = Replace("SELECT NomeCampo,valor,formatacao FROM tblProcessamento where pk = 'pChave' and not NomeCampo is null", "pChave", pChave)
+Dim tmpScript As String: tmpScript = Replace("SELECT DISTINCT NomeCampo,valor,formatacao FROM tblProcessamento where pk = 'pChave' and not NomeCampo is null", "pChave", pChave)
 Dim tmpScriptCabecalho As String
 Dim item As Variant
+Dim tmp As String: tmp = carregarCamposNomes(pRepositorio)
 
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rstRepositorio As DAO.Recordset: Set rstRepositorio = db.OpenRecordset(tmpScript)
@@ -35,42 +38,46 @@ Dim qryCompras_Insert_Processamento As String: _
                                         "FROM (  " & _
                                         "   VALUES strCamposValores  " & _
                                         "   ) AS TMP(strCamposTmp)  " & _
-                                        "LEFT JOIN pRepositorio ON pRepositorio.ChvAcesso_CompraNF = tmp.ChvAcesso  " & _
+                                        "LEFT JOIN pRepositorio ON pRepositorio.ChvAcesso_CompraNF = tmp.strChvAcesso_CompraNF  " & _
                                         "WHERE pRepositorio.ChvAcesso_CompraNF IS NULL;"
-tmpScript = ""
-Do While Not rstRepositorio.EOF
-
-    For Each item In Split(carregarCamposNomes(pRepositorio), ",")
-        
-        If InStr(rstRepositorio.Fields("NomeCampo").value, CStr(item)) Then
-        
-            If rstRepositorio.Fields("formatacao").value = "opTexto" Then
-                tmpScript = tmpScript & "'" & rstRepositorio.Fields("Valor").value & "',"
-        
-            ElseIf rstRepositorio.Fields("formatacao").value = "opNumero" Or rstRepositorio.Fields("formatacao").value = "opMoeda" Then
-                tmpScript = tmpScript & rstRepositorio.Fields("Valor").value & ","
-        
-            ElseIf rstRepositorio.Fields("formatacao").value = "opTime" Then
-                tmpScript = tmpScript & "'" & Format(rstRepositorio.Fields("Valor").value, DATE_TIME_FORMAT) & "',"
-        
-            ElseIf rstRepositorio.Fields("formatacao").value = "opData" Then
-                tmpScript = tmpScript & "'" & Format(rstRepositorio.Fields("Valor").value, DATE_FORMAT) & "',"
-        
+    tmpScript = ""
+    Do While Not rstRepositorio.EOF
+    
+        For Each item In Split(tmp, ",")
+            
+            If InStr(rstRepositorio.Fields("NomeCampo").value, CStr(item)) Then
+                
+                tmpScriptCabecalho = tmpScriptCabecalho & rstRepositorio.Fields("NomeCampo").value & ","
+            
+                If rstRepositorio.Fields("formatacao").value = "opTexto" Then
+                    tmpScript = tmpScript & "'" & rstRepositorio.Fields("Valor").value & "',"
+                    
+                ElseIf rstRepositorio.Fields("formatacao").value = "opNumero" Or rstRepositorio.Fields("formatacao").value = "opMoeda" Then
+                    tmpScript = tmpScript & rstRepositorio.Fields("Valor").value & ","
+            
+                ElseIf rstRepositorio.Fields("formatacao").value = "opTime" Then
+                    tmpScript = tmpScript & "'" & Format(rstRepositorio.Fields("Valor").value, DATE_TIME_FORMAT) & "',"
+            
+                ElseIf rstRepositorio.Fields("formatacao").value = "opData" Then
+                    tmpScript = tmpScript & "'" & Format(rstRepositorio.Fields("Valor").value, DATE_FORMAT) & "',"
+           
+                End If
+                
             End If
-        
-            tmpScriptCabecalho = tmpScriptCabecalho & rstRepositorio.Fields("NomeCampo").value & ","
-        End If
+            DoEvents
+        Next
+        rstRepositorio.MoveNext
         DoEvents
-    Next
-        
-    rstRepositorio.MoveNext
-    DoEvents
-Loop
+    Loop
+    
+    tmpScriptCabecalho = left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)
+    tmpScript = left(tmpScript, Len(tmpScript) - 1)
 
-'Debug.Print left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)
-'Debug.Print left(tmpScript, Len(tmpScript) - 1)
+Debug.Print Replace(Replace(Replace(Replace(qryCompras_Insert_Processamento, "strCamposNomes", tmpScriptCabecalho), "strCamposValores", tmpScript), "pRepositorio", pRepositorio), "strCamposTmp", renameColumn(tmpScriptCabecalho))
 
-Debug.Print Replace(Replace(Replace(Replace(qryCompras_Insert_Processamento, "strCamposNomes", left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)), "strCamposValores", left(tmpScript, Len(tmpScript) - 1)), "pRepositorio", pRepositorio), "strCamposTmp", renameColumn(pRepositorio, left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)))
+'Application.CurrentDb.Execute _
+'    Replace(Replace(Replace(Replace(qryCompras_Insert_Processamento, "strCamposNomes", tmpScriptCabecalho), "strCamposValores", tmpScript), "pRepositorio", pRepositorio), "strCamposTmp", renameColumn(tmpScriptCabecalho))
+
 
 End Sub
 Private Sub gerar_ArquivosDeValidacaoDeCampos()
@@ -169,3 +176,15 @@ Set rstRegistros = Nothing
 Set rstItens = Nothing
 
 End Sub
+
+Function renameColumn(pColumns As String) As String
+Dim tmp As String
+
+    For Each item In Split(pColumns, ",")
+        tmp = tmp & ",str" & CStr(item)
+    Next
+    
+    renameColumn = right(tmp, Len(tmp) - 1)
+
+End Function
+
