@@ -95,9 +95,50 @@ Private Const qryUpdateProcessamento_opTime As String = _
         "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
         
 Private Const qryInsertProcessamento_IDVD_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor)  " & _
-    "SELECT Distinct PK,'IDVD_CompraNF','tblCompraNF','opTexto',val((Left(Trim(Replace(Replace(Valor, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6)))  as IDVD_CompraNF " & _
-    "FROM tblProcessamento WHERE NomeTabela = 'tblCompraNF' AND len(formatacao) > 0 AND len(NomeCampo) > 0 AND Left(Valor, 6) = 'PEDIDO ' AND NomeCampo = 'Obs_CompraNF';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT Distinct PK,'IDVD_CompraNF','tblCompraNF','opTexto',val((Left(Trim(Replace(Replace(Valor, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6)))  as IDVD_CompraNF FROM tblProcessamento WHERE NomeTabela = 'tblCompraNF' AND len(formatacao) > 0 AND len(NomeCampo) > 0 AND Left(Valor, 6) = 'PEDIDO ' AND NomeCampo = 'Obs_CompraNF';"
+
+Private Const qryInsertProcessamento_CFOP_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','CFOP_CompraNF','tblCompraNF','opTexto',tDados.FiltroCFOP  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+Private Const qryInsertProcessamento_ID_NatOp_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','ID_NatOp_CompraNF','tblCompraNF','opNumero',tDados.ID_NatOp_CompraNF  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+Private Const qryInsertProcessamento_ID_Forn_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','ID_Forn_CompraNF','tblCompraNF','opNumero',tDados.ID_Forn_CompraNF  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+Private Const qryInsertProcessamento_ModeloDoc_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','ModeloDoc_CompraNF','tblCompraNF','opTexto',tDados.codMod  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+Private Const qryInsertProcessamento_Sit_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','Sit_CompraNF','tblCompraNF','opNumero',IIF([tblDadosConexaoNFeCTe].[codMod]=57,6,IIF([tDados].[ID_Tipo]=5,6,[tDados].[Sit_CompraNF]))  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+Private Const qryInsertProcessamento_Fil_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','Fil_CompraNF','tblCompraNF','opTexto',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+'' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Const qryInsertProcessamento_VTotNF_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','VTotNF_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+'' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Const qryInsertProcessamento_VTotProd_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','VTotProd_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+'' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Const qryInsertProcessamento_BaseCalcICMS_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','BaseCalcICMS_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+        
+Private Const qryInsertProcessamento_HoraEntd_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','HoraEntd_CompraNF','tblCompraNF','opTime',NULL;"
+
+Private Const qryInsertProcessamento_DTEntd_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','DTEntd_CompraNF','tblCompraNF','opData',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+
+Private Const qryInsertProcessamento_TPNF_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','TPNF_CompraNF','tblCompraNF','opTexto',1;"
+
+Private Const qryInsertProcessamento_VTotIPI_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','VTotIPI_CompraNF','tblCompraNF','opMoeda',0;"
+        
         
 Public Sub DeleteProcessamento()
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - DeleteProcessamento()"
@@ -132,9 +173,86 @@ Public Sub UpdateProcessamentoIdentificarCampos(pRepositorio As String)
                                                 
 End Sub
 
-Private Sub InsertProcessamentoIDVD()
+Private Sub InsertProcessamento_IDVD()
     Application.CurrentDb.Execute qryInsertProcessamento_IDVD_CompraNF
 End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_CFOP(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_ID_NatOp(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_ID_NatOp_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_ID_Forn(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_ID_Forn_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_ModeloDoc(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_ModeloDoc_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_Sit(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_Sit_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_Fil(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_Fil_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Sub InsertProcessamento_VTotNF(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotNF_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Sub InsertProcessamento_VTotProd(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotProd_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Sub InsertProcessamento_BaseCalcICMS(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_BaseCalcICMS_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_HoraEntd(strChvAcesso As String)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_HoraEntd_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
+Private Sub InsertProcessamento_DTEntd(strChvAcesso As String)
+    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_DTEntd_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_TPNF(strChvAcesso As String)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_TPNF_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_VTotIPI(strChvAcesso As String)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotIPI_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
+
 
 
 
@@ -315,7 +433,24 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
             UpdateProcessamentoFormatarDados
             
             '' #CADASTRO DE IDVD
-            InsertProcessamentoIDVD
+            InsertProcessamento_IDVD
+            
+            '' #20211110_0730
+            InsertProcessamento_CFOP pChvAcesso
+            InsertProcessamento_ID_NatOp pChvAcesso
+            InsertProcessamento_ID_Forn pChvAcesso
+            InsertProcessamento_ModeloDoc pChvAcesso
+            InsertProcessamento_Sit pChvAcesso
+            InsertProcessamento_Fil pChvAcesso
+
+'            InsertProcessamento_VTotNF pChvAcesso
+'            InsertProcessamento_VTotProd pChvAcesso
+'            InsertProcessamento_BaseCalcICMS pChvAcesso
+
+            InsertProcessamento_HoraEntd pChvAcesso
+            InsertProcessamento_DTEntd pChvAcesso
+            InsertProcessamento_TPNF pChvAcesso
+            InsertProcessamento_VTotIPI pChvAcesso
             
 '            '' #ARQUIVO
 '            ProcessamentoTransferir repositorioCompras
@@ -340,7 +475,7 @@ On Error Resume Next
 Dim DadosGerais As New clsConexaoNfeCte
 
 '' CONTROLE DE CADASTRO DE REGISTRO
-Dim T As Integer
+Dim t As Integer
 Dim tmpSqlOrigem As String
 
 '' #BANCO_LOCAL
@@ -367,7 +502,7 @@ Do While Not rstPendentes.EOF
     Do While Not rstOrigem.EOF
     
         '' CONTROLE DE CADASTRO
-        If T = 0 Then rstDestino.AddNew: T = 1
+        If t = 0 Then rstDestino.AddNew: t = 1
         rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
         
         '' #CAMPO_CHAVE_RELACIONAMENO
@@ -378,7 +513,7 @@ Do While Not rstPendentes.EOF
     Loop
         
     rstDestino.Update
-    T = 0
+    t = 0
     
     '' #COMPRAS
     If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
