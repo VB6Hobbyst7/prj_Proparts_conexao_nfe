@@ -1,23 +1,7 @@
 Attribute VB_Name = "02_modMSSQL"
-'Private Const qryCampos As String = _
-'        "SELECT distinct   " & _
-'        "   tblParametros.TipoDeParametro  " & _
-'        "   , tblOrigemDestino.campo  " & _
-'        "   , tblOrigemDestino.formatacao  " & _
-'        "   , tblOrigemDestino.valorPadrao  " & _
-'        "FROM   " & _
-'        "   tblParametros INNER JOIN tblOrigemDestino ON tblParametros.ValorDoParametro = tblOrigemDestino.campo  " & _
-'        "WHERE (((tblParametros.TipoDeParametro)='pDestino'));"
-        
-'Private Const qryCompras_ID_ComprasNF As String = _
-'        "SELECT DISTINCT " & _
-'        "   '' AS ID_CompraNF " & _
-'        "   ,ChvAcesso_CompraNF " & _
-'        "INTO tmpCompras_ID_CompraNF " & _
-'        "FROM tblCompraNF; "
 
-'Private Const qryUpdateItens_ID_CompraNF As String = _
-'        "UPDATE tmpCompras_ID_CompraNF INNER JOIN tblCompraNFItem ON tmpCompras_ID_CompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF SET tblCompraNFItem.ID_CompraNF_CompraNFItem = [tmpCompras_ID_CompraNF].[ID_CompraNF];"
+
+
 
 
 '' 01. Criar Tabela Temporaria Para Relacionar IdCompra Com ChvAcesso
@@ -88,13 +72,9 @@ End Function
 
 
 '' 03. Enviar Dados Para Servidor
-Public Function enviar_ComprasParaServidor()
+Public Function enviar_ComprasParaServidor(pDestino As String)
 On Error Resume Next
 'On Error GoTo adm_Err
-
-'' VARIAVEL DE PARAMETRO
-'Dim pDestino As String: pDestino = "tblCompraNF"
-Dim pDestino As String: pDestino = "tblCompraNFItem"
 
 '' ---------------------
 '' VARIAVEIS GERAIS

@@ -7,6 +7,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'' #####################################
+'' 01 CARREGAR DE DADOS
+'' #####################################
+
 Option Compare Database
 
 Public Enum enumTipoProcessamento
@@ -45,8 +49,6 @@ End Enum
 '' #tblProcessamento
 Private Const qrySelecaoDeCampos As String = _
     "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((tblOrigemDestino.tabela)='strParametro') AND ((Len([Tag]))>0) AND ((tblOrigemDestino.TagOrigem)=1)) ORDER BY tblOrigemDestino.Tag, tblOrigemDestino.tabela;"
-       
-
 
 '' #tblProcessamento.Delete
 Private Const qryDeleteProcessamento As String = _
@@ -91,10 +93,6 @@ Private Const qryUpdateProcessamento_opData As String = _
 '' #tblProcessamento.opTime
 Private Const qryUpdateProcessamento_opTime As String = _
         "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
-        
-
-        
-        
         
 Public Sub DeleteProcessamento()
     Application.CurrentDb.Execute qryDeleteProcessamento
@@ -270,6 +268,8 @@ End Function
 Public Sub ProcessamentoTransferir(pDestino As String)
 On Error Resume Next
 
+Dim DadosGerais As New clsConexaoNfeCte
+
 '' CONTROLE DE CADASTRO DE REGISTRO
 Dim t As Integer
 Dim tmpSqlOrigem As String
@@ -311,12 +311,12 @@ Do While Not rstPendentes.EOF
     rstDestino.Update
     t = 0
     
-'    '' #COMPRAS
-'    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(qryUpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
-'
-'    '' #DADOS_GERAIS
-'    '' qryUpdateRegistroValido - Valor padrao
-'    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
+    '' #COMPRAS
+    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+
+    '' #DADOS_GERAIS
+    '' qryUpdateRegistroValido - Valor padrao ( 0 - INVALIDO )
+    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
     
     rstPendentes.MoveNext
     DoEvents

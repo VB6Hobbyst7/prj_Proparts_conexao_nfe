@@ -49,6 +49,7 @@ End Function
 
 '' #DUVIDA - QUAL O OBJETIVO ?
 '' #ENTENDIMENTO_01 - CARREGAR TODOS OS ITENS DA COMPRA
+'' #AILTON - qryInsertCompraItens
 Function PegaTagProdXML(DocXML As String, IDCompraNF As Double, IDForn As Long)
 On Error GoTo Err_PegaTagProdXML
 
@@ -112,6 +113,8 @@ Set XMLdoc = CreateObject("Microsoft.XMLDOM")
 XMLdoc.async = False
 XMLdoc.Load (DocXML)
 
+
+'' -- sBn / Qual o objetivo dessa variavel ?
 qtdProd = XMLdoc.getElementsByTagName(sBn & "infNFe/det").Length 'Contando quantos itens tem o nó det (detalhes)
 
 p = 0
@@ -132,7 +135,7 @@ Else
     For i = 0 To qtdProd - 1 'Varrendo todos os itens
         
         'Item = Item + 1
-        nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).Value)
+        nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
         cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cProd").Item(0).text)
         xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xProd").Item(0).text)
         
@@ -210,7 +213,7 @@ Else
         uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/uCom").Item(0).text)
         qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/qCom").Item(0).text)
         
-        'IPI
+        '#05_XML_IPI
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 -
         Set rsIPI = db.OpenRecordset("SELECT [05_XML_IPI].nID, [05_XML_IPI].cEnq, [05_XML_IPI].CST, [05_XML_IPI].vBC, [05_XML_IPI].pIPI, [05_XML_IPI].vIPI FROM 05_XML_IPI WHERE ([05_XML_IPI].nID=" & nitem & ") AND ([05_XML_IPI].vIPI Is Not Null) ;")
@@ -250,11 +253,17 @@ Else
             vOutro = 0
         End If
         
-        'ICMS
+        
+        
+        
+        '' #05_XML_ICMS
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 -
         Set rsICMS = db.OpenRecordset("SELECT [05_XML_ICMS].nID, [05_XML_ICMS].orig, [05_XML_ICMS].CST, [05_XML_ICMS].modBC, [05_XML_ICMS].vBC, [05_XML_ICMS].pICMS, [05_XML_ICMS].vICMS, [05_XML_ICMS].pRedBC, [05_XML_ICMS].vBCSTRet, [05_XML_ICMS].vICMSSTRet, [05_XML_ICMS].modBCST, [05_XML_ICMS].vBCST, [05_XML_ICMS].pICMSST, [05_XML_ICMS].vICMSST, [05_XML_ICMS].[pMVAST] FROM 05_XML_ICMS WHERE ([05_XML_ICMS].nID=" & nitem & ") AND ([05_XML_ICMS].vICMS Is Not Null) ;")
         If rsICMS.RecordCount > 0 Then
+        '' #05_XML_ICMS_Orig
+        '' #05_XML_ICMS_CST
+        
             CST = rsICMS!Orig & rsICMS!CST
             If Forms!frmCompraNF_ImpXML!Finalidade = 2 Then
                 vBC = 0
@@ -291,6 +300,8 @@ Else
             Else
                 pICMS = rsICMS!pICMS
             End If
+            
+            '' #05_XML_ICMS_CST_VICMS
             If rsICMS!VICMS = 0 Then
                 VICMS = 0
             Else
@@ -352,6 +363,7 @@ Else
         End If
         rsIPI.Close
        
+        '' #AILTON - VALIDAR
        
         '' #AILTON - ITENS DA COMPRANF ( CONSULTA NFE )
         '' #DUVIDA - QUAL O OBJETIVO ?
@@ -506,11 +518,13 @@ Function LerNodes(ByRef Nodes As IXMLDOMNodeList)
                 XMLPerICMS = objNode.NodeValue / 100
             End If
         End If
+        
         If XMLValICMS = 0 Then
             If objNode.ParentNode.nodeName = "vICMS" Then
                 XMLValICMS = objNode.NodeValue / 100
             End If
         End If
+        
         If XMLDTEmi = "00:00:00" Then
             If Forms!frmCompraNF_ImpXML!Finalidade = 0 Then
                 If objNode.ParentNode.nodeName = "dhEmi" Then
@@ -523,6 +537,8 @@ Function LerNodes(ByRef Nodes As IXMLDOMNodeList)
             End If
         End If
         
+        
+        ''HoraEntd_CompraNF
         If XMLdhSaiEnt = "00:00:00" Then
             If Forms!frmCompraNF_ImpXML!Finalidade = 4 Then
                 If objNode.ParentNode.nodeName = "dhSaiEnt" Then
@@ -792,7 +808,7 @@ Else
             pICMSST = 0
             vICMSST = 0
 
-            nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).Value)
+            nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
 
             'ICMS 00
             If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("imposto/ICMS/ICMS00").Length > 0 Then
@@ -905,12 +921,12 @@ Else
             End If
         End If
         
-        '' #
+        '' #05_XML_ICMS
         CurrentDb.Execute "INSERT INTO 05_XML_ICMS ( id, nID, orig, CST, modBC, vBC, pICMS, vICMS, pRedBC, " _
         & "modBCST, vBCST, pICMSST, vICMSST, pMVAST )" _
         & "SELECT '" & nitem & "' AS Expr1, '" & nitem & "' AS Expr2, '" & Orig & "' AS Expr3, '" & CST & "' AS Expr4, '" & modBC & "' AS Expr5, " _
-        & "" & vBC & " AS Expr6, " & pICMS & " AS Expr7, " & VICMS & " AS Expr8, " & iif(pRedBC = "", 0, pRedBC) & " AS Expr9, " _
-        & "" & iif(modBCST = "", 0, modBCST) & " AS Expr12, " & iif(vBCST = "", 0, vBCST) & " AS Expr13, " & iif(pICMSST = "", 0, pICMSST) & " AS Expr14, " & iif(vICMSST = "", 0, vICMSST) & " AS Expr15, " & iif(pMVAST = "", 0, pMVAST) & " AS Expr16 "
+        & "" & vBC & " AS Expr6, " & pICMS & " AS Expr7, " & VICMS & " AS Expr8, " & IIf(pRedBC = "", 0, pRedBC) & " AS Expr9, " _
+        & "" & IIf(modBCST = "", 0, modBCST) & " AS Expr12, " & IIf(vBCST = "", 0, vBCST) & " AS Expr13, " & IIf(pICMSST = "", 0, pICMSST) & " AS Expr14, " & IIf(vICMSST = "", 0, vICMSST) & " AS Expr15, " & IIf(pMVAST = "", 0, pMVAST) & " AS Expr16 "
 
     Next i
 
@@ -959,7 +975,7 @@ Else
         pIPI = 0
         VIPI = 0
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("imposto/IPI").Length > 0 Then
-            nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).Value)
+            nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
             
             If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("imposto/IPI/IPITrib").Length > 0 Then
                 cEnq = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("imposto/IPI").Item(0).getElementsByTagName("cEnq").Item(0).text
@@ -1055,15 +1071,15 @@ If (XMLdoc.parseError.errorCode <> 0) Then
     MsgBox ("You have error " & myErr.reason)
 Else
     For i = 0 To qtdProd - 1 'Varrendo todos os itens
-        nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).Value)
-        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cProd").Item(0).text)
-        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xProd").Item(0).text)
+        nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)             '' Item_CompraNFItem
+        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cProd").Item(0).text)   '' ID_Prod_CompraNFItem
+        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xProd").Item(0).text)   ''
         cEAN = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cEAN").Item(0).text)
         NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/NCM").Item(0).text)
-        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/CFOP").Item(0).text)
+        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/CFOP").Item(0).text)     '' CFOP_CompraNFItem
         uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/uCom").Item(0).text)
         qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/qCom").Item(0).text)
-        vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vUnCom").Item(0).text)
+        vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vUnCom").Item(0).text) '' VUnt_CompraNFItem
         vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vProd").Item(0).text)
         cEANTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/cEANTrib").Item(0).text)
         uTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/uTrib").Item(0).text)
@@ -1071,12 +1087,12 @@ Else
         indTot = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/indTot").Item(0).text)
         
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vFrete").Length > 0 Then
-            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vFrete").Item(0).text)
+            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vFrete").Item(0).text) '' VTotFrete_CompraNFItem
         Else
             VFrete = 0
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vDesc").Length > 0 Then
-            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vDesc").Item(0).text)
+            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/vDesc").Item(0).text)   '' VTotDesc_CompraNFItem
         Else
             VDesc = 0
         End If
@@ -1084,7 +1100,7 @@ Else
             xPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/xPed").Item(0).text)
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/nItemPed").Length > 0 Then
-            nItemPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/nItemPed").Item(0).text)
+            nItemPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").Item(i).SelectNodes("prod/nItemPed").Item(0).text) '' Item_CompraNFItem
         End If
         
         Set gro = db.OpenRecordset("04_XML_prod", dbOpenDynaset)
@@ -1226,13 +1242,13 @@ While Not rsProdXML.EOF
         rsGradeMe.LockType = adLockOptimistic
         rsGradeMe.Open "SELECT TOP 1 * FROM tabGradeProdutos", CNN
         
-        '' #AILTON - qryInsertGradeProdutos
+        '' #AILTON/FERNANDA - qryInsertGradeProdutos
         rsGradeMe.AddNew
         rsGradeMe!CodigoProd_Grade = IDProd
         rsGradeMe!Codigo_Grade = 1
         rsGradeMe!QtdeEst_Grade = 0
         rsGradeMe!CodigoForn_Grade = rsProdXML!cProd
-        rsGradeMe!CodigoBar_Grade = iif(rsProdXML!cEANTrib = "" Or rsProdXML!cEANTrib = "SEM GTIN", Null, rsProdXML!cEANTrib)
+        rsGradeMe!CodigoBar_Grade = IIf(rsProdXML!cEANTrib = "" Or rsProdXML!cEANTrib = "SEM GTIN", Null, rsProdXML!cEANTrib)
         rsGradeMe!Atacado_Grade = 0
         rsGradeMe!Ativo_Grade = True
         rsGradeMe.Update
@@ -1246,14 +1262,15 @@ While Not rsProdXML.EOF
         '' #AILTON - >>> PENDENTE <<<
         
         
-        '' #AILTON - qrySelectEmpresa
+        '' #AILTON - qrySelectEmpresa_FiltroFil
         'Cadastro de Empresa
         rsEmp.CursorLocation = adUseClient
         rsEmp.CursorType = adOpenKeyset
         rsEmp.LockType = adLockOptimistic
         rsEmp.Open "SELECT tblEmpresa.ID_Empresa FROM tblEmpresa WHERE SUBSTRING (ID_Empresa,1,1)='P'", CNN
         
-        '' #AILTON - qrySelectProd_Est - ( NÃO NO ARQUIVO DE BACKUP )
+        '' #AILTON/FERNANDA - qrySelectProd_Est - ( NÃO NO ARQUIVO DE BACKUP )
+        '' #OBJETIVO - ???
         rsEstMe.CursorLocation = adUseClient
         rsEstMe.CursorType = adOpenKeyset
         rsEstMe.LockType = adLockOptimistic

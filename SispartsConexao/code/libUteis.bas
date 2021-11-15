@@ -68,7 +68,6 @@ db.Close: Set db = Nothing
 
 End Sub
 
-
 Public Function GetFilesInSubFolders(pFolder As String) As Collection
 Set GetFilesInSubFolders = New Collection
 
@@ -380,9 +379,6 @@ Public Function NumberToSql(pNumber As Variant) As String
         End If
     End If
 End Function
-
-
-
 
 Public Function PickFolder(pPath As String, pTitle As String, Optional pSubFolder As String) As String
     With Application.FileDialog(msoFileDialogFolderPicker)
