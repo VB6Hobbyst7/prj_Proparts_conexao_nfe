@@ -31,10 +31,12 @@ Dim pChvAcesso As String
 Dim pRepositorio As String
 
 '' SCRIPT DE INCLUSÃO DE DADOS NO SERVIDOR
+Dim tmpCamposNomes As String
 Dim strCamposNomes As String
 Dim strCamposNomesTmp As String
+Dim strRepositorio As String
 Dim tmpScript As String: _
-    tmpScript = "INSERT INTO pRepositorio ( strCamposNomes ) SELECT strCamposNomesTmp FROM ( VALUES strCamposValores ) AS TMP ( strCamposNomesTmp ) LEFT JOIN pRepositorio ON pRepositorio.ChvAcesso_CompraNF = tmp.ChvAcesso WHERE pRepositorio.ChvAcesso_CompraNF IS NULL;"
+    tmpScript = "INSERT INTO pRepositorio ( strCamposNomes ) SELECT strCamposTmp FROM ( VALUES strCamposValores ) AS TMP ( strCamposTmp ) LEFT JOIN pRepositorio ON pRepositorio.ChvAcesso_CompraNF = tmp.ChvAcesso WHERE pRepositorio.ChvAcesso_CompraNF IS NULL;"
 
 '' VALIDAR CONCILIAÇÃO
 Dim tmp As String
@@ -46,20 +48,21 @@ Dim tmp As String
     Do While Not rstChvAcesso.EOF
         pRepositorio = "tblCompraNF"
         pChvAcesso = rstChvAcesso.Fields("ChvAcesso_CompraNF").value
-        tmp = Replace(Replace(Replace(tmpScript, "strCamposNomesTmp", Replace(strCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), "")), "strCamposNomes", carregarCamposNomes(pRepositorio)), "pRepositorio", pRepositorio)
-                
-        Debug.Print tmp
-                
-                
+        
+        tmpCamposNomes = carregarCamposNomes(pRepositorio)
+        strCamposNomes = Replace(tmpScript, "strCamposNomes", tmpCamposNomes)
+        strCamposNomesTmp = Replace(Replace(tmpScript, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
+        strRepositorio = Replace(strCamposNomesTmp, "pRepositorio", pRepositorio)
+        
         '' CONTADOR
         dbDestino.SqlSelect "SELECT max(NumPed_CompraNF)+1 as contador from tblCompraNF"
         contador = IIf(IsNull(dbDestino.rs.Fields("contador").value), 1, dbDestino.rs.Fields("contador").value)
         
         '' CADASTRO DE COMPRAS
         For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-            tmp = Replace(Replace(tmp, "strCamposValores", item), "strNumPed_CompraNF", contador)
-            Debug.Print tmp
-            'dbDestino.SqlExecute tmp
+            tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+'            Debug.Print tmp
+            dbDestino.SqlExecute tmp
         Next item
                
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
@@ -67,16 +70,20 @@ Dim tmp As String
         qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", pChvAcesso), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
         If Not dbDestino.rs.EOF Then
             pRepositorio = "tblCompraNFItem"
-            tmp = Replace(Replace(tmpScript, "strCamposNomesTmp", Replace(strCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), "")), strCamposNomes, carregarCamposNomes(pRepositorio))
+            
+            tmpCamposNomes = carregarCamposNomes(pRepositorio)
+            strCamposNomes = Replace(tmpScript, "strCamposNomes", tmpCamposNomes)
+            strCamposNomesTmp = Replace(Replace(tmpScript, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
+            strRepositorio = Replace(strCamposNomesTmp, "pRepositorio", pRepositorio)
 
             '' #20210823_qryUpdateNumPed_CompraNF
             Application.CurrentDb.Execute qryComprasItens_Update_IDCompraNF
             
             '' CADASTRO DE ITENS DE COMPRAS
             For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-                tmp = Replace(Replace(tmp, "strCamposValores", item), "strNumPed_CompraNF", contador)
-                Debug.Print tmp
-                'dbDestino.SqlExecute tmp
+                tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+'                Debug.Print tmp
+                dbDestino.SqlExecute tmp
             Next item
 
         End If
@@ -111,16 +118,10 @@ Dim Scripts As New clsConexaoNfeCte
 'Dim pRepositorio As String: pRepositorio = "tblCompraNFItem"
 'Dim pChvAcesso As String: pChvAcesso = "32210368365501000296550000000638791001361285"
 
-
-
-Dim T As String
-
 '' BANCO_LOCAL
 Dim db As DAO.Database: Set db = CurrentDb
 
-T = Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio)
-
-Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(T)
+Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
 Dim rstOrigem As DAO.Recordset
 
 '' VALIDAR CONCILIAÇÃO
@@ -129,9 +130,6 @@ Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pReposi
 
 Dim sqlOrigem As String: sqlOrigem = _
     "Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'"
-    
-    Debug.Print pRepositorio
-    Debug.Print sqlOrigem
     
     Set rstOrigem = db.OpenRecordset(sqlOrigem)
     
@@ -147,8 +145,6 @@ Dim sqlOrigem As String: sqlOrigem = _
             '' CRIAR SCRIPT DE INCLUSAO DE DADOS NA TABELA DESTINO
             '' 2. campos x formatacao
             If InStr(rstCampos.Fields("campo").value, tmpValidarCampo) Then
-    
-                Debug.Print rstCampos.Fields("campo").value
     
                 If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo pulo
     
