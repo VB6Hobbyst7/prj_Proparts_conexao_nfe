@@ -2,20 +2,22 @@ Attribute VB_Name = "00_Processamento"
 Option Compare Database
 
 '' #PENDENTE
+'' * proxima atualização
+''
+'' #TESTES
+'' * 32210268365501000296550000000637741001351624 | 55
+'' * 32210304884082000569570000040073831040073834 | 57
 
-'' 32210268365501000296550000000637741001351624 | 55
-'' 32210304884082000569570000040073831040073834 | 57
+
+
 
 '' ### ao montar analisa "contains" '' remover duplicados
 '' ### ListagemDeArquivosValidos() '' listar apenas arquivos validos para cadastro
 '' ### export() '' chvCadastro
 
 
+
 '' #20211109
-'Private Function RepositorioDeImpostos() As Collection
-'Set RepositorioDeImpostos = New Collection
-
-
 Sub teste_ListagemDeArquivosValidos()
 
 '' #ENTRADA - LISTAGEM DE TODOS OS ARQUIVOS COLETADOS
@@ -29,12 +31,14 @@ Dim pColArquivos As Collection: Set pColArquivos = New Collection
 
 Dim item As Variant
 
+'' Importação
 For Each item In ListagemDeArquivosValidosParaCadastros(pColArquivos)
     Debug.Print CStr(item)
 Next
 
 End Sub
 
+'' #20211109
 Function ListagemDeArquivosValidosParaCadastros(pColArquivos As Collection) As Collection
 Dim colArquivo As Variant
 
