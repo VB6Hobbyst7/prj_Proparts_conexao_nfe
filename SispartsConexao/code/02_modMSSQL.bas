@@ -132,6 +132,7 @@ Debug.Print "Concluido!"
 End Sub
 
 '' #AILTON - DESEVENVOLVIMENTO
+'' file:///C:/XMLS/68.365.5010003-77%20-%20Proparts%20Com%C3%A9rcio%20de%20Artigos%20Esportivos%20e%20Tecnologia%20Ltda/recebimento/42210300634453001303570010001139451001171544-cteproc.xml
 Sub teste_carregarCamposValores_PROCESSAMENTO()
 
 'For Each item In carregarCamposValores("tblProcessamento", "42210348740351012767570000021186731952977908-cteproc")

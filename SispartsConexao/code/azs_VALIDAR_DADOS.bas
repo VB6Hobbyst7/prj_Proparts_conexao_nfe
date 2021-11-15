@@ -1,6 +1,55 @@
 Attribute VB_Name = "azs_VALIDAR_DADOS"
 Option Compare Database
 
+
+Sub teste_carregar()
+
+Dim pChave As String: pChave = "42210348740351012767570000021186731952977908-cteproc"
+Dim pRepositorio As String: pRepositorio = "tblCompraNF"
+
+Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pRepositorio) - 3)
+Dim tmpScript As String: tmpScript = Replace("SELECT NomeCampo,valor,formatacao FROM tblProcessamento where pk = 'pChave' and not NomeCampo is null", "pChave", pChave)
+Dim tmpScriptCabecalho As String
+Dim item As Variant
+
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rstRepositorio As DAO.Recordset: Set rstRepositorio = db.OpenRecordset(tmpScript)
+'Debug.Print tmpScript
+
+tmpScript = ""
+Do While Not rstRepositorio.EOF
+
+    For Each item In Split(carregarCamposNomes(pRepositorio), ",")
+        
+        If InStr(rstRepositorio.Fields("NomeCampo").value, CStr(item)) Then
+        
+            If rstRepositorio.Fields("formatacao").value = "opTexto" Then
+                tmpScript = tmpScript & "'" & rstRepositorio.Fields("Valor").value & "',"
+        
+            ElseIf rstRepositorio.Fields("formatacao").value = "opNumero" Or rstRepositorio.Fields("formatacao").value = "opMoeda" Then
+                tmpScript = tmpScript & rstRepositorio.Fields("Valor").value & ","
+        
+            ElseIf rstRepositorio.Fields("formatacao").value = "opTime" Then
+                tmpScript = tmpScript & "'" & Format(rstRepositorio.Fields("Valor").value, DATE_TIME_FORMAT) & "',"
+        
+            ElseIf rstRepositorio.Fields("formatacao").value = "opData" Then
+                tmpScript = tmpScript & "'" & Format(rstRepositorio.Fields("Valor").value, DATE_FORMAT) & "',"
+        
+            End If
+        
+            tmpScriptCabecalho = tmpScriptCabecalho & rstRepositorio.Fields("NomeCampo").value & ","
+        End If
+        DoEvents
+    Next
+        
+    rstRepositorio.MoveNext
+    DoEvents
+Loop
+
+Debug.Print left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)
+Debug.Print left(tmpScript, Len(tmpScript) - 1)
+
+End Sub
 Private Sub gerar_ArquivosDeValidacaoDeCampos()
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rstRegistros As DAO.Recordset
