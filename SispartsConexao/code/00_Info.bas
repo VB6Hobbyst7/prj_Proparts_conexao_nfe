@@ -1,64 +1,115 @@
 Attribute VB_Name = "00_Info"
 Option Compare Database
 
+'' LIMPAR TODA A BASE DE DADOS
+Public Const dataBaseClear As Boolean = True
+
+'' REPROCESSAR ARQUIVOS PENDENTES
+Public Const dataBaseReplay As Boolean = False
+
+'' EXPORTAR DADOS PARA SERVIDOR
+Public Const dataBaseExportarDados As Boolean = True
+
+'' PROCESSAMENTO DE ARQUIVOS
+Public Const dataBaseTratamentoDeArquivos As Boolean = False
+Public Const dataBaseGerarLancamentoManifesto As Boolean = False
+
+
 Sub teste_FuncionamentoGeralDeProcessamentoDeArquivos()
 Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
-Dim dataBaseClear As Boolean: dataBaseClear = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoClear'")
-Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoReplay'")
     
     ''==================================================
     '' REPOSITORIO GERAL
     ''==================================================
 
-    '' LIMPAR REPOSITORIO GERAL
-    If dataBaseClear Then Application.CurrentDb.Execute _
-            "Delete from tblDadosConexaoNFeCTe"
+    '' LIMPAR TODA A BASE DE DADOS
+    If dataBaseClear Then
+    
+        '' Limpar toda a base de dados
+        Application.CurrentDb.Execute "Delete from tblDadosConexaoNFeCTe"
 
-    '' Carregar todos os arquivos para processamento.
-    processarDadosGerais
+        '' Limpar repositorio de itens de compras
+        Application.CurrentDb.Execute _
+                "Delete from tblCompraNFItem"
+    
+        '' Limpar repositorio de compras
+        Application.CurrentDb.Execute _
+                "Delete from tblCompraNF"
 
+        '' Carregar todos os arquivos para processamento.
+        processarDadosGerais
+        
+    Else
+        
+        '' Carregar todos os arquivos para processamento.
+        processarDadosGerais
+    
+    
+    End If
 
     ''==================================================
     '' REPOSITORIOS DE COMPRAS
     ''==================================================
+    
+    '' REPROCESSAR ARQUIVOS VALIDOS
+    If dataBaseReplay Then
+    
+        '' Ajustar marcação de registro
+        Application.CurrentDb.Execute _
+            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado=0 WHERE tblDadosConexaoNFeCTe.registroValido=1 AND tblDadosConexaoNFeCTe.ID_Tipo>0"
+        
+        '' Limpar repositorio de itens de compras
+        Application.CurrentDb.Execute _
+                "Delete from tblCompraNFItem"
+    
+        '' Limpar repositorio de compras
+        Application.CurrentDb.Execute _
+                "Delete from tblCompraNF"
 
-    '' LIMPAR REPOSITORIO DE ITENS DE COMPRAS
-    If dataBaseClear Then Application.CurrentDb.Execute _
-            "Delete from tblCompraNFItem"
+        '' Processamento de arquivos pendentes da pasta de coleta.
+        processarArquivosPendentes
+            
+    Else
+    
+        '' Processamento de arquivos pendentes da pasta de coleta.
+        processarArquivosPendentes
+    
+    End If
 
-    '' LIMPAR REPOSITORIO DE COMPRAS
-    If dataBaseClear Then Application.CurrentDb.Execute _
-            "Delete from tblCompraNF"
-
-    '' Processamento de arquivos pendentes da pasta de coleta.
-    processarArquivosPendentes
 
     ''==================================================
     '' EXPORTAR DADOS PARA O SERVIDOR
     ''==================================================
 
     '' EXPORTAÇÃO DE DADOS
-    CadastroDeComprasEmServidor
+    If dataBaseExportarDados Then _
+            CadastroDeComprasEmServidor
 
     ''==================================================
     '' PROCESSAMENTO DE ARQUIVOS
     ''==================================================
 
-'    '' Transferir Arquivos Validos para pasta de processados
-'    tratamentoDeArquivosValidos
-'
-'    '' Transferir Arquivos Invalidos para pasta de Expurgo
-'    tratamentoDeArquivosInvalidos
-'
-'
-'
-'    '' #### GERAR ARQUIVOS DE LANÇAMENTO E MANIFESTO
-'    '' LANÇAMENTO
-'    gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes
-'
-'    '' MANIFESTO
-'    gerarArquivosJson opManifesto, , strCaminhoAcoes
+    '' #### TRANSFERENCIAS DE ARQUIVOS
+    If dataBaseTratamentoDeArquivos Then _
+
+        '' Transferir Arquivos Validos para pasta de processados
+        tratamentoDeArquivosValidos
     
+        '' Transferir Arquivos Invalidos para pasta de Expurgo
+        tratamentoDeArquivosInvalidos
+
+    End If
+
+    '' #### GERAR ARQUIVOS DE LANÇAMENTO E MANIFESTO
+    If dataBaseGerarLancamentoManifesto Then
+    
+        '' LANÇAMENTO
+        gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes
+    
+        '' MANIFESTO
+        gerarArquivosJson opManifesto, , strCaminhoAcoes
+        
+    End If
     
 Debug.Print "### Concluido! - testeDeFuncionamentoGeral"
 TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - testeDeFuncionamentoGeral"

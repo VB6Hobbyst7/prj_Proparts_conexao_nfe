@@ -20,31 +20,6 @@ Public Function classificacao(strValor As String) As String
 
 End Function
 
-'Public Function getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido(pChvAcesso As String, pDados As String) As String
-''' valor padrao
-'Dim tRetorno As String: tRetorno = 0
-'
-''' Codigo do Retorno de armazem
-'Dim tTipo As String: tTipo = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='RetornoArmazem'")
-'
-''' tipo de cadastro
-'Dim tTipoCadastro As String: tTipoCadastro = DLookup("[ID_Tipo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & pChvAcesso & "'")
-'
-''' limpar dado inicial
-'Dim tValor() As Variant: tValor = Array("PEDIDO:", "PEDIDO")
-'
-'    If tTipoCadastro = tTipo Then
-'        tRetorno = left(Trim(Replace(Replace(pDados, tValor(0), ""), tValor(1), "")), 6)
-'    End If
-'
-'
-'    getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido = tRetorno
-'
-'End Function
-
-
-
-
 Public Function GetFilesInSubFolders(pFolder As String) As Collection
 Set GetFilesInSubFolders = New Collection
 
@@ -184,16 +159,16 @@ Set db = Nothing
 
 End Function
 
-'' CARREGAR PARAMETROS UNICOS
-Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String, Optional pCampo As String) As String
-Dim db As DAO.Database: Set db = CurrentDb
-Dim strTmp As String: strTmp = Replace(pConsulta, "strParametro", pTipoDeParametro)
-Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(strTmp)
-
-    pegarValorDoParametro = rst.Fields(IIf(pCampo <> "", pCampo, "ValorDoParametro")).value
-
-db.Close
-End Function
+''' CARREGAR PARAMETROS UNICOS
+'Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String, Optional pCampo As String) As String
+'Dim db As DAO.Database: Set db = CurrentDb
+'Dim strTmp As String: strTmp = Replace(pConsulta, "strParametro", pTipoDeParametro)
+'Dim rst As DAO.Recordset: Set rst = db.OpenRecordset(strTmp)
+'
+'    pegarValorDoParametro = rst.Fields(IIf(pCampo <> "", pCampo, "ValorDoParametro")).value
+'
+'db.Close
+'End Function
 
 ''#ExtrairCaminhoDoArquivo
 Public Function getPath(sPathIn As String) As String
@@ -415,5 +390,3 @@ adm_Err:
     Resume adm_Exit
 
 End Function
-
-

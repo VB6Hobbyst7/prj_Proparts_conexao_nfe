@@ -1,33 +1,27 @@
 Attribute VB_Name = "azs_VALIDAR_DADOS"
 Option Compare Database
 
-Sub repositorioDeScripts()
-
-    '' REPROCESSAR ARQUIVOS VALIDOS
-    If dataBaseReplay Then Application.CurrentDb.Execute _
-            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado=0 WHERE tblDadosConexaoNFeCTe.registroValido=1 AND tblDadosConexaoNFeCTe.ID_Tipo>0"
-
-'    '' ZERAR CONTADOR DE NUMERO DE PEDIDOS
-'    If dataBaseClear Then Application.CurrentDb.Execute _
-'            "UPDATE tblParametros SET tblParametros.ValorDoParametro = 0 WHERE (((tblParametros.TipoDeParametro)=""NumPed_CompraNF""));"
-
-
-
-End Sub
-
-
 Private Sub gerar_ArquivosDeValidacaoDeCampos()
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rstRegistros As DAO.Recordset
 Dim rstItens As DAO.Recordset
 Dim sqlRegistros As String: sqlRegistros = "Select * from tblCompraNF where ChvAcesso_CompraNF = "
 Dim sqlItens As String: sqlItens = "Select * from tblCompraNFItem where ChvAcesso_CompraNF = "
+Dim arquivos As New Collection
 
 Dim item As Variant
 Dim tmp As String
 
-For Each item In Array("32210304884082000569570000040073831040073834", "42210220147617000494570010009539201999046070", "32210368365501000296550000000638811001361356", "42210212680452000302550020000886301507884230")
-'For Each item In Array("32210368365501000296550000000638841001361501")
+arquivos.add "32210304884082000569570000040073831040073834"
+arquivos.add "42210220147617000494570010009539201999046070"
+arquivos.add "32210368365501000296550000000638811001361356"
+arquivos.add "42210212680452000302550020000886301507884230"
+
+'arquivos.Add "32210368365501000296550000000638841001361501"
+
+
+For Each item In arquivos
+
     
     tmp = sqlRegistros & "'" & CStr(item) & "'"
     Set rstRegistros = db.OpenRecordset(tmp)
@@ -75,56 +69,27 @@ Set rstItens = Nothing
 
 End Sub
 
-Private Sub criarConsultasParaTestes()
-Dim db As DAO.Database: Set db = CurrentDb
-Dim rstOrigem As DAO.Recordset
-Dim strSQL As String
-Dim qrySelectTabelas As String: qrySelectTabelas = "Select Distinct tabela from tblOrigemDestino order by tabela"
-Dim tabela As Variant
-
-'' CRIAR CONSULTA PARA VALIDAR DADOS PROCESSADOS
-For Each tabela In carregarParametros(qrySelectTabelas)
-    strSQL = "Select "
-    Set rstOrigem = db.OpenRecordset("Select distinct Destino from tblOrigemDestino where tabela = '" & tabela & "'")
-    Do While Not rstOrigem.EOF
-        strSQL = strSQL & strSplit(rstOrigem.Fields("Destino").value, ".", 1) & ","
-        rstOrigem.MoveNext
-    Loop
-    
-    strSQL = left(strSQL, Len(strSQL) - 1) & " from " & tabela
-    qryDeleteExists "qry_" & tabela
-    qryCreate "qry_" & tabela, strSQL
-Next tabela
-
-db.Close: Set db = Nothing
-
-End Sub
-
-
-Sub TESTE_qryDadosGerais_Update_IDVD()
-Dim qryDadosGerais_Update_IDVD As String: qryDadosGerais_Update_IDVD = _
-    "UPDATE tblDadosConexaoNFeCTe " & _
-    "SET tblDadosConexaoNFeCTe.IDVD_CompraNF = ((Left(Trim(Replace(Replace(tblDadosConexaoNFeCTe.IDVD_CompraNF, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6))) " & _
-    "WHERE (((Left(tblDadosConexaoNFeCTe.IDVD_CompraNF, 6)) = 'PEDIDO ') " & _
-    "       AND ((tblDadosConexaoNFeCTe.CNPJ_emit) = '12680452000302') " & _
-    "       AND (((tblDadosConexaoNFeCTe.registroValido) = 1)  " & _
-    "       AND ((tblDadosConexaoNFeCTe.registroProcessado) = 0))  " & _
-    "       AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0));"
-
-Dim qryDadosGerais_Update_IDVD_NULL As String: qryDadosGerais_Update_IDVD_NULL = _
-    "UPDATE tblDadosConexaoNFeCTe " & _
-    "SET tblDadosConexaoNFeCTe.IDVD_CompraNF = NULL " & _
-    "WHERE (((Left(tblDadosConexaoNFeCTe.IDVD_CompraNF, 6)) = 'PEDIDO ') " & _
-    "       AND ((tblDadosConexaoNFeCTe.CNPJ_emit) <> '12680452000302') " & _
-    "       AND (((tblDadosConexaoNFeCTe.registroValido) = 1)  " & _
-    "       AND ((tblDadosConexaoNFeCTe.registroProcessado) = 0))  " & _
-    "       AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0));"
-    
-
-Dim qryProcessos() As Variant: qryProcessos = Array(qryDadosGerais_Update_IDVD, qryDadosGerais_Update_IDVD_NULL)
-    
-    executarComandos qryProcessos
-
-End Sub
-
-
+'Private Sub criarConsultasParaTestes()
+'Dim db As DAO.Database: Set db = CurrentDb
+'Dim rstOrigem As DAO.Recordset
+'Dim strSQL As String
+'Dim qrySelectTabelas As String: qrySelectTabelas = "Select Distinct tabela from tblOrigemDestino order by tabela"
+'Dim tabela As Variant
+'
+''' CRIAR CONSULTA PARA VALIDAR DADOS PROCESSADOS
+'For Each tabela In carregarParametros(qrySelectTabelas)
+'    strSQL = "Select "
+'    Set rstOrigem = db.OpenRecordset("Select distinct Destino from tblOrigemDestino where tabela = '" & tabela & "'")
+'    Do While Not rstOrigem.EOF
+'        strSQL = strSQL & strSplit(rstOrigem.Fields("Destino").value, ".", 1) & ","
+'        rstOrigem.MoveNext
+'    Loop
+'
+'    strSQL = left(strSQL, Len(strSQL) - 1) & " from " & tabela
+'    qryDeleteExists "qry_" & tabela
+'    qryCreate "qry_" & tabela, strSQL
+'Next tabela
+'
+'db.Close: Set db = Nothing
+'
+'End Sub
