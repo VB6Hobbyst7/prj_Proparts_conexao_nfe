@@ -112,13 +112,13 @@ Public Sub remove(ByVal i As Integer)
 End Sub
 
 Public Function clsConexaoNfeCteDados(ByVal i As Variant) As clsConexaoNfeCteDados
-    Set clsConexaoNfeCteDados = pCol.Item(i)
+    Set clsConexaoNfeCteDados = pCol.item(i)
 End Function
 
 Public Property Get Itens() As Collection
     Set Itens = pCol
 End Property
 
-Public Property Get Item(i As Variant) As clsConexaoNfeCteDados
-    Set Item = pCol(i)
+Public Property Get item(i As Variant) As clsConexaoNfeCteDados
+    Set item = pCol(i)
 End Property

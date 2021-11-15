@@ -47,7 +47,7 @@ Option Explicit
     
     'API memory functions
     Private Declare Function GlobalAlloc Lib "kernel32" (ByVal wFlags As Long, ByVal dwBytes As Long) As Long
-   Private Declare Function GlobalFree Lib "kernel32" (ByVal hMem As Long) As Long
+    Private Declare Function GlobalFree Lib "kernel32" (ByVal hMem As Long) As Long
     Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
     Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
     
@@ -279,8 +279,8 @@ Public Sub ShowColor()
         If bCancelError = True Then
             'generate an error
             On Error GoTo 0
-            err.Raise Number:=vbObjectError + 894, _
-                description:="Cancel Pressed"
+            Err.Raise Number:=vbObjectError + 894, _
+                Description:="Cancel Pressed"
             Exit Sub
         End If
         
@@ -644,7 +644,7 @@ Private Sub ShowFileDialog(ByVal iAction As Integer)
         Case 0  'user canceled
         If bCancelError = True Then
             'generate an error
-            err.Raise (2001)
+            Err.Raise (2001)
             Exit Sub
         End If
         

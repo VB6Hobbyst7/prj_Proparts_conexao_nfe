@@ -80,9 +80,9 @@ Public Function SqlSelect(Optional pSql As String, Optional pStayConnected As Bo
     iRs.CursorLocation = adUseClient
 
     Do Until intTentativas = MAX_TENTATIVAS
-        err.Clear
+        Err.clear
         iRs.Open iSql, iCn, ADODB.adOpenForwardOnly, adLockReadOnly
-        If err.Number = 0 Then
+        If Err.Number = 0 Then
             Set iRs.ActiveConnection = Nothing
             If Not pStayConnected Then CloseConnection
             Exit Do
@@ -94,8 +94,8 @@ Public Function SqlSelect(Optional pSql As String, Optional pStayConnected As Bo
 Exit Function
 ErrHandler:
     If intTentativas = MAX_TENTATIVAS Then
-        Debug.Print " -- Erro " & err.description & " " & Now() & " -- " & vbNewLine & iSql
-        err.Raise vbObjectError + 512 + ERR_SELECT
+        Debug.Print " -- Erro " & Err.Description & " " & Now() & " -- " & vbNewLine & iSql
+        Err.Raise vbObjectError + 512 + ERR_SELECT
     Else
         intTentativas = intTentativas + 1
         Sleep MAX_SLEEP
@@ -111,9 +111,9 @@ Public Function SqlExecute(Optional pSql As String, Optional pStayConnected As B
     OpenConnection
     
     Do Until intTentativas = MAX_TENTATIVAS
-        err.Clear
+        Err.clear
         iCn.Execute iSql, adExecuteNoRecords
-        If err.Number = 0 Then
+        If Err.Number = 0 Then
             If Not pStayConnected Then CloseConnection
             Exit Do
         Else
@@ -124,8 +124,9 @@ Public Function SqlExecute(Optional pSql As String, Optional pStayConnected As B
 Exit Function
 ErrHandler:
     If intTentativas = MAX_TENTATIVAS Then
-        Debug.Print " -- Erro " & err.description & " " & Now() & " -- " & vbNewLine & iSql
-        err.Raise vbObjectError + 512 + ERR_EXECUTE
+        Debug.Print " -- Erro " & Err.Description & " " & Now() & " -- " & vbNewLine & iSql
+        TextFile_Append CurrentProject.path & "\" & strLog(), "SqlExecute " & " -- Erro " & Err.Description & " " & Now() & " -- " & vbNewLine & iSql
+        Err.Raise vbObjectError + 512 + ERR_EXECUTE
     Else
         intTentativas = intTentativas + 1
         Sleep MAX_SLEEP
@@ -151,8 +152,9 @@ Public Function OpenConnection()
 Exit Function
 ErrHandler:
     If intTentativas = MAX_TENTATIVAS Then
-        Debug.Print " -- Erro " & err.description & " " & Now() & " -- "
-        err.Raise vbObjectError + 512 + ERR_CONECT
+        Debug.Print " -- Erro " & Err.Description & " " & Now() & " -- "
+        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "SqlExecute " & " -- Erro " & Err.Description & " " & Now() & " -- "
+        Err.Raise vbObjectError + 512 + ERR_CONECT
     Else
         intTentativas = intTentativas + 1
         Sleep MAX_SLEEP

@@ -95,30 +95,37 @@ Private Const qryUpdateProcessamento_opTime As String = _
         "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
         
 Public Sub DeleteProcessamento()
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - DeleteProcessamento()"
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDeleteProcessamento
     Application.CurrentDb.Execute qryDeleteProcessamento
                                                     
 End Sub
         
 Public Sub UpdateProcessamentoLimparItensMarcadosErrados()
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - UpdateProcessamentoLimparItensMarcadosErrados()"
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryUpdateProcessamento_LimparItensMarcadosErrados
     Application.CurrentDb.Execute qryUpdateProcessamento_LimparItensMarcadosErrados
                                                     
 End Sub
         
         
 Public Sub UpdateProcessamentoFormatarDados()
-Dim qryProcessos() As Variant: qryProcessos = Array( _
-                                                    qryUpdateProcessamento_opData, _
-                                                    qryUpdateProcessamento_opTime): executarComandos qryProcessos
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - UpdateProcessamentoFormatarDados()"
+    Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                        qryUpdateProcessamento_opData, _
+                                                        qryUpdateProcessamento_opTime): executarComandos qryProcessos
 End Sub
 
 Public Sub UpdateProcessamentoIdentificarCampos(pRepositorio As String)
-Dim qryProcessos() As Variant: qryProcessos = Array( _
-                                                Replace(qryUpdateProcessamento_NomeTabela, "tblRepositorio", pRepositorio), _
-                                                Replace(qryUpdateProcessamento_NomeCampo, "tblRepositorio", pRepositorio), _
-                                                Replace(qryUpdateProcessamento_Formatacao, "tblRepositorio", pRepositorio), _
-                                                qryUpdateProcessamento_RelacaoCamposDeTabelas_Item_CompraNFItem, _
-                                                qryUpdateProcessamento_RelacaoCamposDeTabelas_ChvAcesso_CompraNF, _
-                                                qryUpdateProcessamento_RelacaoCamposDeTabelas_tblCompraNFItem_ChvAcesso_CompraNF): executarComandos qryProcessos
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - UpdateProcessamentoIdentificarCampos(pRepositorio As String)"
+    Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                    Replace(qryUpdateProcessamento_NomeTabela, "tblRepositorio", pRepositorio), _
+                                                    Replace(qryUpdateProcessamento_NomeCampo, "tblRepositorio", pRepositorio), _
+                                                    Replace(qryUpdateProcessamento_Formatacao, "tblRepositorio", pRepositorio), _
+                                                    qryUpdateProcessamento_RelacaoCamposDeTabelas_Item_CompraNFItem, _
+                                                    qryUpdateProcessamento_RelacaoCamposDeTabelas_ChvAcesso_CompraNF, _
+                                                    qryUpdateProcessamento_RelacaoCamposDeTabelas_tblCompraNFItem_ChvAcesso_CompraNF): executarComandos qryProcessos
+                                                
 End Sub
 
 
@@ -137,7 +144,7 @@ Dim XDoc As Object: Set XDoc = CreateObject("MSXML2.DOMDocument"): XDoc.async = 
 XDoc.Load pPathFile
 
 Dim cont As Integer: cont = XDoc.getElementsByTagName("infNFe/det").Length
-Dim Item As Variant
+Dim item As Variant
 
 Dim pDados As New Collection
 Dim idItem As String: idItem = ""
@@ -163,13 +170,13 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
             pDados.add pPK & "|" & "Chave" & "|" & pPK
             pDados.add pPK & "|" & "CaminhoDoArquivo" & "|" & pPathFile
             
-            For Each Item In carregarParametros(qrySelecaoDeCampos, repositorioDadosGerais)
-                Select Case UBound(Split((Item), "|"))
+            For Each item In carregarParametros(qrySelecaoDeCampos, repositorioDadosGerais)
+                Select Case UBound(Split((item), "|"))
                     Case 1
-                        regiao = Split((Item), "|")(0)
-                        campo = Split((Item), "|")(1)
-                        valor = XDoc.SelectNodes(regiao).Item(0).SelectNodes(campo).Item(0).text
-                        If valor <> "" Then pDados.add pPK & "|" & Replace(Item, "|", ";") & "|" & valor
+                        regiao = Split((item), "|")(0)
+                        campo = Split((item), "|")(1)
+                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).Text
+                        If valor <> "" Then pDados.add pPK & "|" & Replace(item, "|", ";") & "|" & valor
                     Case Else
                 End Select
                 
@@ -177,7 +184,7 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                 campo = ""
                 valor = ""
                 DoEvents
-            Next Item
+            Next item
         
         '' COMPRAS
         Case opCompras
@@ -192,13 +199,13 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
             pDados.add pPK & "|" & "ChvAcesso_CompraNF" & "|" & pChvAcesso
             
             '' CABEÇALHO DA COMPRA
-            For Each Item In carregarParametros(qrySelecaoDeCampos, repositorioCompras)
-                Select Case UBound(Split((Item), "|"))
+            For Each item In carregarParametros(qrySelecaoDeCampos, repositorioCompras)
+                Select Case UBound(Split((item), "|"))
                     Case 1
-                        regiao = Split((Item), "|")(0)
-                        campo = Split((Item), "|")(1)
-                        valor = XDoc.SelectNodes(regiao).Item(0).SelectNodes(campo).Item(0).text
-                        If valor <> "" Then pDados.add pPK & "|" & Replace(Item, "|", ";") & "|" & valor
+                        regiao = Split((item), "|")(0)
+                        campo = Split((item), "|")(1)
+                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).Text
+                        If valor <> "" Then pDados.add pPK & "|" & Replace(item, "|", ";") & "|" & valor
                     Case Else
                 End Select
                 
@@ -206,35 +213,35 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                 campo = ""
                 valor = ""
                 DoEvents
-            Next Item
+            Next item
 
 
             '' ITENS DA COMPRA
             For i = 0 To cont - 1
                 '' ID
-                idItem = CStr(XDoc.getElementsByTagName("nfeProc/NFe/infNFe/det").Item(i).Attributes(0).value)
+                idItem = CStr(XDoc.getElementsByTagName("nfeProc/NFe/infNFe/det").item(i).Attributes(0).value)
                 pDados.add pPK & "_" & idItem & "|" & "Item_CompraNFItem" & "|" & idItem
         
                 pDados.add pPK & "_" & idItem & "|" & "tblCompraNFItem.ChvAcesso_CompraNF.opTexto" & "|" & pChvAcesso
         
-                For Each Item In carregarParametros(qrySelecaoDeCampos, repositorioComprasItens)
+                For Each item In carregarParametros(qrySelecaoDeCampos, repositorioComprasItens)
         
-                    Select Case UBound(Split((Item), "|"))
+                    Select Case UBound(Split((item), "|"))
         
                         '' ITEM DE COMPRA
                         Case 1
-                            regiao = Split((Item), "|")(0)
-                            campo = Split((Item), "|")(1)
-                            valor = XDoc.SelectNodes(regiao).Item(i).SelectNodes(campo).Item(0).text
-                            If valor <> "" Then pDados.add pPK & "_" & idItem & "|" & Replace(Item, "|", ";") & "|" & valor
+                            regiao = Split((item), "|")(0)
+                            campo = Split((item), "|")(1)
+                            valor = XDoc.SelectNodes(regiao).item(i).SelectNodes(campo).item(0).Text
+                            If valor <> "" Then pDados.add pPK & "_" & idItem & "|" & Replace(item, "|", ";") & "|" & valor
         
                         '' IMPOSTO
                         Case 2
-                            regiao = Split((Item), "|")(0)
-                            subRegiao = Split((Item), "|")(1)
-                            campo = Split((Item), "|")(2)
-                            valor = XDoc.SelectNodes(regiao).Item(i).SelectNodes(subRegiao).Item(0).getElementsByTagName(campo).Item(0).text
-                            If valor <> "" Then pDados.add pPK & "_" & idItem & "|" & Replace(Item, "|", ";") & "|" & valor
+                            regiao = Split((item), "|")(0)
+                            subRegiao = Split((item), "|")(1)
+                            campo = Split((item), "|")(2)
+                            valor = XDoc.SelectNodes(regiao).item(i).SelectNodes(subRegiao).item(0).getElementsByTagName(campo).item(0).Text
+                            If valor <> "" Then pDados.add pPK & "_" & idItem & "|" & Replace(item, "|", ";") & "|" & valor
         
                         Case Else
                     End Select
@@ -244,7 +251,7 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                     campo = ""
                     valor = ""
                     DoEvents
-                Next Item
+                Next item
                 DoEvents
             Next i
 

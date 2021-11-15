@@ -3,7 +3,7 @@ Option Compare Database
 Option Explicit
 
 Sub InformaErro(procName As String)
-    MsgBox "Erro nº " & err.Number & " @@" & err.description, _
+    MsgBox "Erro nº " & Err.Number & " @@" & Err.Description, _
         vbExclamation, "Procedimento: " & procName
 End Sub
 

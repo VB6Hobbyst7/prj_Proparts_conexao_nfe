@@ -1193,7 +1193,7 @@ Dim hWnd
 Exit_AbreSelArquivo:
     Exit Function
 Err_AbreSelArquivo:
-    MsgBox err.description
+    MsgBox Err.Description
     Resume Exit_AbreSelArquivo
 End Function
 
@@ -1234,7 +1234,7 @@ On Error GoTo Err_OpenGetFileDialog
 Exit_OpenGetFileDialog:
     Exit Function
 Err_OpenGetFileDialog:
-    MsgBox err.description
+    MsgBox Err.Description
     Resume Exit_OpenGetFileDialog
 End Function
 Function STRMaiuscula(campo As Variant) As String
@@ -1750,17 +1750,17 @@ End If
 Exit Function
 
 NoBug:
-If err.Number = 9 Then Exit Function
+If Err.Number = 9 Then Exit Function
 
 End Function
 
-Public Sub SaveSQLString(strSql As String)
+Public Sub SaveSQLString(strSQL As String)
 On Error Resume Next
 Dim i As String
 
 i = FreeFile
 Open "C:\sam\sql_string.txt" For Output As #i
- Print #i, strSql
+ Print #i, strSQL
 Close #i
 
 Shell "notepad C:\sam\sql_string.txt"
@@ -1921,7 +1921,7 @@ Exit Function
 NoBug:
 
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -1980,7 +1980,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -2039,7 +2039,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -2108,7 +2108,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -2176,7 +2176,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -2291,13 +2291,13 @@ End If
         iConf.Load -1    ' CDO Source Defaults
         Set Flds = iConf.Fields
         With Flds
-            .Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
-            .Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = smtpPorta
-            .Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = smtpCliente
-            .Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
-            .Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = smtpUsuario
-            .Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = smtpSenha
-            .Item("http://schemas.microsoft.com/cdo/configuration/sendemailaddress") = emailRemetente
+            .item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+            .item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = smtpPorta
+            .item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = smtpCliente
+            .item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
+            .item("http://schemas.microsoft.com/cdo/configuration/sendusername") = smtpUsuario
+            .item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = smtpSenha
+            .item("http://schemas.microsoft.com/cdo/configuration/sendemailaddress") = emailRemetente
             .Update
         End With
  
@@ -2583,7 +2583,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -2643,7 +2643,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 
@@ -2703,7 +2703,7 @@ Exit Function
 
 NoBug:
 
-If err.Number = 3265 Then Resume Next
+If Err.Number = 3265 Then Resume Next
 'MsgBox Err.Number & Err.Description
 Resume Next
 

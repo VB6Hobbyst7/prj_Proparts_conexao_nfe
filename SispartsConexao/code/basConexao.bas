@@ -49,10 +49,10 @@ CNN.Open strConnect
 Exit Function
 
 ConexaoTrataErro:
-If err.Number = 91 Then ObjConnErr = False: Resume Next
-If err.Number = 3265 Then Resume Next
+If Err.Number = 91 Then ObjConnErr = False: Resume Next
+If Err.Number = 3265 Then Resume Next
   For Each adoErro In CNN.Errors
-    MsgBox adoErro.description
+    MsgBox adoErro.Description
   Next
 End Function
 Public Function GetState(intState As Integer) As String

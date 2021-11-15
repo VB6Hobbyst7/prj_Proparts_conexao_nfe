@@ -41,7 +41,7 @@ Dim nomeArquivo As String
         dados.nomeUsuarioErp = DLookup("ValorDoParametro", "tblParametros", "TipoDeParametro='UsuarioErpNome'")
         
         '' CAMINHO DE SAIDA DO ARQUIVO
-        dados.caminhoDeProcessados = CreateDir(DLookup("ValorDoParametro", "tblParametros", "TipoDeParametro='caminhoDeProcessados'"))
+        dados.caminhoDeProcessados = CreateDir(DLookup("ValorDoParametro", "tblParametros", "TipoDeParametro='caminhoDeColetaProcessados'"))
         If caminhoDeProcessados <> "" Then dados.caminhoDeProcessados = caminhoDeProcessados
                         
         Select Case pArquivo

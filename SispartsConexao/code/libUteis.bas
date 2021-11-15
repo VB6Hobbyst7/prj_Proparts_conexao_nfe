@@ -16,57 +16,34 @@ End Enum
 '' Classificacao de dados para separar itens processados
 Public Function classificacao(strValor As String) As String
 
-classificacao = UBound(Split((strValor), "_"))
+    classificacao = UBound(Split((strValor), "_"))
 
 End Function
 
-Public Function getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido(pChvAcesso As String, pDados As String) As String
-'' valor padrao
-Dim tRetorno As String: tRetorno = 0
+'Public Function getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido(pChvAcesso As String, pDados As String) As String
+''' valor padrao
+'Dim tRetorno As String: tRetorno = 0
+'
+''' Codigo do Retorno de armazem
+'Dim tTipo As String: tTipo = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='RetornoArmazem'")
+'
+''' tipo de cadastro
+'Dim tTipoCadastro As String: tTipoCadastro = DLookup("[ID_Tipo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & pChvAcesso & "'")
+'
+''' limpar dado inicial
+'Dim tValor() As Variant: tValor = Array("PEDIDO:", "PEDIDO")
+'
+'    If tTipoCadastro = tTipo Then
+'        tRetorno = left(Trim(Replace(Replace(pDados, tValor(0), ""), tValor(1), "")), 6)
+'    End If
+'
+'
+'    getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido = tRetorno
+'
+'End Function
 
-'' Codigo do Retorno de armazem
-Dim tTipo As String: tTipo = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='RetornoArmazem'")
-
-'' tipo de cadastro
-Dim tTipoCadastro As String: tTipoCadastro = DLookup("[ID_Tipo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & pChvAcesso & "'")
-
-'' limpar dado inicial
-Dim tValor() As Variant: tValor = Array("PEDIDO:", "PEDIDO")
-
-    If tTipoCadastro = tTipo Then
-        tRetorno = left(Trim(Replace(Replace(pDados, tValor(0), ""), tValor(1), "")), 6)
-    End If
-    
-    
-    getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido = tRetorno
-
-End Function
 
 
-'' #VALIDAR_DADOS
-Sub criarConsultasParaTestes()
-Dim db As DAO.Database: Set db = CurrentDb
-Dim rstOrigem As DAO.Recordset
-Dim strSql As String
-Dim qrySelectTabelas As String: qrySelectTabelas = "Select Distinct tabela from tblOrigemDestino order by tabela"
-Dim tabela As Variant
-
-'' CRIAR CONSULTA PARA VALIDAR DADOS PROCESSADOS
-For Each tabela In carregarParametros(qrySelectTabelas)
-    strSql = "Select "
-    Set rstOrigem = db.OpenRecordset("Select distinct Destino from tblOrigemDestino where tabela = '" & tabela & "'")
-    Do While Not rstOrigem.EOF
-        strSql = strSql & strSplit(rstOrigem.Fields("Destino").value, ".", 1) & ","
-        rstOrigem.MoveNext
-    Loop
-    strSql = left(strSql, Len(strSql) - 1) & " from " & tabela
-    qryDeleteExists "qry_" & tabela
-    qryCreate "qry_" & tabela, strSql
-Next tabela
-
-db.Close: Set db = Nothing
-
-End Sub
 
 Public Function GetFilesInSubFolders(pFolder As String) As Collection
 Set GetFilesInSubFolders = New Collection
@@ -139,7 +116,7 @@ Dim C As Variant, tmp As String: tmp = ""
 End Function
 
 '' CRIACAO DE ARQUIVOS
-Public Function TextFile_Append(pFilePath As String, pText As String) As Boolean ''#CriarArquivosJson (Auxiliar)
+Public Function TextFile_Append(pFilePath As String, pText As String) As Boolean
     Dim intFNumber As Integer
     intFNumber = FreeFile
     
@@ -162,6 +139,9 @@ Public Sub executarComandos(comandos() As Variant)
 Dim Comando As Variant
 
     For Each Comando In comandos
+        Debug.Print Comando
+        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), CStr(Comando)
+        
         Application.CurrentDb.Execute Comando, dbSeeChanges
     Next Comando
 
@@ -203,25 +183,6 @@ db.Close
 Set db = Nothing
 
 End Function
-
-
-'Public Function carregarParametros(pConsulta As String, Optional pParametro As String) As Collection: Set carregarParametros = New Collection
-'Dim db As dao.Database: Set db = CurrentDb
-'Dim strSql As String: strSql = IIf(pParametro <> "", Replace(pConsulta, "strParametro", pParametro), pConsulta)
-'Dim rst As dao.Recordset: Set rst = db.OpenRecordset(pConsulta)
-'Dim f As Variant
-'
-'Do While Not rst.EOF
-'    carregarParametros.add rst.Fields(0).value
-'    rst.MoveNext
-'Loop
-'
-'db.Close
-'
-'Set db = Nothing
-'
-'End Function
-
 
 '' CARREGAR PARAMETROS UNICOS
 Public Function pegarValorDoParametro(pConsulta As String, pTipoDeParametro As String, Optional pCampo As String) As String
@@ -311,6 +272,11 @@ Public Function strControle() As String
     strControle = right(Year(Now()), 4) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & "_" & Format(Hour(Now()), "00") & Format(Minute(Now()), "00")
 End Function
 
+'' GERAR IDENTIFICADOR PARA LOGs
+Public Function strLog() As String
+    strLog = right(Year(Now()), 4) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & ".log"
+End Function
+
 '' LIMPAR PONTOS
 Public Function STRPontos(campo As Variant) As String
   On Error GoTo Err_STR
@@ -395,3 +361,59 @@ Public Function PickFolder(pPath As String, pTitle As String, Optional pSubFolde
             End If
     End With
 End Function
+
+Function azsProcessamentoDeArquivos(sqlArquivos As String, qryUpdate As String)
+On Error GoTo adm_Err
+
+Dim objFSO As Object: Set objFSO = CreateObject("Scripting.FileSystemObject")
+Dim db As DAO.Database: Set db = CurrentDb
+Dim rstArquivos As DAO.Recordset
+Dim DadosGerais As New clsConexaoNfeCte
+
+Dim qryTemp As String
+Dim strOrigem As String
+Dim strDestino As String
+
+    Set rstArquivos = db.OpenRecordset(sqlArquivos)
+    Do While Not rstArquivos.EOF
+        
+        '' 01. IDENTIFICAR CAMINHOS DE ORIGEM E DESTINO
+        strOrigem = rstArquivos.Fields("strOrigem").value
+        Debug.Print strOrigem
+        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), strOrigem
+        
+        strDestino = rstArquivos.Fields("strDestino").value
+        Debug.Print strDestino
+        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), strDestino
+        
+        '' 02. CLASSIFICAÇÃO DO ARQUIVO E ALTERAÇÃO DO CAMINHO DO ARQUIVO
+        qryTemp = Replace(qryUpdate, "strChave", rstArquivos.Fields("ChvAcesso").value)
+        Debug.Print qryTemp
+        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryTemp
+        Application.CurrentDb.Execute qryTemp
+                
+        '' 02. REMOVER ARQUIVO ORIGINAL
+        objFSO.CopyFile strOrigem, strDestino
+        If (Dir(strOrigem) <> "") Then Kill strOrigem
+        
+        rstArquivos.MoveNext
+        DoEvents
+    Loop
+
+adm_Exit:
+    rstArquivos.Close
+    db.Close
+    
+    Set rstArquivos = Nothing
+    Set db = Nothing
+    
+    Exit Function
+
+adm_Err:
+    Debug.Print Error$
+    TextFile_Append CurrentProject.path & "\" & strLog(), Error$
+    Resume adm_Exit
+
+End Function
+
+

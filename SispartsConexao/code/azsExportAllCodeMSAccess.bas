@@ -6,7 +6,7 @@ Public Sub ExportAllCode()
 
     Dim C As VBComponent
     Dim Sfx As String
-    Dim pathExit As String: pathExit = Replace(CurrentProject.path, left(CurrentProject.Name, Len(CurrentProject.Name) - 6), "") & "scripts\" & strControle & "\"
+    Dim pathExit As String: pathExit = Replace(CurrentProject.path, left(CurrentProject.Name, Len(CurrentProject.Name) - 6), "") & "referencia\" & strControle & "\"
     
     For Each C In Application.VBE.VBProjects(1).VBComponents
         Select Case C.Type

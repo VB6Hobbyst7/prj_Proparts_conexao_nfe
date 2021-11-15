@@ -1,39 +1,75 @@
 Attribute VB_Name = "00_Info"
 Option Compare Database
 
-Private Const qryUpdateNumPed_CompraNF As String = "UPDATE TblCompraNF SET TblCompraNF.NumPed_CompraNF = Format(IIf(IsNull(DMax('NumPed_CompraNF', 'TblCompraNF')), '000001', DMax('NumPed_CompraNF', 'TblCompraNF') + 1), '000000') " & _
-        "WHERE (((TblCompraNF.ID_CompraNF) IN (SELECT TOP 1 ID_CompraNF FROM TblCompraNF WHERE NumPed_CompraNF IS NULL ORDER BY ID_CompraNF)));"
+Sub teste_FuncionamentoGeralDeProcessamentoDeArquivos()
+Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
+Dim dataBaseClear As Boolean: dataBaseClear = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoClear'")
+Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoReplay'")
+    
+    ''==================================================
+    '' REPOSITORIO GERAL
+    ''==================================================
+
+    '' LIMPAR REPOSITORIO GERAL
+    If dataBaseClear Then Application.CurrentDb.Execute _
+            "Delete from tblDadosConexaoNFeCTe"
+
+    '' Carregar todos os arquivos para processamento.
+    processarDadosGerais
+
+    '' REPROCESSAR ARQUIVOS VALIDOS
+    If dataBaseReplay Then Application.CurrentDb.Execute _
+            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado=0 WHERE tblDadosConexaoNFeCTe.registroValido=1 AND tblDadosConexaoNFeCTe.ID_Tipo>0"
+
+    ''==================================================
+    '' REPOSITORIOS DE COMPRAS
+    ''==================================================
+
+    '' ZERAR CONTADOR DE NUMERO DE PEDIDOS
+    If dataBaseClear Then Application.CurrentDb.Execute _
+            "UPDATE tblParametros SET tblParametros.ValorDoParametro = 0 WHERE (((tblParametros.TipoDeParametro)=""NumPed_CompraNF""));"
+
+    '' LIMPAR REPOSITORIO DE ITENS DE COMPRAS
+    If dataBaseClear Then Application.CurrentDb.Execute _
+            "Delete from tblCompraNFItem"
+
+    '' LIMPAR REPOSITORIO DE COMPRAS
+    If dataBaseClear Then Application.CurrentDb.Execute _
+            "Delete from tblCompraNF"
+
+    '' Processamento de arquivos pendentes da pasta de coleta.
+    processarArquivosPendentes
+
+    '' Transferir Arquivos Validos para pasta de processados
+    tratamentoDeArquivosValidos
+
+    '' Transferir Arquivos Invalidos para pasta de Expurgo
+    tratamentoDeArquivosInvalidos
 
 
-''----------------------------
 
-'' #AILTON - VALIDAR
-'' #ARQUIVOS - GERAR ARQUIVOS | PROCESSAMENTO POR ARQUIVO(S)
+    ''==================================================
+    '' EXPORTAR DADOS PARA O SERVIDOR
+    ''==================================================
 
-'' #05_XML_ICMS                         - REVISÃO / FERNANDA
-'' #05_XML_ICMS_Orig                    - REVISÃO / FERNANDA
-'' #05_XML_ICMS_CST                     - REVISÃO / FERNANDA
-'' #05_XML_ICMS_CST_VICMS               - REVISÃO / FERNANDA
-'' #05_XML_IPI                          - REVISÃO / FERNANDA
-'' #AILTON - qryInsertCompraItens       - REVISÃO / FERNANDA
-'' #AILTON - qryInsertProdutoConsumo    - REVISÃO / FERNANDA
-''
-'' #PENDENTE - Processamento de arquivos CTE Inclusão de itens
-'' #PENDENTE - Validação de campos de compras e itens
-'' #PENDENTE - Teste de inclusão em banco SQL com todas as compras
+    '' EXPORTAÇÃO DE DADOS
+    enviarDadosServidor
 
-''----------------------------
+'    ''==================================================
+'    '' PROCESSAMENTO DE ARQUIVOS
+'    ''==================================================
+'
+'
+'    '' #### GERAR ARQUIVOS DE LANÇAMENTO E MANIFESTO
+'    '' LANÇAMENTO
+'    gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes
+'
+'    '' MANIFESTO
+'    gerarArquivosJson opManifesto, , strCaminhoAcoes
+    
+    
+Debug.Print "### Concluido! - testeDeFuncionamentoGeral"
+TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - testeDeFuncionamentoGeral"
 
-'' INFO 05/27/2021 17:10:29 - Processamento - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:13:52
-'' INFO 05/28/2021 15:19:27 - Processamento - Importar Registros Validos ( Quantidade de registros: 562 ) - 00:44:49
+End Sub
 
-
-Public Function UpdateNumPed_CompraNF()
-Dim x As Long
-Dim contador As Long: contador = DCount("*", "TblCompraNF", "NumPed_CompraNF is null")
-
-    For x = 1 To contador
-        Application.CurrentDb.Execute qryUpdateNumPed_CompraNF
-    Next
-
-End Function
