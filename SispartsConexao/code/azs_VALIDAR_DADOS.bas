@@ -9,33 +9,33 @@ Dim sqlRegistros As String: sqlRegistros = "Select * from tblCompraNF where ChvA
 Dim sqlItens As String: sqlItens = "Select * from tblCompraNFItem where ChvAcesso_CompraNF = "
 
 Dim item As Variant
-Dim tmp As String
+Dim Tmp As String
 
 For Each item In Array("32210304884082000569570000040073831040073834", "42210220147617000494570010009539201999046070", "32210368365501000296550000000638811001361356", "42210212680452000302550020000886301507884230")
 'For Each item In Array("32210368365501000296550000000638841001361501")
     
-    tmp = sqlRegistros & "'" & CStr(item) & "'"
-    Set rstRegistros = db.OpenRecordset(tmp)
+    Tmp = sqlRegistros & "'" & CStr(item) & "'"
+    Set rstRegistros = db.OpenRecordset(Tmp)
     
     Do While Not rstRegistros.EOF
         
-        tmp = ""
+        Tmp = ""
         For i = 0 To rstRegistros.Fields.count - 1
-            tmp = rstRegistros.Fields(i).Name & vbTab & rstRegistros.Fields(i).value
-            TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", tmp
+            Tmp = rstRegistros.Fields(i).Name & vbTab & rstRegistros.Fields(i).value
+            TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", Tmp
         Next i
 
         TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", vbNewLine & "#############################" & vbNewLine
 
-        tmp = ""
-        tmp = sqlItens & "'" & CStr(item) & "'"
-        Debug.Print tmp
+        Tmp = ""
+        Tmp = sqlItens & "'" & CStr(item) & "'"
+        Debug.Print Tmp
         
-        Set rstItens = db.OpenRecordset(tmp)
+        Set rstItens = db.OpenRecordset(Tmp)
         Do While Not rstItens.EOF
             For i = 0 To rstItens.Fields.count - 1
-                tmp = rstItens.Fields(i).Name & vbTab & rstItens.Fields(i).value
-                TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", tmp
+                Tmp = rstItens.Fields(i).Name & vbTab & rstItens.Fields(i).value
+                TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", Tmp
             Next i
             
             TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", vbNewLine & "#############################" & vbNewLine
@@ -47,7 +47,7 @@ For Each item In Array("32210304884082000569570000040073831040073834", "42210220
         Debug.Print "Concluido! - " & CStr(item) & ".txt"
         rstRegistros.MoveNext
         DoEvents
-        tmp = ""
+        Tmp = ""
     Loop
     
     rstRegistros.Close
