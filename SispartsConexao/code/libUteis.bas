@@ -263,6 +263,17 @@ Public Sub ClearCollection(ByRef container As Collection)
     Next
 End Sub
 
+
+'' VERIFICAR A EXISTENCIA DE UM ITEM DENTRO DA COLEÇÃO
+Function ExistsCollection(coll As Collection, key As String) As Boolean
+' https://excelmacromastery.com/
+On Error GoTo EH
+    IsObject (coll.item(key))
+    ExistsCollection = True
+EH:
+End Function
+
+
 '' STATUS DE PROCESSAMENTO
 Public Function statusFinal(pDate As Date, strTitulo As String)
 Dim TMP As String: TMP = "INFO " & Format(Now, "mm/dd/yyyy HH:mm:ss") & " - " & strTitulo & " - " & Format(Now - pDate, "hh:mm:ss")

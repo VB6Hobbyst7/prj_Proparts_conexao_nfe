@@ -1,6 +1,8 @@
 Attribute VB_Name = "00_Processamento"
 Option Compare Database
 
+'' #PENDENTE
+
 '' 32210268365501000296550000000637741001351624 | 55
 '' 32210304884082000569570000040073831040073834 | 57
 
@@ -10,7 +12,11 @@ Option Compare Database
 
 
 '' #20211109
-Sub ListagemDeArquivosValidos()
+'Private Function RepositorioDeImpostos() As Collection
+'Set RepositorioDeImpostos = New Collection
+
+
+Sub teste_ListagemDeArquivosValidos()
 
 '' #ENTRADA - LISTAGEM DE TODOS OS ARQUIVOS COLETADOS
 Dim pColArquivos As Collection: Set pColArquivos = New Collection
@@ -21,26 +27,27 @@ Dim pColArquivos As Collection: Set pColArquivos = New Collection
     pColArquivos.add "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210320147617000494570010009658691999034138-cteproc.xml", "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210320147617000494570010009658691999034138-cteproc.xml"
     pColArquivos.add "C:\xmls\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210268365501000296550000000637741001351624-nfeproc.xml", "C:\xmls\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210268365501000296550000000637741001351624-nfeproc.xml"
 
-Dim strRemover As String: strRemover = "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210348740351012767570000021186701559009401-cteproc.xml"
+Dim item As Variant
 
-
-''' contains
-Dim i As Long: i = 1
-Dim colArquivo As Variant
-
-
-For Each colArquivo In pColArquivos
-''    Debug.Print DLookup("[ID]", "[tblDadosConexaoNFeCTe]", "[Chave]='" & getFileName(CStr(colArquivo)) & "'")
-    If strRemover = CStr(colArquivo) Then pColArquivos.remove CStr(colArquivo)
+For Each item In ListagemDeArquivosValidosParaCadastros(pColArquivos)
+    Debug.Print CStr(item)
 Next
-
-'' exit
-For Each colArquivo In pColArquivos
-    Debug.Print CStr(colArquivo)
-Next
-
 
 End Sub
+
+Function ListagemDeArquivosValidosParaCadastros(pColArquivos As Collection) As Collection
+Dim colArquivo As Variant
+
+    '' remover duplicados - #PENDENTE
+    '' remover cadastrados
+    For Each colArquivo In pColArquivos
+        If DLookup("[ID]", "[tblDadosConexaoNFeCTe]", "[Chave]='" & getFileName(CStr(colArquivo)) & "'") <> "" Then pColArquivos.remove CStr(colArquivo)
+    Next
+
+'' return as collection
+Set ListagemDeArquivosValidosParaCadastros = pColArquivos
+
+End Function
 
 
 Sub teste_TransferirProcessamentoParaRepositorios()
