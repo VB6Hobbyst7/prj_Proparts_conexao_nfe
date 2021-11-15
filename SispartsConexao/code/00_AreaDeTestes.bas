@@ -77,7 +77,6 @@ Dim strCompras_Insert_Processamento As String
             rstFiltered.MoveNext
             DoEvents
         Loop
-                    
         
         '' EXIT SCRIPT
         strCamposNomes = left(strCamposNomes, Len(strCamposNomes) - 1)
@@ -86,8 +85,8 @@ Dim strCompras_Insert_Processamento As String
         strCamposValores = left(strCamposValores, Len(strCamposValores) - 1)
 '        Debug.Print strCamposValores
         
-        ''Application.CurrentDb.Execute
-        Debug.Print Replace(Replace(Replace(strCompras_Insert_Processamento, "strCamposNomes", strCamposNomes), "strCamposValores", strCamposValores), "pRepositorio", pRepositorio)
+        ''Debug.Print
+        Application.CurrentDb.Execute Replace(Replace(Replace(strCompras_Insert_Processamento, "strCamposNomes", strCamposNomes), "strCamposValores", strCamposValores), "pRepositorio", pRepositorio)
         
         rstRegistros.MoveNext
         DoEvents
