@@ -404,7 +404,7 @@ End Function
 
 '' #DUVIDA - QUAL O OBJETIVO ?
 '' #ENTENDIMENTO - CARREGAR DADOS DO ARQUIVO
-Function LerXML(Arquivo As String)
+Function LerXML(arquivo As String)
     Dim objXML As MSXML2.DOMDocument60
     Set objXML = New MSXML2.DOMDocument60
 
@@ -425,7 +425,7 @@ Function LerXML(Arquivo As String)
     XMLCFOP = ""
 
     objXML.validateOnParse = False
-    If objXML.Load(Arquivo) Then ' Verifico se carregou o XML
+    If objXML.Load(arquivo) Then ' Verifico se carregou o XML
     
         '' #AILTON
         If Forms!frmCompraNF_ImpXML!Finalidade = 0 Or Forms!frmCompraNF_ImpXML!Finalidade = 6 Or Forms!frmCompraNF_ImpXML!Finalidade = 7 Then
