@@ -7,6 +7,7 @@ Option Compare Database
 '' > #PENDENTE
 '' * proxima atualização
 ''
+'' > #20211109_1449
 '' > #20211109_1346
 '' > #20211109
 '' > #20211105
@@ -19,7 +20,7 @@ Option Compare Database
 '' 04.Exportação           - Enviar para banco apenas arquivos não cadastrados na base do servidor
 '' 05.Extração(Json's)     - Gerar arquivos
 ''
-
+''
 '' ## #NOTAS
 ''
 '' - ProcessamentoDeArquivo() | Processamento de arquivo | Fazer a identificação do tipo de processamento ( Dados gerais / Cadastro de compras ) e realizar o cadastro
@@ -28,15 +29,57 @@ Option Compare Database
 ''
 ''@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-'' #20211109_1346
-Sub teste_ProcessamentoDeArquivo_Diretorios()
 
+'' #20211109_1449
+Sub teste_ProcessamentoDeArquivo_Pendentes()
 Dim pColArquivos As Collection: Set pColArquivos = New Collection
+Dim pColProcessamento As Collection
 Dim Processamento As New clsProcessamentoDados
 Dim DadosGerais As New clsConexaoNfeCte
 Dim item As Variant
+Dim contador As Long
 
-    '' 01.Coleta - Leitura de diretorios
+    '' 01.Coleta
+    For Each item In carregarParametros(DadosGerais.SelectArquivosPendentes)
+        pColArquivos.add CStr(item)
+        DoEvents
+    Next
+
+    Set pColProcessamento = pColArquivos
+    contador = pColProcessamento.count
+
+    '' 04.Exportação
+    For Each item In pColProcessamento
+        Processamento.ProcessamentoDeArquivo CStr(item), opCompras
+        Debug.Print "### " & CStr(contador)
+        contador = contador - 1
+        DoEvents
+    Next
+    
+
+    '' COMPRAS ATUALIAR CAMPOS
+    DadosGerais.compras_atualizarCampos
+
+
+Set Processamento = Nothing
+Set DadosGerais = Nothing
+
+
+
+
+End Sub
+
+
+'' #20211109_1346
+Sub teste_ProcessamentoDeArquivo_Diretorios()
+Dim pColArquivos As Collection: Set pColArquivos = New Collection
+Dim pColProcessamento As Collection
+Dim Processamento As New clsProcessamentoDados
+Dim DadosGerais As New clsConexaoNfeCte
+Dim item As Variant
+Dim contador As Long
+
+    '' 01.Coleta
     For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColeta'"))
         For Each caminhoNovo In carregarParametros(DadosGerais.SelectColetaEmpresa)
             For Each item In GetFilesInSubFolders(CStr(Replace(Replace(caminhoAntigo, "empresa", caminhoNovo), "recebimento\", "")))
@@ -48,19 +91,21 @@ Dim item As Variant
         DoEvents
     Next
 
+
+    Set pColProcessamento = ListagemDeArquivosValidosParaCadastros(pColArquivos)
+    contador = pColProcessamento.count
+
     '' 02.Analise e 03.Importação
-    For Each item In ListagemDeArquivosValidosParaCadastros(pColArquivos)
+    For Each item In pColProcessamento
         Processamento.ProcessamentoDeArquivo CStr(item), opDadosGerais
-        Debug.Print "### " & pColArquivos.count - 1
+        Debug.Print "### " & CStr(contador)
+        contador = contador - 1
         DoEvents
     Next
     
 
 Set Processamento = Nothing
 Set DadosGerais = Nothing
-
-
-
 End Sub
 
 

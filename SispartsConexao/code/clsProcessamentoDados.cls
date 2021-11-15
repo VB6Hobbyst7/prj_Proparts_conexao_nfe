@@ -94,6 +94,11 @@ Private Const qryUpdateProcessamento_opData As String = _
 Private Const qryUpdateProcessamento_opTime As String = _
         "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
         
+Private Const qryInsertProcessamento_IDVD_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor)  " & _
+    "SELECT Distinct PK,'IDVD_CompraNF','tblCompraNF','opTexto',val((Left(Trim(Replace(Replace(Valor, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6)))  as IDVD_CompraNF " & _
+    "FROM tblProcessamento WHERE NomeTabela = 'tblCompraNF' AND len(formatacao) > 0 AND len(NomeCampo) > 0 AND Left(Valor, 6) = 'PEDIDO ' AND NomeCampo = 'Obs_CompraNF';"
+        
 Public Sub DeleteProcessamento()
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - DeleteProcessamento()"
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDeleteProcessamento
@@ -107,7 +112,6 @@ Public Sub UpdateProcessamentoLimparItensMarcadosErrados()
     Application.CurrentDb.Execute qryUpdateProcessamento_LimparItensMarcadosErrados
                                                     
 End Sub
-        
         
 Public Sub UpdateProcessamentoFormatarDados()
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - UpdateProcessamentoFormatarDados()"
@@ -127,6 +131,11 @@ Public Sub UpdateProcessamentoIdentificarCampos(pRepositorio As String)
                                                     qryUpdateProcessamento_RelacaoCamposDeTabelas_tblCompraNFItem_ChvAcesso_CompraNF): executarComandos qryProcessos
                                                 
 End Sub
+
+Private Sub InsertProcessamentoIDVD()
+    Application.CurrentDb.Execute qryInsertProcessamento_IDVD_CompraNF
+End Sub
+
 
 
 '' #01. PROCESSAMENTO DE ARQUIVOS POR TIPO
@@ -295,20 +304,25 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
             
             '' #IDENTIFICA플O - CAMPOS
             UpdateProcessamentoIdentificarCampos repositorioCompras
-            UpdateProcessamentoIdentificarCampos repositorioComprasItens
             
             '' #CORRE플O DE DADOS MARCADOS ERRADOS EM ITENS DE COMPRAS
             UpdateProcessamentoLimparItensMarcadosErrados
             
+            '' #IDENTIFICA플O - CAMPOS
+            UpdateProcessamentoIdentificarCampos repositorioComprasItens
+            
             '' #FORMATA플O
             UpdateProcessamentoFormatarDados
+            
+            '' #CADASTRO DE IDVD
+            InsertProcessamentoIDVD
             
 '            '' #ARQUIVO
 '            ProcessamentoTransferir repositorioCompras
 '            ProcessamentoTransferir repositorioComprasItens
             
             '' #CLASSIFICA플O
-            DadosGerais.compras_atualizarCampos
+'            DadosGerais.compras_atualizarCampos
             
         Case Else
     End Select
