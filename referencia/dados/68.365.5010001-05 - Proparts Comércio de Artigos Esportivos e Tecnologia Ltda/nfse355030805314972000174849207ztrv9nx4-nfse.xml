@@ -1,0 +1,97 @@
+<Nfse versao="2.02">
+   <InfNfse>
+      <Numero>849207</Numero>
+      <CodigoVerificacao>ZTRV9NX4</CodigoVerificacao>
+      <DataEmissao>2021-03-01T14:28:49</DataEmissao>
+      <ValoresNfse>
+         <BaseCalculo>8183.64</BaseCalculo>
+         <Aliquota>0.029</Aliquota>
+         <ValorIss>237.32</ValorIss>
+         <ValorLiquidoNfse>8183.64</ValorLiquidoNfse>
+      </ValoresNfse>
+      <ValorCredito>0</ValorCredito>
+      <PrestadorServico>
+         <IdentificacaoPrestador>
+            <CpfCnpj>
+               <Cnpj>05314972000174</Cnpj>
+            </CpfCnpj>
+         </IdentificacaoPrestador>
+         <RazaoSocial>COMPANHIA BRASILEIRA DE TECNOLOGIA PARA E-COMMERCE</RazaoSocial>
+         <NomeFantasia>COMPANHIA BRASILEIRA DE TECNOLOGIA PARA E-COMMERCE</NomeFantasia>
+         <Endereco>
+            <Endereco>AV BRIGADEIRO FARIA LIMA</Endereco>
+            <Numero>4440</Numero>
+            <Bairro>ITAIM BIBI</Bairro>
+            <CodigoMunicipio>3550308</CodigoMunicipio>
+            <Uf>SP</Uf>
+            <Cep>4538132</Cep>
+         </Endereco>
+         <Contato>
+            <Email>fiscal@proparts.esp.br</Email>
+         </Contato>
+      </PrestadorServico>
+      <OrgaoGerador>
+         <CodigoMunicipio>3550308</CodigoMunicipio>
+         <Uf>SP</Uf>
+      </OrgaoGerador>
+      <DeclaracaoPrestacaoServico>
+         <InfDeclaracaoPrestacaoServico>
+            <Rps>
+               <IdentificacaoRps>
+                  <Numero>65709</Numero>
+                  <Serie>010</Serie>
+                  <Tipo>RPS</Tipo>
+               </IdentificacaoRps>
+               <DataEmissao>2021-03-01</DataEmissao>
+            </Rps>
+            <Servico>
+               <Valores>
+                  <ValorServicos>8183.64</ValorServicos>
+                  <ValorIss>237.32</ValorIss>
+                  <Aliquota>0.029</Aliquota>
+               </Valores>
+               <IssRetido>false</IssRetido>
+               <Discriminacao>garmin, mavic, ceramicspeed, lojasram
+Período de competência: 2/2021
+Tipo de serviço: Mensalidade
+Vencimento: 16/03/2021 
+Valor fixo(R$):             4.500,00
+Valor variável(R$):             6.176,27
+Valor variável(R$):               232,37
+Valor fixo(R$):            -3.475,00
+Valor fixo(R$):             2.250,00
+Valor fixo(R$):            -1.500,00</Discriminacao>
+               <CodigoMunicipio>3550308</CodigoMunicipio>
+               <MunicipioIncidencia>3550308</MunicipioIncidencia>
+            </Servico>
+            <Prestador>
+               <CpfCnpj>
+                  <Cnpj>05314972000174</Cnpj>
+               </CpfCnpj>
+               <InscricaoMunicipal>31866972</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+               <IdentificacaoTomador>
+                  <CpfCnpj>
+                     <Cnpj>68365501000105</Cnpj>
+                  </CpfCnpj>
+                  <InscricaoMunicipal>20951230</InscricaoMunicipal>
+               </IdentificacaoTomador>
+               <RazaoSocial>PROPARTS COMERCIO DE ARTIGOS ESPORTIVOS E TECNOLOGIA EIRELI</RazaoSocial>
+               <Endereco>
+                  <Endereco>R ENG     MESQUITA SAMPAIO</Endereco>
+                  <Numero>00329</Numero>
+                  <Bairro>CHACARA SANTO ANTONIO</Bairro>
+                  <CodigoMunicipio>3550308</CodigoMunicipio>
+                  <Uf>SP</Uf>
+                  <Cep>4711000</Cep>
+               </Endereco>
+               <Contato>
+                  <Email>fiscal@proparts.esp.br</Email>
+               </Contato>
+            </Tomador>
+            <OptanteSimplesNacional>0</OptanteSimplesNacional>
+         </InfDeclaracaoPrestacaoServico>
+      </DeclaracaoPrestacaoServico>
+   </InfNfse>
+</Nfse>
