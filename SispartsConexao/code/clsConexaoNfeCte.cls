@@ -293,9 +293,8 @@ Private Const qryCompras_Update_Dados As String = _
         "   ,tblCompraNF.TPNF_CompraNF = 1 " & _
         "   ,tblCompraNF.VTotIPI_CompraNF = 0 " & _
         "WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)) AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0);"
-'' "   ,tblCompraNF.VTotICMS_CompraNF = 0 " & _
 
-
+'"   ,tblCompraNF.VTotICMS_CompraNF = 0 " & _
 
 '' ########################################
 '' #tblCompraNFItem - COMPRAS ITENS

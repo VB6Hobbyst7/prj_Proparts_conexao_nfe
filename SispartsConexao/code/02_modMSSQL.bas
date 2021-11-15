@@ -1,6 +1,5 @@
 Attribute VB_Name = "02_modMSSQL"
-'Public Const DATE_TIME_FORMAT               As String = "yyyy/mm/dd hh:mm:ss"
-Public Const DATE_TIME_FORMAT               As String = "hh:mm:ss"
+Public Const DATE_TIME_FORMAT               As String = "yyyy/mm/dd hh:mm:ss"
 Public Const DATE_FORMAT                    As String = "yyyy/mm/dd"
 
 '' #20210823_CadastroDeComprasEmServidor
@@ -49,7 +48,7 @@ Dim tmpScriptItens As String: _
 
 
 '' VALIDAR CONCILIAÇÃO
-Dim tmp As String
+Dim TMP As String
 
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
@@ -73,9 +72,9 @@ Dim tmp As String
         
         '' CADASTRO DE COMPRAS
         For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-            tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-'            Debug.Print tmp
-            dbDestino.SqlExecute tmp
+            TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+            Debug.Print TMP
+            dbDestino.SqlExecute TMP
         Next item
                
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
@@ -94,9 +93,9 @@ Dim tmp As String
             
             '' CADASTRO DE ITENS DE COMPRAS
             For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-                tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-'                Debug.Print tmp
-                dbDestino.SqlExecute tmp
+                TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+                Debug.Print TMP
+                dbDestino.SqlExecute TMP
             Next item
 
         End If
@@ -166,7 +165,7 @@ Dim sqlOrigem As String: sqlOrigem = _
             '' 2. campos x formatacao
             If InStr(rstCampos.Fields("campo").value, tmpValidarCampo) Then
     
-                If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo PULO
+                If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo pulo
     
                 If rstCampos.Fields("formatacao").value = "opTexto" Then
                     tmpScript = tmpScript & "'" & rstOrigem.Fields(rstCampos.Fields("campo").value).value & "',"
@@ -184,7 +183,7 @@ Dim sqlOrigem As String: sqlOrigem = _
     
             End If
             
-PULO:
+pulo:
             rstCampos.MoveNext
             DoEvents
         Loop
@@ -226,3 +225,119 @@ Dim tmpScript As String
     carregarCamposNomes = left(tmpScript, Len(tmpScript) - 1)
 
 End Function
+
+
+
+''''''''#####################################
+''''''''#####################################
+''''''''#####################################
+
+'Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As String
+'
+''Dim pRepositorio As String: pRepositorio = "tblCompraNFItem"
+''Dim pChvAcesso As String: pChvAcesso = "32210368365501000296550000000638791001361285"
+'
+'Dim Scripts As New clsConexaoNfeCte
+'Dim db As DAO.Database: Set db = CurrentDb
+'Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
+'Dim rstOrigem As DAO.Recordset
+'
+'Dim tmpScript As String
+'Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pRepositorio) - 3)
+'
+'Dim sqlOrigem As String: sqlOrigem = _
+'    "Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'"
+'
+'    Set rstOrigem = db.OpenRecordset(sqlOrigem)
+'
+'    rstOrigem.MoveLast
+'    rstOrigem.MoveFirst
+'    Do While Not rstOrigem.EOF
+'        tmpScript = tmpScript & "("
+'
+'        '' LISTAGEM DE CAMPOS
+'        rstCampos.MoveFirst
+'        Do While Not rstCampos.EOF
+'
+'            '' CRIAR SCRIPT DE INCLUSAO DE DADOS NA TABELA DESTINO
+'            '' 2. campos x formatacao
+'            If InStr(rstCampos.Fields("campo").value, tmpValidarCampo) Then
+'
+'                If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo pulo
+'
+'                If rstCampos.Fields("formatacao").value = "opTexto" Then
+'                    tmpScript = tmpScript & "'" & rstOrigem.Fields(rstCampos.Fields("campo").value).value & "',"
+'
+'                ElseIf rstCampos.Fields("formatacao").value = "opNumero" Or rstCampos.Fields("formatacao").value = "opMoeda" Then
+'                    tmpScript = tmpScript & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", rstOrigem.Fields(rstCampos.Fields("campo").value).value, rstCampos.Fields("valorPadrao").value) & ","
+'
+'                ElseIf rstCampos.Fields("formatacao").value = "opTime" Then
+'                    tmpScript = tmpScript & "'" & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", Format(rstOrigem.Fields(rstCampos.Fields("campo").value).value, DATE_TIME_FORMAT), rstCampos.Fields("valorPadrao").value) & "',"
+'
+'                ElseIf rstCampos.Fields("formatacao").value = "opData" Then
+'                    tmpScript = tmpScript & "'" & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", Format(rstOrigem.Fields(rstCampos.Fields("campo").value).value, DATE_FORMAT), rstCampos.Fields("valorPadrao").value) & "',"
+'
+'                End If
+'
+'            End If
+'
+'pulo:
+'            rstCampos.MoveNext
+'            DoEvents
+'        Loop
+'
+'        tmpScript = left(tmpScript, Len(tmpScript) - 1) & "),"
+'        rstOrigem.MoveNext
+'        DoEvents
+'    Loop
+'
+'    Set Scripts = Nothing
+'    rstCampos.Close
+'    rstOrigem.Close
+'    db.Close
+'
+'    carregarCamposValores = left(tmpScript, Len(tmpScript) - 1)
+'
+'End Function
+
+
+
+
+'Sub teste__carregarScript_Insert()
+'
+''' 01
+''Debug.Print carregarScript_Insert("tblCompraNF", "32210368365501000296550000000638811001361356")
+'
+''' 02
+'Debug.Print carregarScript_Insert("tblCompraNFItem", "32210368365501000296550000000638791001361285")
+'
+''' 23
+''Debug.Print carregarScript_Insert("tblCompraNFItem", "32210368365501000296550000000638811001361356")
+'
+'End Sub
+'
+'Function carregarScript_Insert(pRepositorio As String, pChvAcesso As String) As String
+'
+'Dim strCamposNomes As String: _
+'    strCamposNomes = carregarCamposNomes(pRepositorio)
+'
+'Dim strCamposNomesTmp As String: _
+'    strCamposNomesTmp = Replace(strCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), "")
+'
+''Dim strCamposValores As Collection: _
+''    strCamposValores = carregarCamposValores(pRepositorio, pChvAcesso)
+'
+'Dim item As Variant
+'
+'    For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
+'        Debug.Print CStr(i)
+'    Next item
+'
+'
+'Dim tmpScript As String: _
+'    tmpScript = "INSERT INTO " & pRepositorio & " ( " & strCamposNomes & " ) SELECT " & strCamposNomesTmp & " FROM ( VALUES " & strCamposValores & " ) AS TMP ( " & strCamposNomesTmp & " ) LEFT JOIN " & pRepositorio & " ON " & pRepositorio & ".ChvAcesso_CompraNF = tmp.ChvAcesso WHERE " & pRepositorio & ".ChvAcesso_CompraNF IS NULL;"
+'    '"INSERT INTO " & pRepositorio & " ( " & strCamposNomes & " ) SELECT " & strCamposNomesTmp & " FROM ( VALUES ( " & strCamposValores & " ) ) AS TMP ( " & strCamposNomesTmp & " ) LEFT JOIN " & pRepositorio & " ON " & pRepositorio & ".ChvAcesso_CompraNF = tmp.ChvAcesso WHERE " & pRepositorio & ".ChvAcesso_CompraNF IS NULL;"
+'
+'    carregarScript_Insert = tmpScript
+'
+'End Function

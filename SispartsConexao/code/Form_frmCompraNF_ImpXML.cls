@@ -378,10 +378,10 @@ If Me.Finalidade = 0 Then 'CT-e
     
     rsCompraNF!ID_Forn_CompraNF = IDCadFor
     
+    '' #AILTON - AJUSTE
     '' #20210823_BaseCalcICMS_CompraNF
-    rsCompraNF!BaseCalcICMS_CompraNF = XMLBCICMS
-    
     '' #20210823_VTotICMS_CompraNF
+    rsCompraNF!BaseCalcICMS_CompraNF = XMLBCICMS
     rsCompraNF!VTotICMS_CompraNF = XMLValICMS
     
     '' #20210823_VTotProd_CompraNF
