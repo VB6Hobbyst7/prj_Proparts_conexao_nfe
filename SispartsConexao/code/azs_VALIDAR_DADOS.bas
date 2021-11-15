@@ -10,12 +10,16 @@ Dim sqlItens As String: sqlItens = "Select * from tblCompraNFItem where ChvAcess
 Dim arquivos As New Collection
 
 Dim item As Variant
-Dim tmp As String
+Dim TMP As String
+''42210300634453001303570010001139451001171544
+ arquivos.add "42210300634453001303570010001139451001171544" '' 57
 
-arquivos.add "32210304884082000569570000040073831040073834"
-arquivos.add "42210220147617000494570010009539201999046070"
-arquivos.add "32210368365501000296550000000638811001361356"
-arquivos.add "42210212680452000302550020000886301507884230"
+'arquivos.add "32210368365501000296550000000639051001364146"
+
+'arquivos.add "32210304884082000569570000040073831040073834"
+'arquivos.add "42210220147617000494570010009539201999046070"
+'arquivos.add "32210368365501000296550000000638811001361356"
+'arquivos.add "42210212680452000302550020000886301507884230"
 
 'arquivos.Add "32210368365501000296550000000638841001361501"
 
@@ -23,28 +27,28 @@ arquivos.add "42210212680452000302550020000886301507884230"
 For Each item In arquivos
 
     
-    tmp = sqlRegistros & "'" & CStr(item) & "'"
-    Set rstRegistros = db.OpenRecordset(tmp)
+    TMP = sqlRegistros & "'" & CStr(item) & "'"
+    Set rstRegistros = db.OpenRecordset(TMP)
     
     Do While Not rstRegistros.EOF
         
-        tmp = ""
+        TMP = ""
         For i = 0 To rstRegistros.Fields.count - 1
-            tmp = rstRegistros.Fields(i).Name & vbTab & rstRegistros.Fields(i).value
-            TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", tmp
+            TMP = rstRegistros.Fields(i).Name & vbTab & rstRegistros.Fields(i).value
+            TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", TMP
         Next i
 
         TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", vbNewLine & "#############################" & vbNewLine
 
-        tmp = ""
-        tmp = sqlItens & "'" & CStr(item) & "'"
-        Debug.Print tmp
+        TMP = ""
+        TMP = sqlItens & "'" & CStr(item) & "'"
+        Debug.Print TMP
         
-        Set rstItens = db.OpenRecordset(tmp)
+        Set rstItens = db.OpenRecordset(TMP)
         Do While Not rstItens.EOF
             For i = 0 To rstItens.Fields.count - 1
-                tmp = rstItens.Fields(i).Name & vbTab & rstItens.Fields(i).value
-                TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", tmp
+                TMP = rstItens.Fields(i).Name & vbTab & rstItens.Fields(i).value
+                TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", TMP
             Next i
             
             TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", vbNewLine & "#############################" & vbNewLine
@@ -56,7 +60,7 @@ For Each item In arquivos
         Debug.Print "Concluido! - " & CStr(item) & ".txt"
         rstRegistros.MoveNext
         DoEvents
-        tmp = ""
+        TMP = ""
     Loop
     
     rstRegistros.Close

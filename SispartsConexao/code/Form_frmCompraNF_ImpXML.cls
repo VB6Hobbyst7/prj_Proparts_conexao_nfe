@@ -377,6 +377,8 @@ If Me.Finalidade = 0 Then 'CT-e
     rsCompraNF!DTEntd_CompraNF = Date
     
     rsCompraNF!ID_Forn_CompraNF = IDCadFor
+    
+    '' #AILTON - AJUSTE
     rsCompraNF!BaseCalcICMS_CompraNF = XMLBCICMS
     rsCompraNF!VTotICMS_CompraNF = XMLValICMS
     

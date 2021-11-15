@@ -281,12 +281,13 @@ Private Const qryCompras_Update_Dados As String = _
         "   ,tblCompraNF.ID_NatOp_CompraNF = [tblDadosConexaoNFeCTe].[ID_NatOp_CompraNF] " & _
         "   ,tblCompraNF.ID_Forn_CompraNF = [tblDadosConexaoNFeCTe].[ID_Forn_CompraNF] " & _
         "   ,tblCompraNF.ModeloDoc_CompraNF = [tblDadosConexaoNFeCTe].[codMod] " & _
-        "   ,tblCompraNF.Sit_CompraNF = [tblDadosConexaoNFeCTe].[Sit_CompraNF] " & _
+        "   ,tblCompraNF.Sit_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,6,IIF([tblDadosConexaoNFeCTe].[ID_Tipo]=5,6,[tblDadosConexaoNFeCTe].[Sit_CompraNF])) " & _
         "   ,tblCompraNF.Fil_CompraNF = [tblDadosConexaoNFeCTe].[ID_Empresa] " & _
-        "   ,tblCompraNF.IDVD_CompraNF = [tblDadosConexaoNFeCTe].[IDVD_CompraNF] " & _
+        "   ,tblCompraNF.IDVD_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,null,[tblDadosConexaoNFeCTe].[IDVD_CompraNF]) " & _
         "   ,tblCompraNF.VTotNF_CompraNF = replace(Nz([tblCompraNF].[VTotNF_CompraNF], 0) / 100, "","", ""."") " & _
         "   ,tblCompraNF.VTotProd_CompraNF = replace(Nz([tblCompraNF].[VTotNF_CompraNF], 0) / 100, "","", ""."") " & _
         "   ,tblCompraNF.BaseCalcICMS_CompraNF = replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, "","", ""."") " & _
+        "   ,tblCompraNF.DTEmi_CompraNF = [tblDadosConexaoNFeCTe].[dhEmi]  " & _
         "   ,tblCompraNF.HoraEntd_CompraNF = NULL " & _
         "   ,tblCompraNF.DTEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,Format(DATE(), ""yyyy-mm-dd""),tblCompraNF.DTEntd_CompraNF) " & _
         "   ,tblCompraNF.TPNF_CompraNF = 1 " & _

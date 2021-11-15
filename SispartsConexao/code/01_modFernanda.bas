@@ -74,7 +74,9 @@ DadosGerais.CriarRepositorios
 For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColeta'"))
     For Each caminhoNovo In carregarParametros(DadosGerais.SelectColetaEmpresa)
         For Each item In GetFilesInSubFolders(CStr(Replace(Replace(caminhoAntigo, "empresa", caminhoNovo), "recebimento\", "")))
-            arquivos.add CStr(item)
+            Debug.Print CStr(item)
+        
+            'arquivos.add CStr(item)
         Next
     Next
 Next

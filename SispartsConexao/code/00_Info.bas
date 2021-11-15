@@ -8,7 +8,7 @@ Public Const dataBaseClear As Boolean = True
 Public Const dataBaseReplay As Boolean = False
 
 '' EXPORTAR DADOS PARA SERVIDOR
-Public Const dataBaseExportarDados As Boolean = True
+Public Const dataBaseExportarDados As Boolean = False
 
 '' PROCESSAMENTO DE ARQUIVOS
 Public Const dataBaseTratamentoDeArquivos As Boolean = False
@@ -26,7 +26,7 @@ Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "
     If dataBaseClear Then
     
         '' Limpar toda a base de dados
-        Application.CurrentDb.Execute "Delete from tblDadosConexaoNFeCTe"
+'        Application.CurrentDb.Execute "Delete from tblDadosConexaoNFeCTe"
 
         '' Limpar repositorio de itens de compras
         Application.CurrentDb.Execute _

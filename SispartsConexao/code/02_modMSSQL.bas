@@ -18,7 +18,16 @@ Dim dbDestino As New Banco
 '' BANCO_LOCAL
 Dim Scripts As New clsConexaoNfeCte
 Dim db As DAO.Database: Set db = CurrentDb
-Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF"))
+
+'' #AILTON - TESTES
+Dim TMP2 As String: TMP2 = "select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF") & ") as tmp where tmp.ChvAcesso_CompraNF = '42210300634453001303570010001139451001171544'"
+Debug.Print TMP2
+
+'Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF"))
+Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(TMP2)
+
+
+
 Dim qryCompras_Insert_Compras As String
 Dim qryComprasItens_Update_IDCompraNF As String
 
@@ -43,7 +52,7 @@ Dim tmpScriptItens As String: _
 
 
 '' VALIDAR CONCILIAÇÃO
-Dim tmp As String
+Dim TMP As String
 
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
@@ -67,9 +76,9 @@ Dim tmp As String
         
         '' CADASTRO DE COMPRAS
         For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-            tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-'            Debug.Print tmp
-            dbDestino.SqlExecute tmp
+            TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+            Debug.Print TMP
+            dbDestino.SqlExecute TMP
         Next item
                
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
@@ -88,9 +97,9 @@ Dim tmp As String
             
             '' CADASTRO DE ITENS DE COMPRAS
             For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-                tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-'                Debug.Print tmp
-                dbDestino.SqlExecute tmp
+                TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+                Debug.Print TMP
+                dbDestino.SqlExecute TMP
             Next item
 
         End If
