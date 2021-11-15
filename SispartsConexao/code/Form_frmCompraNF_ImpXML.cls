@@ -41,7 +41,7 @@ TrataErro_Exit:
     Exit Sub
 
 TrataErro:
-    MsgBox err.description
+    MsgBox Err.description
     DoCmd.Hourglass False 'Mouse Ampulheta
     Resume Next 'TrataErro_Exit
 End Sub
@@ -157,7 +157,7 @@ End If
 
 Exit Sub
 ErroPasta:
-    MsgBox "Erro n˙mero: " & err.Number & Chr(10) & "DescriÁ„o: " & err.description, vbCritical, "Erro"
+    MsgBox "Erro n˙mero: " & Err.Number & Chr(10) & "DescriÁ„o: " & Err.description, vbCritical, "Erro"
     strXMLnovo = ""
     strXMLjaImp = ""
     CountXMLImp = 0
@@ -167,12 +167,10 @@ End Sub
 
 Private Sub Imprimir_Click() '' #AILTON - COMPRANF
 On Error GoTo TrataErro
-Dim strSql As String
-
+Dim strSQL As String
 Dim rsCad As ADODB.Recordset: Set rsCad = New ADODB.Recordset
 Dim rsCompraNF As ADODB.Recordset: Set rsCompraNF = New ADODB.Recordset
 Dim rsCompraNFItem As ADODB.Recordset: Set rsCompraNFItem = New ADODB.Recordset
-
 Dim IDCompraNF As Double
 Dim IDCadFor As Long
 
@@ -201,7 +199,7 @@ Else
     End If
     
     '' #AILTON
-    '' qrySelectEmpresa_FiltroFil
+    '' qryEmpresa
     If IsNull(Me.FiltroFil) Then
         MsgBox "Selecione a Empresa!", vbCritical, "AtenÁ„o"
         Me.FiltroFil.SetFocus
@@ -232,36 +230,36 @@ txtIdentifCNPJ = False
 'MsgBox XMLNumNF & " " & XMLCNPJEmi & " " & XMLValNF & " " & XMLBCICMS & " " & XMLPerICMS & " " & XMLValICMS & " " & Chr(10) & XMLDTEmi & " " & XMLChave
 
 
-'' #AILTON - qryUpdateFornecedoresValidos
+'' #AILTON - qryExpurgoDeFornecedoresInvalidos
 '' #ENTENDIMENTO - BLOQUEIO POR FORNECEDOR - ( VAMOS TRABALHAR APENAS COM EMITENTE )
-strSql = "SELECT Clientes.CNPJ_CPF, Clientes.C”DIGOClientes AS ID_Cad FROM Clientes WHERE  (Clientes.CNPJ_CPF='" & Format(XMLCNPJEmi, "00\.000\.000/0000\-00") & "');"
+strSQL = "SELECT Clientes.CNPJ_CPF, Clientes.C”DIGOClientes AS ID_Cad FROM Clientes WHERE  (Clientes.CNPJ_CPF='" & Format(XMLCNPJEmi, "00\.000\.000/0000\-00") & "');"
 
 
 'SaveSQLString strSQL
 rsCad.CursorType = adOpenKeyset
 rsCad.LockType = adLockOptimistic
 rsCad.CursorLocation = adUseClient
-rsCad.Open strSql, CNN, , , adCmdText
+rsCad.Open strSQL, CNN, , , adCmdText
 If rsCad.RecordCount = 0 Then
     MsgBox "Fornecedor n„o cadastrado !" & Chr(10) & "CNPJ: " & XMLCNPJEmi, vbInformation, "AtenÁ„o"
     rsCad.Close
     Exit Sub
 Else
-    '' #AILTON - ID_FORNECEDOR - qryUpdateFornecedoresValidos
+    '' #AILTON - ID_FORNECEDOR - qryUpdateFornecedoresValidos - ( qryExpurgoDeFornecedoresInvalidos )
     IDCadFor = rsCad!ID_Cad
 End If
 
 '' #AILTON - qryExpurgoDeComprasJaCadastradas
 '' #DUVIDA - QUAL O OBJETIVO ?
 '' #ENTENDIMENTO - N√O GERAR DUPLICIDADE NO CADASTRO DE COMPRA VERIFICANDO A EXISTENCIA DA MESMA PELOS SEGUINTES CAMPOS: XMLCNPJEmi E XMLNumNF
-strSql = "SELECT Clientes.CNPJ_CPF, tblCompraNF.ID_Forn_CompraNF, tblCompraNF.NumNF_CompraNF, tblCompraNF.DTEntd_CompraNF FROM tblCompraNF INNER JOIN Clientes ON tblCompraNF.ID_Forn_CompraNF = Clientes.C”DIGOClientes WHERE  (Clientes.CNPJ_CPF='" & Format(XMLCNPJEmi, "00\.000\.000/0000\-00") & "') AND (tblCompraNF.NumNF_CompraNF=" & XMLNumNF & ");"
+strSQL = "SELECT Clientes.CNPJ_CPF, tblCompraNF.ID_Forn_CompraNF, tblCompraNF.NumNF_CompraNF, tblCompraNF.DTEntd_CompraNF FROM tblCompraNF INNER JOIN Clientes ON tblCompraNF.ID_Forn_CompraNF = Clientes.C”DIGOClientes WHERE  (Clientes.CNPJ_CPF='" & Format(XMLCNPJEmi, "00\.000\.000/0000\-00") & "') AND (tblCompraNF.NumNF_CompraNF=" & XMLNumNF & ");"
 
 'SaveSQLString strSQL
 
 rsCompraNF.CursorType = adOpenKeyset
 rsCompraNF.LockType = adLockOptimistic
 rsCompraNF.CursorLocation = adUseClient
-rsCompraNF.Open strSql, CNN, , , adCmdText
+rsCompraNF.Open strSQL, CNN, , , adCmdText
 If rsCompraNF.RecordCount > 0 Then
     'MsgBox Me.Finalidade.Column(1) & " j· importad" & IIf(Me.Finalidade.Column(0) = 0, "o", "a") & "  !", vbInformation, "AtenÁ„o"
     strXMLjaImp = strXMLjaImp & XMLNumNF & " - Data Entrada: " & rsCompraNF!DTEntd_CompraNF & Chr(10)
@@ -285,63 +283,37 @@ If Me.Finalidade = 0 Then 'CT-e
        
     '' #Ailton - qryUpdateCFOP_PSP
     '' #ENTENDIMENTO_01 - ATUALIZA«√O DE "ID_NatOp_CompraNF" E "CFOP_CompraNF" COM BASE "ID_EMPRESA"
-    
-    '' tblDadosConexaoNFeCTe.ID_EMPRESA
     If Me.FiltroFil = "PSP" Then
         
         '' #DUVIDA - QUAL O OBJETIVO DESSE CRITERIO ?
         '' #ENTENDIMENTO_02 - SE ACHARMOS O "txtCNPJRem" A NATUREZA DA OPERA«√O … 1.353 SE N√O SER¡ 2.353
         If Me.txtUFEmit = DLookup("[UF_Empresa]", "tblEmpresa", "[CNPJ_Empresa]='" & Forms!frmCompraNF_ImpXML!txtCNPJRem & "'") Then
-            
-            '' cfop - local
-            '' tblDadosConexaoNFeCTe.FiltroCFOP
             Me.FiltroCFOP = DLookup("[ID_NatOper]", "tblNatOp", "[CFOP_NatOper]='1.353' and [Fil_NatOper]='" & Me.FiltroFil & "'")
-            
             Me.FiltroCFOP.Requery
         ElseIf Me.txtUFEmit <> DLookup("[UF_Empresa]", "tblEmpresa", "[CNPJ_Empresa]='" & Forms!frmCompraNF_ImpXML!txtCNPJRem & "'") Then
-            
-            '' cfop - fora do estado
-            '' tblDadosConexaoNFeCTe.FiltroCFOP
             Me.FiltroCFOP = DLookup("[ID_NatOper]", "tblNatOp", "[CFOP_NatOper]='2.353' and [Fil_NatOper]='" & Me.FiltroFil & "'")
-            
             Me.FiltroCFOP.Requery
         End If
         
     '' #Ailton - qryUpdateCFOP_PSC_PES
     '' #ENTENDIMENTO_01 - ATUALIZA«√O DE "ID_NatOp_CompraNF" E "CFOP_CompraNF" COM BASE "ID_EMPRESA"
     '' #ENTENDIMENTO_02 - SE O XMLCFOP FOR 5353 NATUREZA DA OPERA«√O PARA PESQUISA SER¡ 1.353 SE N√O SER¡ 2.353 COM O "FiltroFil" QUE VEM DO CADASTRO
-    
-    ' PSC | 5353 | 1.353
-    ' PSC | 6353 | 2.353
-    
     ElseIf Me.FiltroFil = "PSC" Then
     
          If XMLCFOP = "5353" Then '1353
-            
-            '' tblDadosConexaoNFeCTe.FiltroCFOP
             Me.FiltroCFOP = DLookup("[ID_NatOper]", "tblNatOp", "[CFOP_NatOper]='1.353' and [Fil_NatOper]='" & Me.FiltroFil & "'")
-            
             Me.FiltroCFOP.Requery
         ElseIf XMLCFOP = "6353" Then '2353
-            
-            '' tblDadosConexaoNFeCTe.FiltroCFOP
             Me.FiltroCFOP = DLookup("[ID_NatOper]", "tblNatOp", "[CFOP_NatOper]='2.353' and [Fil_NatOper]='" & Me.FiltroFil & "'")
-            
             Me.FiltroCFOP.Requery
         End If
     ElseIf Me.FiltroFil = "PES" Then
     
          If XMLCFOP = "5353" Then '1353
-            
-            '' tblDadosConexaoNFeCTe.FiltroCFOP
             Me.FiltroCFOP = DLookup("[ID_NatOper]", "tblNatOp", "[CFOP_NatOper]='1.353' and [Fil_NatOper]='" & Me.FiltroFil & "'")
-            
             Me.FiltroCFOP.Requery
         ElseIf XMLCFOP = "6353" Then '2353
-            
-            '' tblDadosConexaoNFeCTe.FiltroCFOP
             Me.FiltroCFOP = DLookup("[ID_NatOper]", "tblNatOp", "[CFOP_NatOper]='2.353' and [Fil_NatOper]='" & Me.FiltroFil & "'")
-            
             Me.FiltroCFOP.Requery
         End If
     End If
@@ -361,11 +333,7 @@ If Me.Finalidade = 0 Then 'CT-e
     '' #AILTON - qryInsertCompra - #VALOR_VARIAVEL
     rsCompraNF!Fil_CompraNF = Me.FiltroFil
     rsCompraNF!NumNF_CompraNF = XMLNumNF
-    
-    '' #AILTON - NumPed_CompraNF
-    '' #EnviarDadosParaServidor
-    rsCompraNF!NumPed_CompraNF = Format(IIf(IsNull(DMax("NumPed_CompraNF", "tblCompraNF")), "000001", DMax("NumPed_CompraNF", "tblCompraNF") + 1), "000000") '' CONTROLE DO NUMERO DO PEDIDO
-    
+    rsCompraNF!NumPed_CompraNF = Format(iif(IsNull(DMax("NumPed_CompraNF", "tblCompraNF")), "000001", DMax("NumPed_CompraNF", "tblCompraNF") + 1), "000000") '' CONTROLE DO NUMERO DO PEDIDO
     rsCompraNF!ID_NatOp_CompraNF = Me.FiltroCFOP.Column(0)
     rsCompraNF!CFOP_CompraNF = Me.FiltroCFOP.Column(1)
     rsCompraNF!Serie_CompraNF = XMLSerie
@@ -411,29 +379,25 @@ If Me.Finalidade = 0 Then 'CT-e
     rsCompraNFItem.Open "SELECT TOP 1 * FROM tblCompraNFItem", CNN, , , adCmdText
     rsCompraNFItem.AddNew
     
-    '' #AILTON - qryInsertItensCTe
+    '' #AILTON - qryInsertCompraItens
     rsCompraNFItem!ID_CompraNF_CompraNFItem = IDCompraNF
-    
-    '' #EnviarDadosParaServidor
     rsCompraNFItem!ID_Prod_CompraNFItem = DLookup("[CÛdigo]", "[Cadastro de Produtos]", "[Modelo]='TRANSPORTE'")
-    
-    '' #AILTON - qryInsertItensCTe - #VALOR_VARIAVEL
     rsCompraNFItem!Almox_CompraNFItem = Forms!frmCompraNF_ImpXML!FiltroAlmox
-    rsCompraNFItem!VUnt_CompraNFItem = XMLValNF                                 '' | OK
-    rsCompraNFItem!ICMS_CompraNFItem = XMLPerICMS                               '' | carregarItens
-    rsCompraNFItem!CFOP_CompraNFItem = Me.FiltroCFOP.Column(1)                  '' | tblNatOp.CFOP_NatOper
-    rsCompraNFItem!ST_CompraNFItem = "0" & Me.FiltroCFOP.Column(4)              '' | tblNatOp.STICMS_NatOper
-    rsCompraNFItem!DTEmi_CompraNFItem = XMLDTEmi                                '' | OK
-    rsCompraNFItem!Num_CompraNFItem = XMLNumNF                                  '' | OK
-    rsCompraNFItem!VTot_CompraNFItem = XMLValNF                                 '' | OK
-    rsCompraNFItem!DebICMS_CompraNFItem = XMLValICMS                            '' | OK
-    rsCompraNFItem!VTotBaseCalcICMS_CompraNFItem = XMLBCICMS                    '' | OK
-    rsCompraNFItem!ID_NatOp_CompraNFItem = Me.FiltroCFOP.Column(0)              '' | OK
-    rsCompraNFItem!STPIS_CompraNFItem = Me.FiltroCFOP.Column(6)                 '' | tblNatOp.STPC_NatOper
-    rsCompraNFItem!STCOFINS_CompraNFItem = Me.FiltroCFOP.Column(6)              '' | tblNatOp.STPC_NatOper
-    rsCompraNFItem!STIPI_CompraNFItem = Me.FiltroCFOP.Column(5)                 '' | tblNatOp.STIPI_NatOper
+    rsCompraNFItem!VUnt_CompraNFItem = XMLValNF
+    rsCompraNFItem!ICMS_CompraNFItem = XMLPerICMS
+    rsCompraNFItem!CFOP_CompraNFItem = Me.FiltroCFOP.Column(1)
+    rsCompraNFItem!ST_CompraNFItem = "0" & Me.FiltroCFOP.Column(4)
+    rsCompraNFItem!DTEmi_CompraNFItem = XMLDTEmi
+    rsCompraNFItem!Num_CompraNFItem = XMLNumNF
+    rsCompraNFItem!VTot_CompraNFItem = XMLValNF
+    rsCompraNFItem!DebICMS_CompraNFItem = XMLValICMS
+    rsCompraNFItem!VTotBaseCalcICMS_CompraNFItem = XMLBCICMS
+    rsCompraNFItem!ID_NatOp_CompraNFItem = Me.FiltroCFOP.Column(0)
+    rsCompraNFItem!STPIS_CompraNFItem = Me.FiltroCFOP.Column(6)
+    rsCompraNFItem!STCOFINS_CompraNFItem = Me.FiltroCFOP.Column(6)
+    rsCompraNFItem!STIPI_CompraNFItem = Me.FiltroCFOP.Column(5)
     
-    '' #AILTON - qryInsertItensCTe - #VALOR_FIXO
+    '' #AILTON - qryInsertCompraItens - #VALOR_FIXO
     rsCompraNFItem!Item_CompraNFItem = 1
     rsCompraNFItem!ID_Grade_CompraNFItem = 1
     rsCompraNFItem!QtdFat_CompraNFItem = 1
@@ -495,8 +459,6 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
     rsCompraNF.CursorType = adOpenKeyset
     rsCompraNF.LockType = adLockOptimistic
     rsCompraNF.Open "SELECT TOP 1 * FROM tblCompraNF ORDER BY NumPed_CompraNF DESC;", CNN
-    
-    
     Dim NumPed As Long
     NumPed = rsCompraNF!NumPed_CompraNF
     
@@ -506,34 +468,20 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
     '' #AILTON - qryInsertCompra - #VALOR_VARIAVEL
     rsCompraNF!Fil_CompraNF = Me.FiltroFil
     rsCompraNF!NumNF_CompraNF = XMLNumNF
-    
-    '' #EnviarDadosParaServidor
     rsCompraNF!NumPed_CompraNF = Format(NumPed + 1, "000000")
-    
     rsCompraNF!Serie_CompraNF = XMLSerie
     rsCompraNF!ID_NatOp_CompraNF = Me.FiltroCFOP.Column(0)
     rsCompraNF!CFOP_CompraNF = Me.FiltroCFOP.Column(1)
     rsCompraNF!DTEmi_CompraNF = XMLDTEmi
     rsCompraNF!DTEntd_CompraNF = XMLDTEmi
-    
-    '' #BUG - PONTO DE QUEBRA
-    
-    '' #EnviarDadosParaServidor
     rsCompraNF!Obs_CompraNF = Mid(XMLinfAdFisco, 1, 255)
         
     Dim parts() As String
     Dim NumAtual As String
    
-    '' #BUG - PONTO DE QUEBRA
-    '' #PEGAR APENAS O NUMERO DO PEDIDO - #PONTO DE ATEN«√O
-    
-    '' #EnviarDadosParaServidor
     If XMLinfAdFisco <> "" Then
         parts = Split((XMLinfAdFisco), ",")
         NumAtual = parts(LBound(parts))
-        
-'        tNumAtual = Replace(parts(LBound(Split((XMLinfAdFisco), ","))), "Pedido:", "")
-        
         If Forms!frmCompraNF_ImpXML!Finalidade = 4 Then
             rsCompraNF!IDVD_CompraNF = Replace(NumAtual, "Pedido:", "")
         End If
@@ -565,14 +513,14 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
     rsCompraNF!BaseCalcICMSSubsTrib_CompraNF = 0
     rsCompraNF!VTotICMSSubsTrib_CompraNF = 0
     
-'    If Est·Aberto("formVendas") Then
-'        rsCompraNF!VTotFrete_CompraNF = Forms!formVendas!Transporte * -1
-'    Else
-'        rsCompraNF!VTotFrete_CompraNF = 0
-'    End If
+    If Est·Aberto("formVendas") Then
+        rsCompraNF!VTotFrete_CompraNF = Forms!formVendas!Transporte * -1
+    Else
+        rsCompraNF!VTotFrete_CompraNF = 0
+    End If
     
-    rsCompraNF!VTotFrete_CompraNF = 0
     
+    '' #AILTON - qryInsertCompraItens - #VALOR_FIXO
     rsCompraNF!ModeloDoc_CompraNF = 55
     rsCompraNF!TPNF_CompraNF = 1
     rsCompraNF!BaseCalcICMS_CompraNF = 0
@@ -608,19 +556,13 @@ ElseIf Me.Finalidade = 1 Or Me.Finalidade = 3 Or Me.Finalidade = 4 Or Me.Finalid
     rsCompraNF.Close
     rsCad.Close
  
-'    If Est·Aberto("formVendas") Then
-'    Else
-'        DoCmd.SetWarnings False
-'        DoCmd.OpenQuery "qryCompraNF_ImpXML_BCICMS"
-'        DoCmd.OpenQuery "qryCompraNF_ImpXML_IPI"
-'        DoCmd.SetWarnings True
-'    End If
-  
-    '' #AILTON - PENDENTE
-    DoCmd.OpenQuery "qryCompraNF_ImpXML_BCICMS"
-    DoCmd.OpenQuery "qryCompraNF_ImpXML_IPI"
-  
-  
+    If Est·Aberto("formVendas") Then
+    Else
+        DoCmd.SetWarnings False
+        DoCmd.OpenQuery "qryCompraNF_ImpXML_BCICMS"
+        DoCmd.OpenQuery "qryCompraNF_ImpXML_IPI"
+        DoCmd.SetWarnings True
+    End If
   
 '' #AILTON - qryUpdateCFOP
 '' #tblTipos - 2 - NF-e Consumo
@@ -685,18 +627,18 @@ ElseIf Me.Finalidade = 2 Then
     IDCompraNF = rsCompraNF!ID_CompraNF
     Me.ID = IDCompraNF
     
-'    If Me.Finalidade = 2 Then
-'        Imp_Prod_NF (DocXML)
-'        Imp_Prod_ICMS (DocXML)
-'        Imp_Prod_IPI (DocXML)
-'
-'        '' #Ailton - qryInsertProdutoConsumo
-'        CadProdXMLConsumo (IDCadFor)
-'
-'        '' #Ailton - qryInsertCompraItens
-'        PegaTagProdXML DocXML, IDCompraNF, IDCadFor
-'
-'    End If
+    If Me.Finalidade = 2 Then
+        Imp_Prod_NF (DocXML)
+        Imp_Prod_ICMS (DocXML)
+        Imp_Prod_IPI (DocXML)
+        
+        '' #Ailton - qryInsertProdutoConsumo
+        CadProdXMLConsumo (IDCadFor)
+        
+        '' #Ailton - qryInsertCompraItens
+        PegaTagProdXML DocXML, IDCompraNF, IDCadFor
+
+    End If
        
 End If
 
@@ -710,7 +652,7 @@ TrataErro_Exit:
     Exit Sub
 
 TrataErro:
-    MsgBox err.description
+    MsgBox Err.description
     DoCmd.Hourglass False 'Mouse Ampulheta
     Resume Next 'TrataErro_Exit
 End Sub
