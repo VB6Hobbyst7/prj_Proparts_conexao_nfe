@@ -123,25 +123,29 @@ Private Const qryDadosGerais_Update_IdFornCompraNF As String = _
 'Private Const qryDadosGerais_Update_RegistrosInvalidos As String = _
 '        "DELETE * FROM tblDadosConexaoNFeCTe WHERE tblDadosConexaoNFeCTe.registroValido = 0;"
 
-
-'' -- PROCESSAMENTO CONCLUIDO
+'' ATUALIZAR PARA REGISTRO PROCESSADO
 '' #tblDadosConexaoNFeCTe.registroProcessado = 1
 Private Const qryDadosGerais_Update_ProcessamentoConcluido As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
 
-
+'' ATUALIZAR PARA REGISTRO PROCESSADO
 '' #tblDadosConexaoNFeCTe.registroProcessado = 1
 Private Const qryDadosGerais_Update_ProcessamentoConcluido_CTE As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo) = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro] = 'Cte'"")));"
 
+'' ATUALIZAR PARA REGISTRO PROCESSADO
+''' #tblDadosConexaoNFeCTe.registroProcessado = 1 -
+'Private Const qryDadosGerais_Update_ProcessamentoConcluido_ItensCompras As String = _
+'        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
 
-'' #tblDadosConexaoNFeCTe.registroProcessado = 1
-Private Const qryDadosGerais_Update_ProcessamentoConcluido_ItensCompras As String = _
-        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 1 FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0));"
+'' ATUALIZAR REGISTRO PARA ENVIADO PARA SERVIDOR
+'' #tblDadosConexaoNFeCTe.registroProcessado = 2 - Enviado para servidor
+Private Const qryDadosGerais_Update_ProcessamentoConcluido_Servidor As String = _
+        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 2 WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0) AND ((tblDadosConexaoNFeCTe.Chave)='strChave'));"
 
 
 '' ATUALIZAR REGISTRO PARA PROCESSADO
-'' #tblDadosConexaoNFeCTe.registroProcessado
+'' #tblDadosConexaoNFeCTe.registroProcessado = 3 - Arquivo(s) movido(s) para pasta de processados
 Private Const qryDadosGerais_Update_RegistroProcessado As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 3 " & _
         ",tblDadosConexaoNFeCTe.CaminhoDoArquivo = Replace(DLookUp(""[ValorDoParametro]"",""[tblParametros]"",""[TipoDeParametro]='caminhoDeColetaProcessados'""),""empresa"",strSplit(getPath([tblDadosConexaoNFeCTe].[CaminhoDoArquivo]),""\"",2)) & getFileNameAndExt([tblDadosConexaoNFeCTe].[CaminhoDoArquivo])" & _
@@ -149,7 +153,7 @@ Private Const qryDadosGerais_Update_RegistroProcessado As String = _
 
 
 '' ATUALIZAR REGISTRO PARA EXPURGO
-'' #tblDadosConexaoNFeCTe.registroProcessado
+'' #tblDadosConexaoNFeCTe.registroProcessado = 4 - Arquivo(s) movido(s) para pasta de expurgo
 Private Const qryDadosGerais_Update_RegistroExpurgo As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 4  " & _
         ",tblDadosConexaoNFeCTe.CaminhoDoArquivo = Replace(DLookUp(""[ValorDoParametro]"",""[tblParametros]"",""[TipoDeParametro]='caminhoDeColetaExpurgo'""),""empresa"",strSplit(getPath([tblDadosConexaoNFeCTe].[CaminhoDoArquivo]),""\"",2)) & getFileNameAndExt([tblDadosConexaoNFeCTe].[CaminhoDoArquivo])" & _
@@ -179,7 +183,7 @@ Private Const qryDadosGerais_Select_ArquivosValidos As String = _
         "SELECT ID AS ChvAcesso " & _
         "   ,CaminhoDoArquivo AS strOrigem   " & _
         "   ,Replace(DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='caminhoDeColetaProcessados'""), ""empresa"", strSplit(getPath([tblDadosConexaoNFeCTe].[CaminhoDoArquivo]), ""\"", 2)) & getFileNameAndExt([tblDadosConexaoNFeCTe].[CaminhoDoArquivo]) AS strDestino " & _
-        "FROM tblDadosConexaoNFeCTe WHERE ((NOT (tblDadosConexaoNFeCTe.CaminhoDoArquivo) IS NULL) AND ((tblDadosConexaoNFeCTe.registroValido) = 1)  AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1));"
+        "FROM tblDadosConexaoNFeCTe WHERE ((NOT (tblDadosConexaoNFeCTe.CaminhoDoArquivo) IS NULL) AND ((tblDadosConexaoNFeCTe.registroValido) = 1)  AND ((tblDadosConexaoNFeCTe.registroProcessado) = 2));"
 
 
 '' ARQUIVOS INVALIDOS
@@ -246,7 +250,7 @@ Private Const qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP As String = _
 '' #tblDadosConexaoNFeCTe.IDVD_CompraNF
 Private Const qryDadosGerais_Update_IDVD As String = _
     "UPDATE tblDadosConexaoNFeCTe " & _
-    "SET tblDadosConexaoNFeCTe.IDVD_CompraNF = ((Left(Trim(Replace(Replace(tblDadosConexaoNFeCTe.Obs_CompraNF, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6))) " & _
+    "SET tblDadosConexaoNFeCTe.IDVD_CompraNF = val((Left(Trim(Replace(Replace(tblDadosConexaoNFeCTe.Obs_CompraNF, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6))) " & _
     "WHERE (((Left(tblDadosConexaoNFeCTe.Obs_CompraNF, 6)) = 'PEDIDO ') " & _
     "       AND ((tblDadosConexaoNFeCTe.CNPJ_emit) = '12680452000302') " & _
     "       AND (((tblDadosConexaoNFeCTe.registroValido) = 1)  " & _
@@ -443,11 +447,20 @@ Public Function SelectArquivosPendentes() As String
                                                     
 End Function
 
+
+''qryDadosGerais_Update_ProcessamentoConcluido_Servidor
 Private Sub compras_atualizarItensCompras()
-    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDadosGerais_Update_ProcessamentoConcluido_ItensCompras
-    Application.CurrentDb.Execute qryDadosGerais_Update_ProcessamentoConcluido_ItensCompras
+    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDadosGerais_Update_ProcessamentoConcluido_Servidor
+    Application.CurrentDb.Execute qryDadosGerais_Update_ProcessamentoConcluido_Servidor
 
 End Sub
+
+
+''Private Sub compras_atualizarItensCompras()
+''    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDadosGerais_Update_ProcessamentoConcluido_ItensCompras
+''    Application.CurrentDb.Execute qryDadosGerais_Update_ProcessamentoConcluido_ItensCompras
+''
+''End Sub
 
 '' #AILTON - VALIDAR
 '' ATUALIZAR CAMPOS DE COMPRAS

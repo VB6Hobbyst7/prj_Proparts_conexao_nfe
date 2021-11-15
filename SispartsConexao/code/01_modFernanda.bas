@@ -187,9 +187,6 @@ totalDeRegistros = arquivos.count
 
     '' COMPRAS ATUALIAR CAMPOS
     DadosGerais.compras_atualizarCampos
-
-    '' CADASTRO DE NUMERO DE PEDIDOS
-    DadosGerais.UpdateNumPed_CompraNF
        
     '' #ANALISE_DE_PROCESSAMENTO
     statusFinal DT_PROCESSO, "carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: " & contadorDeRegistros & " )"

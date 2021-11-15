@@ -22,7 +22,6 @@ Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Scripts.S
 Dim qryCompras_Insert_Compras As String
 Dim qryComprasItens_Update_IDCompraNF As String
 
-
 Dim contador As Long: contador = 1
 
     '' BANCO_DESTINO
@@ -37,13 +36,13 @@ Dim contador As Long: contador = 1
         
         '' CADASTRO DE COMPRAS
         qryCompras_Insert_Compras = Replace(carregarScript_Insert("tblCompraNF", rstChvAcesso.Fields("ChvAcesso_CompraNF").value), "strNumPed_CompraNF", contador)
-        Debug.Print qryCompras_Insert_Compras
+'        Debug.Print qryCompras_Insert_Compras
         dbDestino.SqlExecute qryCompras_Insert_Compras
         
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
         dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & rstChvAcesso.Fields("ChvAcesso_CompraNF").value & "';"
         qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", rstChvAcesso.Fields("ChvAcesso_CompraNF").value), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
-        Debug.Print qryComprasItens_Update_IDCompraNF
+'        Debug.Print qryComprasItens_Update_IDCompraNF
         If Not dbDestino.rs.EOF Then
             Application.CurrentDb.Execute qryComprasItens_Update_IDCompraNF
             
@@ -51,8 +50,7 @@ Dim contador As Long: contador = 1
             
             '' .................
         End If
-        
-        
+                
         rstChvAcesso.MoveNext
         contador = contador + 1
         DoEvents
@@ -61,7 +59,6 @@ Dim contador As Long: contador = 1
 rstChvAcesso.Close
 dbDestino.CloseConnection
 db.Close
-
 
 Set Scripts = Nothing
 Set rstChvAcesso = Nothing

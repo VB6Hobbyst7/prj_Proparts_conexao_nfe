@@ -25,9 +25,9 @@ Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[
     '' REPOSITORIOS DE COMPRAS
     ''==================================================
 
-    '' ZERAR CONTADOR DE NUMERO DE PEDIDOS
-    If dataBaseClear Then Application.CurrentDb.Execute _
-            "UPDATE tblParametros SET tblParametros.ValorDoParametro = 0 WHERE (((tblParametros.TipoDeParametro)=""NumPed_CompraNF""));"
+'    '' ZERAR CONTADOR DE NUMERO DE PEDIDOS
+'    If dataBaseClear Then Application.CurrentDb.Execute _
+'            "UPDATE tblParametros SET tblParametros.ValorDoParametro = 0 WHERE (((tblParametros.TipoDeParametro)=""NumPed_CompraNF""));"
 
     '' LIMPAR REPOSITORIO DE ITENS DE COMPRAS
     If dataBaseClear Then Application.CurrentDb.Execute _
@@ -40,22 +40,24 @@ Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[
     '' Processamento de arquivos pendentes da pasta de coleta.
     processarArquivosPendentes
 
-    '' Transferir Arquivos Validos para pasta de processados
-    tratamentoDeArquivosValidos
-
-    '' Transferir Arquivos Invalidos para pasta de Expurgo
-    tratamentoDeArquivosInvalidos
 
     ''==================================================
     '' EXPORTAR DADOS PARA O SERVIDOR
     ''==================================================
 
     '' EXPORTAÇÃO DE DADOS
-    enviarDadosServidor
+    CadastroDeComprasEmServidor
 
 '    ''==================================================
 '    '' PROCESSAMENTO DE ARQUIVOS
 '    ''==================================================
+'
+'    '' Transferir Arquivos Validos para pasta de processados
+'    tratamentoDeArquivosValidos
+'
+'    '' Transferir Arquivos Invalidos para pasta de Expurgo
+'    tratamentoDeArquivosInvalidos
+'
 '
 '
 '    '' #### GERAR ARQUIVOS DE LANÇAMENTO E MANIFESTO
