@@ -16,7 +16,7 @@ Option Explicit
 '' ########################################
 
 Private Const qryCompras_Select_RegistroValidoPorcessado As String = _
-        "SELECT * FROM pRepositorio INNER JOIN tblDadosConexaoNFeCTe ON pRepositorio.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND (tblDadosConexaoNFeCTe.registroProcessado) = 1)"
+        "SELECT pRepositorio.* FROM pRepositorio INNER JOIN tblDadosConexaoNFeCTe ON pRepositorio.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND (tblDadosConexaoNFeCTe.registroProcessado) = 1)"
         '"Select * from tblCompraNF Where tblCompraNF.ChvAcesso_CompraNF IN (SELECT ChvAcesso FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND (tblDadosConexaoNFeCTe.registroProcessado)=1))"
 
 Private Const qryCompras_Update_RegistroConcluida As String = _

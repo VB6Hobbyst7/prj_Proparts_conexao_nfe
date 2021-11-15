@@ -278,7 +278,7 @@ On Error Resume Next
 Dim DadosGerais As New clsConexaoNfeCte
 
 '' CONTROLE DE CADASTRO DE REGISTRO
-Dim t As Integer
+Dim T As Integer
 Dim tmpSqlOrigem As String
 
 '' #BANCO_LOCAL
@@ -305,7 +305,7 @@ Do While Not rstPendentes.EOF
     Do While Not rstOrigem.EOF
     
         '' CONTROLE DE CADASTRO
-        If t = 0 Then rstDestino.AddNew: t = 1
+        If T = 0 Then rstDestino.AddNew: T = 1
         rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
         
         '' #CAMPO_CHAVE_RELACIONAMENO
@@ -316,7 +316,7 @@ Do While Not rstPendentes.EOF
     Loop
         
     rstDestino.Update
-    t = 0
+    T = 0
     
     '' #COMPRAS
     If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
