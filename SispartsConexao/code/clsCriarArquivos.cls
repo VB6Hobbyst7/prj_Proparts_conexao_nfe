@@ -9,6 +9,11 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Compare Database
 
+Public Enum enumTipoArquivo
+    opFlagLancadaERP = 0
+    opManifesto = 1
+End Enum
+
 '' #00. CRIAÇÃO DE ARQUIVOS JSON
 Public Sub criarArquivoJson(pArquivo As enumTipoArquivo, qryDados As String, Optional caminhoDeProcessados As String)
 Dim db As DAO.Database: Set db = CurrentDb

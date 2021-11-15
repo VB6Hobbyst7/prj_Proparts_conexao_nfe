@@ -6,7 +6,7 @@ Public Sub ExportAllCode()
 
     Dim C As VBComponent
     Dim Sfx As String
-    Dim pathExit As String: pathExit = Replace(CurrentProject.path, left(CurrentProject.Name, Len(CurrentProject.Name) - 6), "") & "scripts\"
+    Dim pathExit As String: pathExit = Replace(CurrentProject.path, left(CurrentProject.Name, Len(CurrentProject.Name) - 6), "") & "scripts\" & strControle & "\"
     
     For Each C In Application.VBE.VBProjects(1).VBComponents
         Select Case C.Type
@@ -21,7 +21,7 @@ Public Sub ExportAllCode()
         End Select
 
         If Sfx <> "" Then
-            CreateDir pathExit & strControle & "\"
+            CreateDir pathExit
             C.Export fileName:=pathExit & C.Name & Sfx
         End If
     Next C

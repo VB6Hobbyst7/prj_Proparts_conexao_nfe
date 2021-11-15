@@ -15,13 +15,37 @@ Public Enum enumTipoProcessamento
 End Enum
 
 
+'' -- SELEÇÃO DE ITENS UNICOS PARA PROCESSAMENTO
+'' #tblProcessamento
+'Private Const sqyProcessamentosPendentes As String = _
+'        "SELECT DISTINCT pk from tblProcessamento;"
+
+
+
+'' -- ATUALIZAR CAMPOS ( Nometabela e NomeCampo ) PARA USO DA TABELA DE PROCESSAMENTO
+'' #tblProcessamento.Tabela = [qryOrigemDestino].[Tabela]
+'' #tblProcessamento.Campo = [qryOrigemDestino].[Campo]
+'' #tblProcessamento.formatacao = [qryOrigemDestino].[formatacao]
+'Private Const qryUpdateProcessamento As String = _
+'        "UPDATE (SELECT tblOrigemDestino.Destino " & _
+'        "           ,tblOrigemDestino.Tag " & _
+'        "           ,tblOrigemDestino.Tabela " & _
+'        "           ,tblOrigemDestino.Campo " & _
+'        "           ,tblOrigemDestino.formatacao " & _
+'        "       FROM tblOrigemDestino " & _
+'        "       WHERE tblOrigemDestino.Tabela = 'strParametro' " & _
+'        "       ) AS qryOrigemDestino INNER JOIN tblProcessamento ON qryOrigemDestino.Tag = tblProcessamento.chave  " & _
+'        "SET tblProcessamento.nomeTabela = [qryOrigemDestino].[Tabela] " & _
+'        "   ,tblProcessamento.NomeCampo = [qryOrigemDestino].[Campo] " & _
+'        "   ,tblProcessamento.formatacao = [qryOrigemDestino].[formatacao];"
+
+
+
+
 '' #tblProcessamento
 Private Const qrySelecaoDeCampos As String = _
     "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((tblOrigemDestino.tabela)='strParametro') AND ((Len([Tag]))>0) AND ((tblOrigemDestino.TagOrigem)=1)) ORDER BY tblOrigemDestino.Tag, tblOrigemDestino.tabela;"
        
-'' #tblProcessamento.Pendentes
-Private Const qrySelecaoDeArquivosPendentes As String = _
-    "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1)) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0) ORDER BY tblDadosConexaoNFeCTe.CaminhoDoArquivo;"
 
 
 '' #tblProcessamento.Delete
@@ -34,7 +58,11 @@ Private Const qryUpdateProcessamento_Chave As String = _
 
 '' #tblProcessamento.NomeTabela
 Private Const qryUpdateProcessamento_NomeTabela As String = _
-    "UPDATE tblProcessamento SET tblProcessamento.NomeTabela = ""tblRepositorio"";"
+    "UPDATE tblProcessamento SET tblProcessamento.NomeTabela = ""tblRepositorio"" where tblProcessamento.NomeTabela is null;"
+
+'' #tblProcessamento.NomeTabela - Limpar Itens Marcados Errados
+Private Const qryUpdateProcessamento_LimparItensMarcadosErrados As String = _
+    "UPDATE tblProcessamento SET tblProcessamento.NomeTabela = Null WHERE (((classificacao([tblProcessamento].[pk]))=1));"
 
 '' #tblProcessamento.NomeCampo
 Private Const qryUpdateProcessamento_NomeCampo As String = _
@@ -64,10 +92,20 @@ Private Const qryUpdateProcessamento_opData As String = _
 Private Const qryUpdateProcessamento_opTime As String = _
         "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
         
+
+        
+        
+        
 Public Sub DeleteProcessamento()
     Application.CurrentDb.Execute qryDeleteProcessamento
                                                     
 End Sub
+        
+Public Sub UpdateProcessamentoLimparItensMarcadosErrados()
+    Application.CurrentDb.Execute qryUpdateProcessamento_LimparItensMarcadosErrados
+                                                    
+End Sub
+        
         
 Public Sub UpdateProcessamentoFormatarDados()
 Dim qryProcessos() As Variant: qryProcessos = Array( _
@@ -79,7 +117,10 @@ Public Sub UpdateProcessamentoIdentificarCampos(pRepositorio As String)
 Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                 Replace(qryUpdateProcessamento_NomeTabela, "tblRepositorio", pRepositorio), _
                                                 Replace(qryUpdateProcessamento_NomeCampo, "tblRepositorio", pRepositorio), _
-                                                Replace(qryUpdateProcessamento_Formatacao, "tblRepositorio", pRepositorio)): executarComandos qryProcessos
+                                                Replace(qryUpdateProcessamento_Formatacao, "tblRepositorio", pRepositorio), _
+                                                qryUpdateProcessamento_RelacaoCamposDeTabelas_Item_CompraNFItem, _
+                                                qryUpdateProcessamento_RelacaoCamposDeTabelas_ChvAcesso_CompraNF, _
+                                                qryUpdateProcessamento_RelacaoCamposDeTabelas_tblCompraNFItem_ChvAcesso_CompraNF): executarComandos qryProcessos
 End Sub
 
 
@@ -107,6 +148,13 @@ Dim subRegiao As String: subRegiao = ""
 Dim campo As String: campo = ""
 Dim valor As String: valor = ""
 
+'' DADOS GERAIS
+Dim repositorioDadosGerais As String: repositorioDadosGerais = "tblDadosConexaoNFeCTe"
+
+'' COMPRAS
+Dim repositorioCompras As String: repositorioCompras = "tblCompraNF"
+Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFItem"
+    
     Select Case pTipoProcessamento
         
         '' DADOS GERAIS
@@ -117,7 +165,7 @@ Dim valor As String: valor = ""
             pDados.add pPK & "|" & "Chave" & "|" & pPK
             pDados.add pPK & "|" & "CaminhoDoArquivo" & "|" & pPathFile
             
-            For Each Item In carregarParametros(qrySelecaoDeCampos, "tblDadosConexaoNFeCTe")
+            For Each Item In carregarParametros(qrySelecaoDeCampos, repositorioDadosGerais)
                 Select Case UBound(Split((Item), "|"))
                     Case 1
                         regiao = Split((Item), "|")(0)
@@ -146,7 +194,7 @@ Dim valor As String: valor = ""
             pDados.add pPK & "|" & "ChvAcesso_CompraNF" & "|" & pChvAcesso
             
             '' CABEÇALHO DA COMPRA
-            For Each Item In carregarParametros(qrySelecaoDeCampos, "tblCompraNF")
+            For Each Item In carregarParametros(qrySelecaoDeCampos, repositorioCompras)
                 Select Case UBound(Split((Item), "|"))
                     Case 1
                         regiao = Split((Item), "|")(0)
@@ -171,7 +219,7 @@ Dim valor As String: valor = ""
         
                 pDados.add pPK & "_" & idItem & "|" & "tblCompraNFItem.ChvAcesso_CompraNF.opTexto" & "|" & pChvAcesso
         
-                For Each Item In carregarParametros(qrySelecaoDeCampos, "tblCompraNFItem")
+                For Each Item In carregarParametros(qrySelecaoDeCampos, repositorioComprasItens)
         
                     Select Case UBound(Split((Item), "|"))
         

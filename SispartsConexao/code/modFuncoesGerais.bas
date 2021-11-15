@@ -2234,7 +2234,7 @@ Dim str As String
 Dim emailRemetente As String
 Dim nomeRemetente As String
 Dim emailBcc As String
-Dim Arquivos As String
+Dim arquivos As String
 Dim smtpCliente As String
 Dim smtpPorta As String
 Dim smtpSSL As String

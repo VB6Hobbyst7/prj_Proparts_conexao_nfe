@@ -38,50 +38,6 @@ Option Explicit
 Private FileCollention As New Collection
 Private con As ADODB.Connection
 
-Public Enum enumTipoArquivo
-    opFlagLancadaERP = 0
-    opManifesto = 1
-End Enum
-
-
-
-
-'' #################################################
-'' #tblProcessamento - Formatar campos processados
-'' #################################################
-
-
-
-
-
-'' -- SELEÇÃO DE ITENS UNICOS PARA PROCESSAMENTO
-'' #tblProcessamento
-'Private Const sqyProcessamentosPendentes As String = _
-'        "SELECT DISTINCT pk from tblProcessamento;"
-
-
-
-'' -- ATUALIZAR CAMPOS ( Nometabela e NomeCampo ) PARA USO DA TABELA DE PROCESSAMENTO
-'' #tblProcessamento.Tabela = [qryOrigemDestino].[Tabela]
-'' #tblProcessamento.Campo = [qryOrigemDestino].[Campo]
-'' #tblProcessamento.formatacao = [qryOrigemDestino].[formatacao]
-'Private Const qryUpdateProcessamento As String = _
-'        "UPDATE (SELECT tblOrigemDestino.Destino " & _
-'        "           ,tblOrigemDestino.Tag " & _
-'        "           ,tblOrigemDestino.Tabela " & _
-'        "           ,tblOrigemDestino.Campo " & _
-'        "           ,tblOrigemDestino.formatacao " & _
-'        "       FROM tblOrigemDestino " & _
-'        "       WHERE tblOrigemDestino.Tabela = 'strParametro' " & _
-'        "       ) AS qryOrigemDestino INNER JOIN tblProcessamento ON qryOrigemDestino.Tag = tblProcessamento.chave  " & _
-'        "SET tblProcessamento.nomeTabela = [qryOrigemDestino].[Tabela] " & _
-'        "   ,tblProcessamento.NomeCampo = [qryOrigemDestino].[Campo] " & _
-'        "   ,tblProcessamento.formatacao = [qryOrigemDestino].[formatacao];"
-
-
-
-
-
 
 
 '' ########################################
@@ -99,23 +55,15 @@ Private Const qryTags As String = _
 
 
 
-
-
-'' ########################################
-'' #tblDadosConexaoNFeCTe - PROCESSAMENTO
-'' ########################################
-
-'' ------------------------
-'' #FormatarCamposEmProcessamento
-'' ------------------------
-
-
-
-
-
 '' ########################################
 '' #tblDadosConexaoNFeCTe - #DADOS_GERAIS
 '' ########################################
+
+
+
+'' tblDadosConexaoNFeCTe.Pendentes
+Private Const qrySelecaoDeArquivosPendentes As String = _
+    "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=0)) AND ((tblDadosConexaoNFeCTe.ID_Tipo)>0) ORDER BY tblDadosConexaoNFeCTe.CaminhoDoArquivo;"
 
 '' -- PROCESSAMENTO CONCLUIDO
 '' #tblDadosConexaoNFeCTe.registroProcessado
@@ -266,12 +214,19 @@ Private Const qryUpdate_ModeloDoc_CFOP As String = _
 Private Const qryUpdateItens_ID_Prod_CompraNFItem As String = _
         "UPDATE tblCompraNFItem SET tblCompraNFItem.ID_Prod_CompraNFItem = DLookUp(""CodigoProd_Grade"",""dbo_tabGradeProdutos"",""CodigoForn_Grade='"" & [tblCompraNFItem].[ID_Prod_CompraNFItem] & ""'"");"
 
+''' #tblCompraNFItem.ID_Prod_CompraNFItem
+'Private Const qryUpdateItens_ID_Prod_CompraNFItem As String = _
+'        "UPDATE tblCompraNFItem SET tblCompraNFItem.ID_Prod_CompraNFItem = DLookUp(""CodigoProd_Grade"",""dbo_tabGradeProdutos"",""CodigoForn_Grade='"" & [tblCompraNFItem].[ID_Prod_CompraNFItem] & ""'"");"
+
+
 '' #tblCompraNFItem.InsertItensCTe
 Private Const qryInsertItensCTe As String = _
         "INSERT INTO tblCompraNFItem ( ChvAcesso_CompraNF, VUnt_CompraNFItem, DTEmi_CompraNFItem, Num_CompraNFItem, VTot_CompraNFItem, DebICMS_CompraNFItem, VTotBaseCalcICMS_CompraNFItem, ID_NatOp_CompraNFItem, Item_CompraNFItem, ID_Grade_CompraNFItem, QtdFat_CompraNFItem, ISS_CompraNFItem, IPI_CompraNFItem, FlagEst_CompraNFItem, BaseCalcICMS_CompraNFItem, IseICMS_CompraNFItem, OutICMS_CompraNFItem, BaseCalcIPI_CompraNFItem, DebIPI_CompraNFItem, IseIPI_CompraNFItem, OutIPI_CompraNFItem, TxMLSubsTrib_CompraNFItem, TxIntSubsTrib_CompraNFItem, TxExtSubsTrib_CompraNFItem, BaseCalcICMSSubsTrib_CompraNFItem, VTotICMSSubsTrib_compranfitem, VTotFrete_CompraNFItem, VTotDesc_CompraNFItem, VTotPIS_CompraNFItem, VTotBaseCalcPIS_CompraNFItem, VTotCOFINS_CompraNFItem, VTotIseICMS_CompraNFItem, VTotBaseCalcCOFINS_CompraNFItem, SNCredICMS_CompraNFItem, VTotSNCredICMS_CompraNFItem, VTotSeg_CompraNFItem, VTotOutDesp_CompraNFItem )  " & _
         "SELECT tblCompraNF.ChvAcesso_CompraNF, tblCompraNF.VTotNF_CompraNF, tblCompraNF.DTEmi_CompraNF, tblCompraNF.NumNF_CompraNF, tblCompraNF.VTotNF_CompraNF, IIf([VTotICMS_CompraNF]<>"""",replace(tblCompraNF.BaseCalcICMS_CompraNF/100,"","","".""),0) AS strVTotICMS, tblCompraNF.BaseCalcICMS_CompraNF, tblCompraNF.ID_NatOp_CompraNF, 1 AS strItem, 1 AS strIDGrade, 1 AS strQtdFat, 0 AS strISS, 0 AS strIPI, 0 AS strFlag, 100 AS strBaseCalcICMS, 0 AS strIseICMS, 0 AS strOutICMS, 0 AS strBaseCalcIPI, 0 AS strDebIPI, 0 AS strIseIPI, 0 AS strOutIPI, 0 AS strTxMLSubsTrib, 0 AS strTxIntSubsTrib, 0 AS strTxExtSubsTrib, 0 AS strBaseCalcICMSSubsTrib, 0 AS strVTotICMSSubsTrib, 0 AS strVTotFrete, 0 AS strVTotDesc, 0 AS strVTotPIS, 0 AS strVTotBaseCalcPIS, 0 AS strVTotCOFINS, 0 AS strVTotIseICMS, 0 AS strVTotBaseCalcCOFINS, 0 AS strSNCredICMS, 0 AS strVTotSNCredICMS, 0 AS strVTotSeg, 0 AS strVTotOutDesp  " & _
         "FROM tblCompraNF INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso  " & _
         "WHERE (((tblDadosConexaoNFeCTe.ID_Tipo)=DLookUp(""[ValorDoParametro]"",""[tblParametros]"",""[TipoDeParametro]='Cte'""))) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1) ; "
+
+
 
 ''#######################################################################################
 ''### CONSULTAS DE CONTROLE DE DADOS
@@ -282,6 +237,12 @@ Private Const qryInsertItensCTe As String = _
 'Dim qryProcessos() As Variant: qryProcessos = Array(qryUpdateFilCompraNF): executarComandos qryProcessos
 '
 'End Sub
+
+
+Public Function SelectArquivosPendentes() As String
+    SelectArquivosPendentes = qrySelecaoDeArquivosPendentes
+                                                    
+End Function
 
 Private Sub compras_atualizarItensCompras()
     Application.CurrentDb.Execute qryUpdateProcessamentoConcluido_ItensCompras
@@ -311,7 +272,13 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
 End Sub
 
 
-Private Sub TratamentoDeDadosGerais()
+Public Sub FormatarItensDeCompras()
+    Application.CurrentDb.Execute qryUpdateItens_ID_Prod_CompraNFItem
+
+End Sub
+
+
+Public Sub TratamentoDeDadosGerais()
 Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                 qryUpdateFornecedoresValidos, _
                                                 qryUpdateRegistrosValidos, _

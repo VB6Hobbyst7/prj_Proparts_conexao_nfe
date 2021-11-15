@@ -13,6 +13,13 @@ End Enum
 '' ### #Libs - PODE SER ADICIONADAS AS FUNÇÕES GERAIS DA APLICAÇÃO
 '' #####################################################################
 
+'' Classificacao de dados para separar itens processados
+Public Function classificacao(strValor As String) As String
+
+classificacao = UBound(Split((strValor), "_"))
+
+End Function
+
 Public Function getConsultarSeRetornoArmazemParaRecuperarNumeroDePedido(pChvAcesso As String, pDados As String) As String
 '' valor padrao
 Dim tRetorno As String: tRetorno = 0
