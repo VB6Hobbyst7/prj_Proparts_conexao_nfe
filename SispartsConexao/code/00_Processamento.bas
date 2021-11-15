@@ -51,6 +51,7 @@ Dim item As Variant
     '' 02.Analise e 03.Importação
     For Each item In ListagemDeArquivosValidosParaCadastros(pColArquivos)
         Processamento.ProcessamentoDeArquivo CStr(item), opDadosGerais
+        Debug.Print "### " & pColArquivos.count - 1
         DoEvents
     Next
     
