@@ -38,6 +38,10 @@ Dim strRepositorio As String
 Dim tmpScript As String: _
     tmpScript = "INSERT INTO pRepositorio ( strCamposNomes ) SELECT strCamposTmp FROM ( VALUES strCamposValores ) AS TMP ( strCamposTmp ) LEFT JOIN pRepositorio ON pRepositorio.ChvAcesso_CompraNF = tmp.ChvAcesso WHERE pRepositorio.ChvAcesso_CompraNF IS NULL;"
 
+Dim tmpScriptItens As String: _
+    tmpScriptItens = "INSERT INTO pRepositorio ( strCamposNomes ) SELECT strCamposTmp FROM ( VALUES strCamposValores ) AS TMP ( strCamposTmp );"
+
+
 '' VALIDAR CONCILIAÇÃO
 Dim tmp As String
 
@@ -72,8 +76,8 @@ Dim tmp As String
             pRepositorio = "tblCompraNFItem"
             
             tmpCamposNomes = carregarCamposNomes(pRepositorio)
-            strCamposNomes = Replace(tmpScript, "strCamposNomes", tmpCamposNomes)
-            strCamposNomesTmp = Replace(Replace(tmpScript, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
+            strCamposNomes = Replace(tmpScriptItens, "strCamposNomes", tmpCamposNomes)
+            strCamposNomesTmp = Replace(Replace(tmpScriptItens, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
             strRepositorio = Replace(strCamposNomesTmp, "pRepositorio", pRepositorio)
 
             '' #20210823_qryUpdateNumPed_CompraNF
