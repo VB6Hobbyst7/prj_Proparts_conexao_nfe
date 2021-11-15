@@ -2,6 +2,19 @@ Attribute VB_Name = "azs_VALIDAR_DADOS"
 Option Compare Database
 
 
+Function renameColumn(pRepositorio As String, pColumns As String) As String
+'Dim pRepositorio As String: pRepositorio = "tblCompraNF"
+Dim tmp As String
+
+    For Each item In Split(pColumns, ",")
+        tmp = tmp & ",str" & CStr(item)
+    Next
+    
+    renameColumn = right(tmp, Len(tmp) - 1)
+
+End Function
+
+
 Sub teste_carregar()
 
 Dim pChave As String: pChave = "42210348740351012767570000021186731952977908-cteproc"
@@ -16,6 +29,14 @@ Dim db As DAO.Database: Set db = CurrentDb
 Dim rstRepositorio As DAO.Recordset: Set rstRepositorio = db.OpenRecordset(tmpScript)
 'Debug.Print tmpScript
 
+Dim qryCompras_Insert_Processamento As String: _
+    qryCompras_Insert_Processamento = "INSERT INTO pRepositorio (strCamposNomes)  " & _
+                                        "SELECT strCamposTmp  " & _
+                                        "FROM (  " & _
+                                        "   VALUES strCamposValores  " & _
+                                        "   ) AS TMP(strCamposTmp)  " & _
+                                        "LEFT JOIN pRepositorio ON pRepositorio.ChvAcesso_CompraNF = tmp.ChvAcesso  " & _
+                                        "WHERE pRepositorio.ChvAcesso_CompraNF IS NULL;"
 tmpScript = ""
 Do While Not rstRepositorio.EOF
 
@@ -46,8 +67,10 @@ Do While Not rstRepositorio.EOF
     DoEvents
 Loop
 
-Debug.Print left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)
-Debug.Print left(tmpScript, Len(tmpScript) - 1)
+'Debug.Print left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)
+'Debug.Print left(tmpScript, Len(tmpScript) - 1)
+
+Debug.Print Replace(Replace(Replace(Replace(qryCompras_Insert_Processamento, "strCamposNomes", left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)), "strCamposValores", left(tmpScript, Len(tmpScript) - 1)), "pRepositorio", pRepositorio), "strCamposTmp", renameColumn(pRepositorio, left(tmpScriptCabecalho, Len(tmpScriptCabecalho) - 1)))
 
 End Sub
 Private Sub gerar_ArquivosDeValidacaoDeCampos()
@@ -59,7 +82,7 @@ Dim sqlItens As String: sqlItens = "Select * from tblCompraNFItem where ChvAcess
 Dim arquivos As New Collection
 
 Dim item As Variant
-Dim TMP As String
+Dim tmp As String
 
 '' 57
 arquivos.add "42210300634453001303570010001139451001171544"
@@ -90,8 +113,8 @@ For Each item In arquivos
     '' PROCESSAMENTO DE ARQUIVOS PENDENTES
     processarArquivosPendentes
     
-    TMP = sqlRegistros & "'" & CStr(item) & "'"
-    Set rstRegistros = db.OpenRecordset(TMP)
+    tmp = sqlRegistros & "'" & CStr(item) & "'"
+    Set rstRegistros = db.OpenRecordset(tmp)
     
     Do While Not rstRegistros.EOF
         
@@ -99,24 +122,24 @@ For Each item In arquivos
         If (Dir(CurrentProject.path & "\" & CStr(item) & ".txt") <> "") Then Kill CurrentProject.path & "\" & CStr(item) & ".txt"
         
         '' CARREGAR CABEÇALHO
-        TMP = ""
+        tmp = ""
         For i = 0 To rstRegistros.Fields.count - 1
-            TMP = rstRegistros.Fields(i).Name & vbTab & rstRegistros.Fields(i).value
-            TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", TMP
+            tmp = rstRegistros.Fields(i).Name & vbTab & rstRegistros.Fields(i).value
+            TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", tmp
         Next i
 
         '' CARREGAR ITENS DA NOTA
         TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", vbNewLine & "### ITENS ###" & vbNewLine
 
-        TMP = ""
-        TMP = sqlItens & "'" & CStr(item) & "'"
-        Debug.Print TMP
+        tmp = ""
+        tmp = sqlItens & "'" & CStr(item) & "'"
+        Debug.Print tmp
         
-        Set rstItens = db.OpenRecordset(TMP)
+        Set rstItens = db.OpenRecordset(tmp)
         Do While Not rstItens.EOF
             For i = 0 To rstItens.Fields.count - 1
-                TMP = rstItens.Fields(i).Name & vbTab & rstItens.Fields(i).value
-                TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", TMP
+                tmp = rstItens.Fields(i).Name & vbTab & rstItens.Fields(i).value
+                TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", tmp
             Next i
             
             TextFile_Append CurrentProject.path & "\" & CStr(item) & ".txt", vbNewLine & "#############################" & vbNewLine
@@ -126,7 +149,7 @@ For Each item In arquivos
         Loop
 
         '' ABRIR ARQUIVO
-        TMP = DLookup("[CaminhoDoArquivo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & CStr(item) & "'")
+        tmp = DLookup("[CaminhoDoArquivo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & CStr(item) & "'")
         Shell "notepad " & CurrentProject.path & "\" & CStr(item) & ".txt", vbMaximizedFocus
 '        Debug.Print TMP
 '        Shell "msedge.exe "" & TMP &"" ", vbMaximizedFocus
@@ -134,7 +157,7 @@ For Each item In arquivos
         Debug.Print "Concluido! - " & CStr(item) & ".txt"
         rstRegistros.MoveNext
         DoEvents
-        TMP = ""
+        tmp = ""
     Loop
     
     rstRegistros.Close

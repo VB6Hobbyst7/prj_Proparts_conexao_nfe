@@ -59,7 +59,7 @@ End Function
 
 '' EXECUÇÃO DE APLICATIVO EXTERNO
 Public Function execucao(pCol As Collection, strFileName As String, Optional strFilePath As String, Optional pOperacao As enumOperacao, Optional strApp As String) 'runUrl.au3
-Dim C As Variant, TMP As String: TMP = ""
+Dim C As Variant, tmp As String: tmp = ""
     
     '' Path
     If ((strFilePath) = "") Then
@@ -72,11 +72,11 @@ Dim C As Variant, TMP As String: TMP = ""
     
     '' Criação
     For Each C In pCol
-        TMP = TMP + CStr(C) + vbNewLine
+        tmp = tmp + CStr(C) + vbNewLine
     Next C
     
     '' Saida para arquivo
-    TextFile_Append strFilePath & strFileName, TMP
+    TextFile_Append strFilePath & strFileName, tmp
     
     '' Operações - Execução ou Abrir arquivo depois de pronto
     Dim pathApp As String: pathApp = strApp & " " & strFilePath & strFileName
@@ -220,11 +220,11 @@ End Sub
 
 '' STATUS DE PROCESSAMENTO
 Public Function statusFinal(pDate As Date, strTitulo As String)
-Dim TMP As String: TMP = "INFO " & Format(Now, "mm/dd/yyyy HH:mm:ss") & " - " & strTitulo & " - " & Format(Now - pDate, "hh:mm:ss")
+Dim tmp As String: tmp = "INFO " & Format(Now, "mm/dd/yyyy HH:mm:ss") & " - " & strTitulo & " - " & Format(Now - pDate, "hh:mm:ss")
 Dim strFileName As String: strFileName = right(Year(Now()), 4) & Format(Month(Now()), "00") & Format(Day(Now()), "00") & ".log"
     
     '' Saida de Log
-    TextFile_Append CurrentProject.path & "\" & strFileName, TMP
+    TextFile_Append CurrentProject.path & "\" & strFileName, tmp
     
 End Function
 

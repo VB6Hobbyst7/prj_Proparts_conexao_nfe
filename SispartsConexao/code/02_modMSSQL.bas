@@ -49,7 +49,7 @@ Dim tmpScriptItens As String: _
 
 
 '' VALIDAR CONCILIAÇÃO
-Dim TMP As String
+Dim tmp As String
 
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
@@ -73,9 +73,9 @@ Dim TMP As String
         
         '' CADASTRO DE COMPRAS
         For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-            TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-            Debug.Print TMP
-            dbDestino.SqlExecute TMP
+            tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+            Debug.Print tmp
+            dbDestino.SqlExecute tmp
         Next item
                
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
@@ -94,9 +94,9 @@ Dim TMP As String
             
             '' CADASTRO DE ITENS DE COMPRAS
             For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-                TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-                Debug.Print TMP
-                dbDestino.SqlExecute TMP
+                tmp = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+                Debug.Print tmp
+                dbDestino.SqlExecute tmp
             Next item
 
         End If
