@@ -7,6 +7,8 @@ Option Compare Database
 
 Sub teste_TransferirProcessamentoParaRepositorios()
 Dim Processamento As New clsProcessamentoDados
+Dim DadosGerais As New clsConexaoNfeCte
+
 Dim strChave As String: strChave = "32210268365501000296550000000637741001351624" ' 55
 'Dim strChave As String: strChave = "32210304884082000569570000040073831040073834" ' 57
 Dim strRepositorio As String: strRepositorio = "tblCompraNF"
@@ -16,21 +18,29 @@ Dim strArquivo As String: strArquivo = DLookup("[CaminhoDoArquivo]", "[tblDadosC
     '' LIMPAR TABELA DE PROCESSAMENTOS
     Processamento.DeleteProcessamento
     
-    '' PROCESSAMENTO
+    '' #IMPORTACAO - CADASTRO DE DADOS DO ARQUIVO NA TABELA DE PROCESSAMENTO -
     Processamento.ProcessamentoDeArquivo strArquivo, opCompras
         
-    '' IDENTIFICAR CAMPOS
+    '' #IDENTIFICA플O - CAMPOS
     Processamento.UpdateProcessamentoIdentificarCampos "tblCompraNF"
     
-    '' CORRE플O DE DADOS MARCADOS ERRADOS EM ITENS DE COMPRAS
+    '' #CORRE플O DE DADOS MARCADOS ERRADOS EM ITENS DE COMPRAS
     Processamento.UpdateProcessamentoLimparItensMarcadosErrados
 
-    '' IDENTIFICAR CAMPOS
+    '' #IDENTIFICA플O - CAMPOS
     Processamento.UpdateProcessamentoIdentificarCampos "tblCompraNFItem"
             
     '' FORMATAR DADOS
     Processamento.UpdateProcessamentoFormatarDados
             
+    '' #CLASSIFICAR
+    DadosGerais.TratamentoDeDadosGerais
+    DadosGerais.compras_atualizarCampos
+    
+    
+    
+    
+    
             
     '' TRANSFERIR
 '    TransferirProcessamentoParaRepositorios strChave
