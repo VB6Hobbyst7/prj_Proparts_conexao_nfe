@@ -3,7 +3,6 @@ Public Const DATE_TIME_FORMAT               As String = "yyyy/mm/dd hh:mm:ss"
 Public Const DATE_FORMAT                    As String = "yyyy/mm/dd"
 
 '' #20210823_CadastroDeComprasEmServidor
-'' #20210823_qryUpdateNumPed_CompraNF
 Sub CadastroDeComprasEmServidor()
 
 '' #ANALISE_DE_PROCESSAMENTO
@@ -38,14 +37,14 @@ Dim contador As Long: contador = 1
         
         '' CADASTRO DE COMPRAS
         qryCompras_Insert_Compras = Replace(carregarScript_Insert("tblCompraNF", rstChvAcesso.Fields("ChvAcesso_CompraNF").value), "strNumPed_CompraNF", contador)
-'        Debug.Print qryCompras_Insert_Compras
         dbDestino.SqlExecute qryCompras_Insert_Compras
         
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
         dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & rstChvAcesso.Fields("ChvAcesso_CompraNF").value & "';"
         qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", rstChvAcesso.Fields("ChvAcesso_CompraNF").value), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
-'        Debug.Print qryComprasItens_Update_IDCompraNF
         If Not dbDestino.rs.EOF Then
+            
+            '' #20210823_qryUpdateNumPed_CompraNF
             Application.CurrentDb.Execute qryComprasItens_Update_IDCompraNF
             
             '' CADASTRO DE ITENS DE COMPRAS
@@ -77,13 +76,20 @@ Debug.Print "Concluido!"
 
 End Sub
 
+
+Sub teste__carregarScript_Insert()
+
+Debug.Print carregarScript_Insert("tblCompraNFItem", "32210368365501000296550000000638811001361356")
+
+End Sub
+
 Function carregarScript_Insert(pRepositorio As String, pChvAcesso As String) As String
 
 Dim strCamposNomes As String: _
     strCamposNomes = carregarCamposNomes(pRepositorio)
 
 Dim strCamposNomesTmp As String: _
-    strCamposNomesTmp = Replace(strCamposNomes, "_CompraNF", "")
+    strCamposNomesTmp = Replace(strCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), "")
 
 Dim strCamposValores As String: _
     strCamposValores = carregarCamposValores(pRepositorio, pChvAcesso)
@@ -104,7 +110,12 @@ Dim rstOrigem As DAO.Recordset
 Dim tmpScript As String
 Dim tmp As String: tmp = right(pRepositorio, Len(pRepositorio) - 3)
 
-    Set rstOrigem = db.OpenRecordset("Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'")
+Dim sqlOrigem As String: sqlOrigem = _
+    "Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'"
+
+Dim contador As Long: contador = 0
+
+    Set rstOrigem = db.OpenRecordset(sqlOrigem)
     
     Do While Not rstOrigem.EOF
         tmpScript = ""
@@ -136,6 +147,8 @@ Dim tmp As String: tmp = right(pRepositorio, Len(pRepositorio) - 3)
             End If
             
 pulo:
+            contador = contador + 1
+            Debug.Print contador
             rstCampos.MoveNext
             DoEvents
         Loop
@@ -175,39 +188,3 @@ Dim tmp As String
     carregarCamposNomes = left(tmpScript, Len(tmpScript) - 1)
 
 End Function
-
-'Sub relacionarComprasItens()
-''' BANCO_DESTINO
-'Dim strUsuarioNome As String: strUsuarioNome = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Usuario'")
-'Dim strUsuarioSenha As String: strUsuarioSenha = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Senha'")
-'Dim strOrigem As String: strOrigem = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Origem'")
-'Dim strBanco As String: strBanco = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Banco'")
-'Dim dbDestino As New Banco
-'
-''' BANCO_ORIGEM
-'Dim Scripts As New clsConexaoNfeCte
-'Dim db As DAO.Database: Set db = CurrentDb
-'Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Scripts.SelectRegistroValidoPorcessado)
-'
-'Dim sqlTmp As String: sqlTmp = "UPDATE tblCompraNFItem SET tblCompraNFItem.ID_CompraNF_CompraNFItem = strID_Compra WHERE  tblCompraNFItem.ChvAcesso_CompraNF = 'strChave'"
-'Dim Tmp As String
-'
-'    '' BANCO_DESTINO
-'    dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
-'
-'    Do While Not rstChvAcesso.EOF
-'        dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & rstChvAcesso.Fields("ChvAcesso_CompraNF").value & "';"
-'
-'        Tmp = Replace(Replace(sqlTmp, "strChave", dbDestino.rs.Fields("ChvAcesso_CompraNF").value), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
-'        If Not dbDestino.rs.EOF Then Application.CurrentDb.Execute Tmp
-'
-'        rstChvAcesso.MoveNext
-'        DoEvents
-'    Loop
-'
-'rstChvAcesso.Close
-'dbDestino.CloseConnection
-'db.Close
-'
-'End Sub
-

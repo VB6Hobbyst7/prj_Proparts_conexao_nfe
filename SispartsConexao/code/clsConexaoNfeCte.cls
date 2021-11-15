@@ -16,7 +16,8 @@ Option Explicit
 '' ########################################
 
 Private Const qryCompras_Select_RegistroValidoPorcessado As String = _
-        "Select * from tblCompraNF Where tblCompraNF.ChvAcesso_CompraNF IN (SELECT ChvAcesso FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND (tblDadosConexaoNFeCTe.registroProcessado)=1))"
+        "SELECT * FROM pRepositorio INNER JOIN tblDadosConexaoNFeCTe ON pRepositorio.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND (tblDadosConexaoNFeCTe.registroProcessado) = 1)"
+        '"Select * from tblCompraNF Where tblCompraNF.ChvAcesso_CompraNF IN (SELECT ChvAcesso FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroValido)=1) AND (tblDadosConexaoNFeCTe.registroProcessado)=1))"
 
 Private Const qryCompras_Update_RegistroConcluida As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado = 2 WHERE (((tblDadosConexaoNFeCTe.ChvAcesso)=""strChave"") AND ((tblDadosConexaoNFeCTe.registroValido)=1) AND ((tblDadosConexaoNFeCTe.registroProcessado)=1));"
@@ -395,7 +396,7 @@ End Function
 'End Function
 
 
-'' qryComprasItens_Update_IDCompraNF
+'' #20210823_qryUpdateNumPed_CompraNF
 Public Function UpdateComprasItens_IDCompraNF() As String
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryComprasItens_Update_IDCompraNF
     UpdateComprasItens_IDCompraNF = qryComprasItens_Update_IDCompraNF

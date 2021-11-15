@@ -44,11 +44,11 @@ Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[
     '' PROCESSAMENTO DE ARQUIVOS
     ''==================================================
 
-    '' Transferir Arquivos Validos para pasta de processados
-    tratamentoDeArquivosValidos
-
-    '' Transferir Arquivos Invalidos para pasta de Expurgo
-    tratamentoDeArquivosInvalidos
+'    '' Transferir Arquivos Validos para pasta de processados
+'    tratamentoDeArquivosValidos
+'
+'    '' Transferir Arquivos Invalidos para pasta de Expurgo
+'    tratamentoDeArquivosInvalidos
 '
 '
 '
