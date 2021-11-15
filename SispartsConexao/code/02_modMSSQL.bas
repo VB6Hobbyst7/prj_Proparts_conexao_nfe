@@ -25,31 +25,60 @@ Dim tmp As String
 
 Dim contador As Long: contador = 1
 
+Dim strCamposNomes As String: _
+    strCamposNomes = carregarCamposNomes(pRepositorio)
+
+Dim strCamposNomesTmp As String: _
+    strCamposNomesTmp = Replace(strCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), "")
+    
+    
+Dim tmpScript As String: _
+    tmpScript = "INSERT INTO " & pRepositorio & " ( " & strCamposNomes & " ) SELECT " & strCamposNomesTmp & " FROM ( VALUES " & strCamposValores & " ) AS TMP ( " & strCamposNomesTmp & " ) LEFT JOIN " & pRepositorio & " ON " & pRepositorio & ".ChvAcesso_CompraNF = tmp.ChvAcesso WHERE " & pRepositorio & ".ChvAcesso_CompraNF IS NULL;"
+    
+
+Dim item As Variant
+Dim pChvAcesso As String
+Dim pRepositorio As String
+
+
+Dim tmp As String
+
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
 
     '' CADASTRO
     Do While Not rstChvAcesso.EOF
+        pChvAcesso = rstChvAcesso.Fields("ChvAcesso_CompraNF").value
+        pRepositorio = "tblCompraNF"
         
         '' CONTADOR
         dbDestino.SqlSelect "SELECT max(NumPed_CompraNF)+1 as contador from tblCompraNF"
         contador = IIf(IsNull(dbDestino.rs.Fields("contador").value), 1, dbDestino.rs.Fields("contador").value)
         
         '' CADASTRO DE COMPRAS
-        qryCompras_Insert_Compras = Replace(carregarScript_Insert("tblCompraNF", rstChvAcesso.Fields("ChvAcesso_CompraNF").value), "strNumPed_CompraNF", contador)
-        dbDestino.SqlExecute qryCompras_Insert_Compras
+        For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
+            tmp = Replace(Replace(tmpScript, "strCamposValores", item), "strNumPed_CompraNF", contador)
+            Debug.Print tmp
+            'dbDestino.SqlExecute tmp
+        Next item
+        
         
         '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
-        dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & rstChvAcesso.Fields("ChvAcesso_CompraNF").value & "';"
-        qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", rstChvAcesso.Fields("ChvAcesso_CompraNF").value), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
+        dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & pChvAcesso & "';"
+        qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", pChvAcesso), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
         If Not dbDestino.rs.EOF Then
+            pRepositorio = "tblCompraNFItem"
             
             '' #20210823_qryUpdateNumPed_CompraNF
             Application.CurrentDb.Execute qryComprasItens_Update_IDCompraNF
             
             '' CADASTRO DE ITENS DE COMPRAS
-            
-            '' .................
+            For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
+                tmp = Replace(Replace(tmpScript, "strCamposValores", item), "strNumPed_CompraNF", contador)
+                Debug.Print tmp
+                'dbDestino.SqlExecute tmp
+            Next item
+
         End If
                 
                 
@@ -98,8 +127,15 @@ Dim strCamposNomes As String: _
 Dim strCamposNomesTmp As String: _
     strCamposNomesTmp = Replace(strCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), "")
 
-Dim strCamposValores As String: _
-    strCamposValores = carregarCamposValores(pRepositorio, pChvAcesso)
+'Dim strCamposValores As Collection: _
+'    strCamposValores = carregarCamposValores(pRepositorio, pChvAcesso)
+    
+Dim item As Variant
+    
+    For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
+        Debug.Print CStr(i)
+    Next item
+    
 
 Dim tmpScript As String: _
     tmpScript = "INSERT INTO " & pRepositorio & " ( " & strCamposNomes & " ) SELECT " & strCamposNomesTmp & " FROM ( VALUES " & strCamposValores & " ) AS TMP ( " & strCamposNomesTmp & " ) LEFT JOIN " & pRepositorio & " ON " & pRepositorio & ".ChvAcesso_CompraNF = tmp.ChvAcesso WHERE " & pRepositorio & ".ChvAcesso_CompraNF IS NULL;"
@@ -109,7 +145,9 @@ Dim tmpScript As String: _
 
 End Function
 
-Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As String
+
+Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As Collection
+Set carregarCamposValores = New Collection
 
 'Dim pRepositorio As String: pRepositorio = "tblCompraNFItem"
 'Dim pChvAcesso As String: pChvAcesso = "32210368365501000296550000000638791001361285"
@@ -130,7 +168,7 @@ Dim sqlOrigem As String: sqlOrigem = _
     rstOrigem.MoveLast
     rstOrigem.MoveFirst
     Do While Not rstOrigem.EOF
-        tmpScript = tmpScript & "("
+        tmpScript = "("
         
         '' LISTAGEM DE CAMPOS
         rstCampos.MoveFirst
@@ -163,7 +201,7 @@ pulo:
             DoEvents
         Loop
         
-        tmpScript = left(tmpScript, Len(tmpScript) - 1) & "),"
+        carregarCamposValores.add left(tmpScript, Len(tmpScript) - 1) & ")"
         rstOrigem.MoveNext
         DoEvents
     Loop
@@ -172,10 +210,77 @@ pulo:
     rstCampos.Close
     rstOrigem.Close
     db.Close
-    
-    carregarCamposValores = left(tmpScript, Len(tmpScript) - 1)
 
 End Function
+
+
+'Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As String
+'
+''Dim pRepositorio As String: pRepositorio = "tblCompraNFItem"
+''Dim pChvAcesso As String: pChvAcesso = "32210368365501000296550000000638791001361285"
+'
+'Dim Scripts As New clsConexaoNfeCte
+'Dim db As DAO.Database: Set db = CurrentDb
+'Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
+'Dim rstOrigem As DAO.Recordset
+'
+'Dim tmpScript As String
+'Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pRepositorio) - 3)
+'
+'Dim sqlOrigem As String: sqlOrigem = _
+'    "Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'"
+'
+'    Set rstOrigem = db.OpenRecordset(sqlOrigem)
+'
+'    rstOrigem.MoveLast
+'    rstOrigem.MoveFirst
+'    Do While Not rstOrigem.EOF
+'        tmpScript = tmpScript & "("
+'
+'        '' LISTAGEM DE CAMPOS
+'        rstCampos.MoveFirst
+'        Do While Not rstCampos.EOF
+'
+'            '' CRIAR SCRIPT DE INCLUSAO DE DADOS NA TABELA DESTINO
+'            '' 2. campos x formatacao
+'            If InStr(rstCampos.Fields("campo").value, tmpValidarCampo) Then
+'
+'                If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo pulo
+'
+'                If rstCampos.Fields("formatacao").value = "opTexto" Then
+'                    tmpScript = tmpScript & "'" & rstOrigem.Fields(rstCampos.Fields("campo").value).value & "',"
+'
+'                ElseIf rstCampos.Fields("formatacao").value = "opNumero" Or rstCampos.Fields("formatacao").value = "opMoeda" Then
+'                    tmpScript = tmpScript & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", rstOrigem.Fields(rstCampos.Fields("campo").value).value, rstCampos.Fields("valorPadrao").value) & ","
+'
+'                ElseIf rstCampos.Fields("formatacao").value = "opTime" Then
+'                    tmpScript = tmpScript & "'" & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", Format(rstOrigem.Fields(rstCampos.Fields("campo").value).value, DATE_TIME_FORMAT), rstCampos.Fields("valorPadrao").value) & "',"
+'
+'                ElseIf rstCampos.Fields("formatacao").value = "opData" Then
+'                    tmpScript = tmpScript & "'" & IIf((rstOrigem.Fields(rstCampos.Fields("campo").value).value) <> "", Format(rstOrigem.Fields(rstCampos.Fields("campo").value).value, DATE_FORMAT), rstCampos.Fields("valorPadrao").value) & "',"
+'
+'                End If
+'
+'            End If
+'
+'pulo:
+'            rstCampos.MoveNext
+'            DoEvents
+'        Loop
+'
+'        tmpScript = left(tmpScript, Len(tmpScript) - 1) & "),"
+'        rstOrigem.MoveNext
+'        DoEvents
+'    Loop
+'
+'    Set Scripts = Nothing
+'    rstCampos.Close
+'    rstOrigem.Close
+'    db.Close
+'
+'    carregarCamposValores = left(tmpScript, Len(tmpScript) - 1)
+'
+'End Function
 
 Function carregarCamposNomes(pRepositorio As String) As String
 Dim Scripts As New clsConexaoNfeCte
