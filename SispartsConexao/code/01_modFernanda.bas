@@ -27,6 +27,7 @@ DadosGerais.CriarRepositorios
 '' Carregar arquivos
 ''#######################################################################################
 
+'' #20211109_1346
 '' REPOSITORIOS
 For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColeta'"))
     For Each caminhoNovo In carregarParametros(DadosGerais.SelectColetaEmpresa)
