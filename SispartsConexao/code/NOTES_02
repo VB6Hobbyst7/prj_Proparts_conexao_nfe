@@ -1,8 +1,0 @@
-SELECT tblCompraNF.ChvAcesso_CompraNF
-
-	,IIf([VTotICMS_CompraNF] <> "", Replace(tblCompraNF.BaseCalcICMS_CompraNF / 100, ",", "."), 0) AS strVTotICMS
-
-FROM tblCompraNF
-INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso
-WHERE (
-		((tblCompraNF.ChvAcesso_CompraNF) = "32210204884082000569570000039548351039548356")
