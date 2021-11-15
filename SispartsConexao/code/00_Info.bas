@@ -16,25 +16,6 @@ Public Const dataBaseGerarLancamentoManifesto As Boolean = False
 
 
 
-Sub ProcessamentoTransferir_teste()
-Dim s As New clsProcessamentoDados: s.ProcessamentoTransferir "tblCompraNF"
-Dim item  As Variant
-
-
-
-
-
-For Each item In Array("ChvAcesso_CompraNF|42210300634453001303570010001139451001171544", "CPNJ_Dest|68365501000105", "emit_UF|SC", "CNPJ_CPF_CompraNF|00634453001303", "NomeCompleto_CompraNF|T S V TRANSPORTES RAPIDOS LTDA  ITJ", "CFOP|6353", "HoraEntd_CompraNF|20:35:00", "codMod|57", "NumNF_CompraNF|113945", "Serie_CompraNF|1", "TPNF_CompraNF|0", "BaseCalcICMS_CompraNF|119.36", "VTotICMS_CompraNF|14.32", "rem_UF|SC", "CNPJ_Rem_CompraNF|68365501000377", "VTotNF_CompraNF|119.36", "ChvAcesso|42210300634453001303570010001139451001171544")
-
-    Debug.Print CStr(Split(item, "|")(1))
-
-Next
-
-
-Set s = Nothing
-End Sub
-
-
 Sub teste_FuncionamentoGeralDeProcessamentoDeArquivos()
 Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
     
