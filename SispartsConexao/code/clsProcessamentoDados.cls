@@ -272,70 +272,167 @@ Set XDoc = Nothing
 End Function
 
 '' #02. TRANSFERIR DADOS PROCESSAMENTOS PARA A TABELA DE DESTINO
-Public Sub ProcessamentoTransferir(pDestino As String)
-On Error Resume Next
+Sub TransferirProcessamentoParaRepositorios(pChave As String)
+    
+Dim qryProcessamento_Select_CompraComItens As String: _
+    qryProcessamento_Select_CompraComItens = _
+    "SELECT DISTINCT tblProcessamento.NomeTabela " & _
+        "   ,tblProcessamento.pk " & _
+        "   ,tblProcessamento.NomeCampo " & _
+        "   ,tblProcessamento.valor " & _
+        "   ,tblProcessamento.formatacao " & _
+        "FROM tblParametros " & _
+        "INNER JOIN tblProcessamento ON (tblParametros.ValorDoParametro = tblProcessamento.NomeCampo) AND (tblParametros.TipoDeParametro = tblProcessamento.NomeTabela) " & _
+        "WHERE (((tblProcessamento.pk) LIKE 'pChave*') AND ((tblProcessamento.NomeCampo) IS NOT NULL)) " & _
+        "ORDER BY tblProcessamento.NomeTabela,tblProcessamento.pk"
+
+Dim qryCompras_Insert_Processamento As String: _
+    qryCompras_Insert_Processamento = "INSERT INTO pRepositorio (strCamposNomes) SELECT strCamposValores  "
 
 Dim DadosGerais As New clsConexaoNfeCte
-
-'' CONTROLE DE CADASTRO DE REGISTRO
-Dim T As Integer
-Dim tmpSqlOrigem As String
-
-'' #BANCO_LOCAL
 Dim db As DAO.Database: Set db = CurrentDb
-Dim tmpSql As String: tmpSql = "Select Distinct pk from tblProcessamento where NomeTabela = '" & pDestino & "' Order by pk;"
+Dim rstProcessamento As DAO.Recordset: Set rstProcessamento = db.OpenRecordset(Replace(qryProcessamento_Select_CompraComItens, "pChave", pChave))
+Dim rstRegistros As DAO.Recordset: Set rstRegistros = db.OpenRecordset("select distinct tmp.pk from (" & Replace(qryProcessamento_Select_CompraComItens, "pChave", pChave) & ") as tmp order by tmp.pk;")
+Dim rstFiltered As DAO.Recordset
 
-If (pDestino = "tblCompraNFItem") Then tmpSql = "SELECT tblProcessamento.pk FROM tblProcessamento WHERE (((tblProcessamento.valor) In (SELECT tblProcessamento.valor as chave FROM tblProcessamento WHERE (((tblProcessamento.NomeCampo)='ChvAcesso_CompraNF') AND ((tblProcessamento.NomeTabela)='tblCompraNF')) ORDER BY tblProcessamento.ID)) AND ((tblProcessamento.NomeTabela)='tblCompraNFItem')) ORDER BY tblProcessamento.ID;"
+Dim item As Variant
 
-Debug.Print tmpSql
-Dim rstPendentes As DAO.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
-Dim rstOrigem As DAO.Recordset
-
-'' #BANCO_DESTINO
-tmpSql = "Select * from " & pDestino
-Dim rstDestino As DAO.Recordset: Set rstDestino = db.OpenRecordset(tmpSql)
-
-'' PROCESSAMENTO PENDENTE
-Do While Not rstPendentes.EOF
-
-    '' listar itens de compra
-    tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0  and len(NomeCampo)>0 Order by ID "
+Dim pRepositorio As String
+Dim strChave As String
+Dim strCamposNomes As String
+Dim strCamposValores As String
+Dim strCompras_Insert_Processamento As String
     
-    '' REGISTROS DO PROCESSAMENTO PENDENTE
-    Debug.Print tmpSqlOrigem
-    Set rstOrigem = db.OpenRecordset(tmpSqlOrigem)
-    Do While Not rstOrigem.EOF
-    
-        '' CONTROLE DE CADASTRO
-        If T = 0 Then rstDestino.AddNew: T = 1
-        rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
-        'Debug.Print rstOrigem.Fields("NomeCampo").value & " | " & rstOrigem.Fields("Valor").value
+    '' REGISTROS
+    Do While Not rstRegistros.EOF
         
-        '' #CAMPO_CHAVE_RELACIONAMENO
-        If (pDestino = "tblDadosConexaoNFeCTe") Then rstDestino.Fields("Chave").value = rstOrigem.Fields("pk").value
-    
-        rstOrigem.MoveNext
+        '' VARIAVEIS
+        strCamposNomes = ""
+        strCamposValores = ""
+        strCompras_Insert_Processamento = qryCompras_Insert_Processamento
+        
+        '' SELEÇÃO DE ITEM
+        strChave = rstRegistros.Fields("pk").value
+        rstProcessamento.Filter = "pk = '" & strChave & "'"
+            
+        '' PROCESSAMENTO DO ITEM
+        Set rstFiltered = rstProcessamento.OpenRecordset
+        Do While Not rstFiltered.EOF
+        
+            pRepositorio = rstFiltered.Fields("NomeTabela").value
+
+            '' NOME DAS COLUNAS
+            strCamposNomes = strCamposNomes & rstFiltered.Fields("NomeCampo").value & ","
+            
+            '' VALOR DAS COLUNAS
+            If rstFiltered.Fields("formatacao").value = "opTexto" Then
+                strCamposValores = strCamposValores & "'" & rstFiltered.Fields("Valor").value & "',"
+                
+            ElseIf rstFiltered.Fields("formatacao").value = "opNumero" Or rstFiltered.Fields("formatacao").value = "opMoeda" Then
+                strCamposValores = strCamposValores & rstFiltered.Fields("Valor").value & ","
+            
+            ElseIf rstFiltered.Fields("formatacao").value = "opTime" Then
+                strCamposValores = strCamposValores & "'" & Format(rstFiltered.Fields("Valor").value, DATE_TIME_FORMAT) & "',"
+            
+            ElseIf rstFiltered.Fields("formatacao").value = "opData" Then
+                strCamposValores = strCamposValores & "'" & Format(rstFiltered.Fields("Valor").value, DATE_FORMAT) & "',"
+            
+            End If
+       
+            rstFiltered.MoveNext
+            DoEvents
+        Loop
+        
+        '' EXIT SCRIPT
+        strCamposNomes = left(strCamposNomes, Len(strCamposNomes) - 1)
+        strCamposValores = left(strCamposValores, Len(strCamposValores) - 1)
+        
+        ''Debug.Print
+        Application.CurrentDb.Execute Replace(Replace(Replace(strCompras_Insert_Processamento, "strCamposNomes", strCamposNomes), "strCamposValores", strCamposValores), "pRepositorio", pRepositorio)
+        
+        rstRegistros.MoveNext
         DoEvents
     Loop
         
-    rstDestino.Update
-    T = 0
-    
-    '' #COMPRAS
-    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+    '' registroProcessado
+    Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", strChave)
+        
+        
+'' Cleanup
+rstFiltered.Close
+rstProcessamento.Close
+rstRegistros.Close
 
-    '' #DADOS_GERAIS
-    '' qryUpdateRegistroValido - Valor padrao ( 0 - INVALIDO )
-    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
-    
-    rstPendentes.MoveNext
-    DoEvents
-Loop
-
-'dbDestino.CloseConnection
-db.Close: Set db = Nothing
+Set rstFiltered = Nothing
+Set rstProcessamento = Nothing
+Set rstRegistros = Nothing
 
 End Sub
+
+'Public Sub ProcessamentoTransferir(pDestino As String)
+'On Error Resume Next
+'
+'Dim DadosGerais As New clsConexaoNfeCte
+'
+''' CONTROLE DE CADASTRO DE REGISTRO
+'Dim T As Integer
+'Dim tmpSqlOrigem As String
+'
+''' #BANCO_LOCAL
+'Dim db As DAO.Database: Set db = CurrentDb
+'Dim tmpSql As String: tmpSql = "Select Distinct pk from tblProcessamento where NomeTabela = '" & pDestino & "' Order by pk;"
+'
+'If (pDestino = "tblCompraNFItem") Then tmpSql = "SELECT tblProcessamento.pk FROM tblProcessamento WHERE (((tblProcessamento.valor) In (SELECT tblProcessamento.valor as chave FROM tblProcessamento WHERE (((tblProcessamento.NomeCampo)='ChvAcesso_CompraNF') AND ((tblProcessamento.NomeTabela)='tblCompraNF')) ORDER BY tblProcessamento.ID)) AND ((tblProcessamento.NomeTabela)='tblCompraNFItem')) ORDER BY tblProcessamento.ID;"
+'
+''Debug.Print tmpSql
+'Dim rstPendentes As DAO.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
+'Dim rstOrigem As DAO.Recordset
+'
+''' #BANCO_DESTINO
+'tmpSql = "Select * from " & pDestino
+'Dim rstDestino As DAO.Recordset: Set rstDestino = db.OpenRecordset(tmpSql)
+'
+''' PROCESSAMENTO PENDENTE
+'Do While Not rstPendentes.EOF
+'
+'    '' listar itens de compra
+'    tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0  and len(NomeCampo)>0 Order by ID "
+'
+'    '' REGISTROS DO PROCESSAMENTO PENDENTE
+''    Debug.Print tmpSqlOrigem
+'    Set rstOrigem = db.OpenRecordset(tmpSqlOrigem)
+'    Do While Not rstOrigem.EOF
+'
+'        '' CONTROLE DE CADASTRO
+'        If T = 0 Then rstDestino.AddNew: T = 1
+'        rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
+'        'Debug.Print rstOrigem.Fields("NomeCampo").value & " | " & rstOrigem.Fields("Valor").value
+'
+'        '' #CAMPO_CHAVE_RELACIONAMENO
+'        If (pDestino = "tblDadosConexaoNFeCTe") Then rstDestino.Fields("Chave").value = rstOrigem.Fields("pk").value
+'
+'        rstOrigem.MoveNext
+'        DoEvents
+'    Loop
+'
+'    rstDestino.Update
+'    T = 0
+'
+'    '' #COMPRAS
+'    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+'
+'    '' #DADOS_GERAIS
+'    '' qryUpdateRegistroValido - Valor padrao ( 0 - INVALIDO )
+'    If (pDestino = "tblDadosConexaoNFeCTe") Then Application.CurrentDb.Execute "Update tblDadosConexaoNFeCTe SET registroValido = 0 where registroValido is null"
+'
+'    rstPendentes.MoveNext
+'    DoEvents
+'Loop
+'
+''dbDestino.CloseConnection
+'db.Close: Set db = Nothing
+'
+'End Sub
 
 '' #00. CADASTRO DE DADOS PROCESSADOS
 Private Function cadastroProcessamento(pRegistros As Collection)

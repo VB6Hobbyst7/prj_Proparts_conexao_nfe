@@ -61,7 +61,7 @@ For Each item In arquivos
 
         tmp = ""
         tmp = sqlItens & "'" & CStr(item) & "'"
-        Debug.Print tmp
+'        Debug.Print tmp
         
         Set rstItens = db.OpenRecordset(tmp)
         Do While Not rstItens.EOF

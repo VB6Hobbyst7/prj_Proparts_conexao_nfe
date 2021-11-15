@@ -354,16 +354,16 @@ Dim strDestino As String
         
         '' 01. IDENTIFICAR CAMINHOS DE ORIGEM E DESTINO
         strOrigem = rstArquivos.Fields("strOrigem").value
-        Debug.Print strOrigem
+'        Debug.Print strOrigem
         If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), strOrigem
         
         strDestino = rstArquivos.Fields("strDestino").value
-        Debug.Print strDestino
+'        Debug.Print strDestino
         If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), strDestino
         
         '' 02. CLASSIFICAÇÃO DO ARQUIVO E ALTERAÇÃO DO CAMINHO DO ARQUIVO
         qryTemp = Replace(qryUpdate, "strChave", rstArquivos.Fields("ChvAcesso").value)
-        Debug.Print qryTemp
+'        Debug.Print qryTemp
         If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryTemp
         Application.CurrentDb.Execute qryTemp
                 

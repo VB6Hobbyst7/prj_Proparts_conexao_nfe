@@ -291,9 +291,10 @@ Private Const qryCompras_Update_Dados As String = _
         "   ,tblCompraNF.HoraEntd_CompraNF = NULL " & _
         "   ,tblCompraNF.DTEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,Format(DATE(), ""yyyy-mm-dd""),tblCompraNF.DTEntd_CompraNF) " & _
         "   ,tblCompraNF.TPNF_CompraNF = 1 " & _
-        "   ,tblCompraNF.VTotICMS_CompraNF = 0 " & _
         "   ,tblCompraNF.VTotIPI_CompraNF = 0 " & _
         "WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)) AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0);"
+'' "   ,tblCompraNF.VTotICMS_CompraNF = 0 " & _
+
 
 
 '' ########################################

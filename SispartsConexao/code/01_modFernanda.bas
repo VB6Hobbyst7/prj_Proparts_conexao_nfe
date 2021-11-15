@@ -1,34 +1,6 @@
 Attribute VB_Name = "01_modFernanda"
 Option Compare Database
 
-
-'' ### TO-DO ###
-''
-'' #20210823_BaseCalcICMS_CompraNF
-'' #20210823_VTotICMS_CompraNF
-
-'' #20210823_CadastroDeComprasEmServidor
-'' #20210823_qryUpdateNumPed_CompraNF
-'' #20210823_FornecedoresValidos
-
-'' ### DONE ###
-''
-'' Consultas
-'' #20210823_EXPORTACAO_LIMITE
-'' #20210823_qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP -- FiltroCFOP
-'' #20210823_qryDadosGerais_Update_IDVD
-'' #20210823_qryUpdateID_NatOp_CompraNF
-'' #20210823_qryUpdateCFOP_FilCompra
-'' #20210823_qryUpdate_ModeloDoc_CFOP
-'' #20210823_qryUpdateFilCompraNF
-'' #20210823_qryDadosGerais_Update_IdFornCompraNF
-'' #20210823_qryDadosGerais_Update_Sit_CompraNF
-'' #20210823_XML_CONTROLE | Quando importar cada XML, precisa recortar o arquivo da pasta da empresa e colar dentro de uma pasta chama “Processados”, porém dentro de cada pasta de cada empresa, pois não podemos misturar os XML´s de cada empresa.
-'' #20210823_XML_FORMULARIO | Não encontrei um formulário com os XML´s que não foram processados e o motivo. | <<< ATENÇÃO - NÃO DEFINIMOS COMO CLASSIFICAREMOS OS MOTIMOS DE NÃO PROCESSAMENTO DE ARQUIVOS >>>
-'' #20210823_VTotProd_CompraNF
-'' #20210823_ID_Prod_CompraNFItem
-
-
 '' 01. PROCESSAR DADOS GERAIS
 Sub processarDadosGerais()
 On Error GoTo adm_Err
@@ -191,36 +163,6 @@ adm_Err:
 
 End Sub
 
-
-''' 04. ENVIAR DADOS PARA SERVIDOR
-''' #20210823_CadastroDeComprasEmServidor
-'Sub enviarDadosServidor()
-'
-'''==================================================
-'''### PROCESSAMENTO
-'''==================================================
-'
-'''' #ANALISE_DE_PROCESSAMENTO
-''Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
-''
-''    '' CADASTRO DE CABEÇALHO DE COMPRAS
-''    enviar_ComprasParaServidor "tblCompraNF"
-''
-''    '' RELACIONAMENTO DE ID_COMPRAS COM CHAVES DE ACESSO CADASTRADAS DO SERVIDOR
-''    criarTabelaTemporariaParaRelacionarIdCompraComChvAcesso
-''    relacionarIdCompraComChvAcesso
-''
-''    '' CADASTRO DE ITENS DE COMPRAS
-''    enviar_ComprasParaServidor "tblCompraNFItem"
-''
-''    '' #ANALISE_DE_PROCESSAMENTO
-''    statusFinal DT_PROCESSO, "enviarDadosServidor"
-''
-''    Debug.Print "Concluido! - enviarDadosServidor"
-''    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - enviarDadosServidor"
-'
-'End Sub
-
 '' #20210823_XML_CONTROLE
 '' 05. TRATAMENTO DE ARQUIVOS VALIDOS
 Sub tratamentoDeArquivosValidos()
@@ -280,7 +222,7 @@ Dim qrySelectRegistroValido As String: qrySelectRegistroValido = _
                     "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi]))>0) AND ((tblDadosConexaoNFeCTe.registroValido)=1));"
     End If
     
-    Debug.Print qrySelectRegistroValido
+'    Debug.Print qrySelectRegistroValido
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qrySelectRegistroValido
 
     '' CAMINHO DE SAIDA DO ARQUIVO
@@ -296,10 +238,7 @@ Dim qrySelectRegistroValido As String: qrySelectRegistroValido = _
     '' EXECUCAO
     s.criarArquivoJson pArquivo, qrySelectRegistroValido, strCaminhoDeSaida
 
-'    '' SELEÇÃO PELO USUARIO
-'    s.criarArquivoJson opManifesto, qrySelectRegistroValido, strCaminhoDeSaida
-
-    Debug.Print "Concluido! - criacaoArquivosJson"
+'    Debug.Print "Concluido! - criacaoArquivosJson"
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - criacaoArquivosJson"
 
 Cleanup:
@@ -344,8 +283,7 @@ Dim strRepositorio As String
     ''#######################################################################################
         
     '' TRANSFERENCIA DE DADOS
-    s.ProcessamentoTransferir strRepositorio
-
+    s.TransferirProcessamentoParaRepositorios DLookup("[pk]", "[tblProcessamento]", "[valor]='" & strArquivo & "'")
 
 adm_Exit:
     Set s = Nothing
@@ -395,8 +333,9 @@ Dim strRepositorio As String
     ''#######################################################################################
 
     '' TRANSFERIR DADOS PROCESSADOS
-    s.ProcessamentoTransferir strRepositorio
-    s.ProcessamentoTransferir strRepositorio & "Item"
+    s.TransferirProcessamentoParaRepositorios DLookup("[Chave]", "[tblDadosConexaoNFeCTe]", "[CaminhoDoArquivo]='" & strArquivo & "'")
+    
+    
 
 adm_Exit:
     Set s = Nothing

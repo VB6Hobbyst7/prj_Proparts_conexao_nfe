@@ -1,5 +1,31 @@
 Attribute VB_Name = "00_Info"
 Option Compare Database
+'' ### TO-DO ###
+''
+'' #20210823_BaseCalcICMS_CompraNF
+'' #20210823_VTotICMS_CompraNF
+
+'' #20210823_CadastroDeComprasEmServidor
+'' #20210823_qryUpdateNumPed_CompraNF
+'' #20210823_FornecedoresValidos
+
+'' ### DONE ###
+''
+'' Consultas
+'' #20210823_EXPORTACAO_LIMITE
+'' #20210823_qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP -- FiltroCFOP
+'' #20210823_qryDadosGerais_Update_IDVD
+'' #20210823_qryUpdateID_NatOp_CompraNF
+'' #20210823_qryUpdateCFOP_FilCompra
+'' #20210823_qryUpdate_ModeloDoc_CFOP
+'' #20210823_qryUpdateFilCompraNF
+'' #20210823_qryDadosGerais_Update_IdFornCompraNF
+'' #20210823_qryDadosGerais_Update_Sit_CompraNF
+'' #20210823_XML_CONTROLE | Quando importar cada XML, precisa recortar o arquivo da pasta da empresa e colar dentro de uma pasta chama “Processados”, porém dentro de cada pasta de cada empresa, pois não podemos misturar os XML´s de cada empresa.
+'' #20210823_XML_FORMULARIO | Não encontrei um formulário com os XML´s que não foram processados e o motivo. | <<< ATENÇÃO - NÃO DEFINIMOS COMO CLASSIFICAREMOS OS MOTIMOS DE NÃO PROCESSAMENTO DE ARQUIVOS >>>
+'' #20210823_VTotProd_CompraNF
+'' #20210823_ID_Prod_CompraNFItem
+
 
 '' LIMPAR TODA A BASE DE DADOS
 Public Const dataBaseClear As Boolean = True
@@ -14,8 +40,6 @@ Public Const dataBaseExportarDados As Boolean = False
 Public Const dataBaseTratamentoDeArquivos As Boolean = False
 Public Const dataBaseGerarLancamentoManifesto As Boolean = False
 
-
-
 Sub teste_FuncionamentoGeralDeProcessamentoDeArquivos()
 Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
     
@@ -27,7 +51,7 @@ Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "
     If dataBaseClear Then
     
         '' Limpar toda a base de dados
-'        Application.CurrentDb.Execute "Delete from tblDadosConexaoNFeCTe"
+        Application.CurrentDb.Execute "Delete from tblDadosConexaoNFeCTe"
 
         '' Limpar repositorio de itens de compras
         Application.CurrentDb.Execute _
