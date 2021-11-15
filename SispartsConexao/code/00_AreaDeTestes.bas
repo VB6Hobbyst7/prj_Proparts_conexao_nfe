@@ -34,55 +34,55 @@ Dim pRepositorio As String
 Dim tmpCamposNomes As String
 Dim strCamposNomes As String: strCamposNomes = ""
 Dim strCamposValores As String: strCamposValores = ""
-   
+Dim contador As Long: contador = 0
     
     Do While Not rstProcessamento.EOF
         
         '' ATRIBUIÇÃO DE CHAVE INICIAL
         If tmpChave <> rstProcessamento.Fields("pk").value Then
+            
+            '' CARREGAR NOME DE CAMPOS
+'            If pRepositorio <> rstProcessamento.Fields("NomeTabela").value Then tmpCamposNomes = carregarCamposNomes(rstProcessamento.Fields("NomeTabela").value)
+            
+            If contador > 0 Then
+                strCamposNomes = left(strCamposNomes, Len(strCamposNomes) - 1)
+                strCamposValores = left(strCamposValores, Len(strCamposValores) - 1)
+                
+                Debug.Print _
+                    Replace(Replace(Replace(qryCompras_Insert_Processamento, "strCamposNomes", strCamposNomes), "strCamposValores", strCamposValores), "pRepositorio", pRepositorio)
+            End If
+            
             tmpChave = rstProcessamento.Fields("pk").value
             pRepositorio = rstProcessamento.Fields("NomeTabela").value
+            contador = contador + 1
+            strCamposNomes = ""
+            strCamposValores = ""
+            
             Debug.Print tmpChave
+            
         End If
         
-        '' CARREGAR NOME DE CAMPOS
-        tmpCamposNomes = carregarCamposNomes(rstProcessamento.Fields("NomeTabela").value)
-        
         '' SELEÇÃO DE VALORES DOS CAMPOS
-        For Each item In Split(tmpCamposNomes, ",")
+        strCamposNomes = strCamposNomes & rstProcessamento.Fields("NomeCampo").value & ","
+        
+        If rstProcessamento.Fields("formatacao").value = "opTexto" Then
+            strCamposValores = strCamposValores & "'" & rstProcessamento.Fields("Valor").value & "',"
             
-            If InStr(rstProcessamento.Fields("NomeCampo").value, CStr(item)) Then
-                
-                strCamposNomes = strCamposNomes & rstProcessamento.Fields("NomeCampo").value & ","
-            
-                If rstProcessamento.Fields("formatacao").value = "opTexto" Then
-                    strCamposValores = strCamposValores & "'" & rstProcessamento.Fields("Valor").value & "',"
-                    
-                ElseIf rstProcessamento.Fields("formatacao").value = "opNumero" Or rstProcessamento.Fields("formatacao").value = "opMoeda" Then
-                    strCamposValores = strCamposValores & rstProcessamento.Fields("Valor").value & ","
-            
-                ElseIf rstProcessamento.Fields("formatacao").value = "opTime" Then
-                    strCamposValores = strCamposValores & "'" & Format(rstProcessamento.Fields("Valor").value, DATE_TIME_FORMAT) & "',"
-            
-                ElseIf rstProcessamento.Fields("formatacao").value = "opData" Then
-                    strCamposValores = strCamposValores & "'" & Format(rstProcessamento.Fields("Valor").value, DATE_FORMAT) & "',"
-           
-                End If
-                
-            End If
-            DoEvents
-        Next
+        ElseIf rstProcessamento.Fields("formatacao").value = "opNumero" Or rstProcessamento.Fields("formatacao").value = "opMoeda" Then
+            strCamposValores = strCamposValores & rstProcessamento.Fields("Valor").value & ","
+        
+        ElseIf rstProcessamento.Fields("formatacao").value = "opTime" Then
+            strCamposValores = strCamposValores & "'" & Format(rstProcessamento.Fields("Valor").value, DATE_TIME_FORMAT) & "',"
+        
+        ElseIf rstProcessamento.Fields("formatacao").value = "opData" Then
+            strCamposValores = strCamposValores & "'" & Format(rstProcessamento.Fields("Valor").value, DATE_FORMAT) & "',"
+        
+        End If
+         
         rstProcessamento.MoveNext
         DoEvents
     Loop
-    
-    strCamposNomes = left(strCamposNomes, Len(strCamposNomes) - 1)
-    strCamposValores = left(strCamposValores, Len(strCamposValores) - 1)
-    
-    Debug.Print _
-        Replace(Replace(Replace(qryCompras_Insert_Processamento, "strCamposNomes", strCamposNomes), "strCamposValores", strCamposValores), "pRepositorio", pRepositorio)
-
-'    Application.CurrentDb.Execute _
+   
 
 End Sub
 
