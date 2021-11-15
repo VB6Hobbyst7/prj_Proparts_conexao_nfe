@@ -1,5 +1,6 @@
 Attribute VB_Name = "02_modMSSQL"
-Public Const DATE_TIME_FORMAT               As String = "yyyy/mm/dd hh:mm:ss"
+'Public Const DATE_TIME_FORMAT               As String = "yyyy/mm/dd hh:mm:ss"
+Public Const DATE_TIME_FORMAT               As String = "hh:mm:ss"
 Public Const DATE_FORMAT                    As String = "yyyy/mm/dd"
 
 '' #20210823_CadastroDeComprasEmServidor
