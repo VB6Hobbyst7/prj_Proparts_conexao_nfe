@@ -47,6 +47,9 @@ Dim tmp As String
 
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
+    
+    '' #BARRA_PROGRESSO
+    SysCmd acSysCmdInitMeter, "Exportação...", rstChvAcesso.RecordCount
 
     '' CADASTRO
     Do While Not rstChvAcesso.EOF
@@ -97,6 +100,10 @@ Dim tmp As String
 
         rstChvAcesso.MoveNext
         contador = contador + 1
+        
+        '' #BARRA_PROGRESSO
+        SysCmd acSysCmdUpdateMeter, contador
+    
         DoEvents
     Loop
 
@@ -110,6 +117,9 @@ Set db = Nothing
 
 '' #ANALISE_DE_PROCESSAMENTO
 statusFinal DT_PROCESSO, "CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: " & contador & " )"
+
+'' #BARRA_PROGRESSO
+SysCmd acSysCmdRemoveMeter
 
 Debug.Print "Concluido!"
 

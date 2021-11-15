@@ -279,6 +279,7 @@ Private Const qryCompras_Update_Dados As String = _
         "INNER JOIN tblCompraNF ON tblDadosConexaoNFeCTe.ChvAcesso = tblCompraNF.ChvAcesso_CompraNF " & _
         "SET tblCompraNF.CFOP_CompraNF = [tblDadosConexaoNFeCTe].[FiltroCFOP] " & _
         "   ,tblCompraNF.ID_NatOp_CompraNF = [tblDadosConexaoNFeCTe].[ID_NatOp_CompraNF] " & _
+        "   ,tblCompraNF.ID_Forn_CompraNF = [tblDadosConexaoNFeCTe].[ID_Forn_CompraNF] " & _
         "   ,tblCompraNF.ModeloDoc_CompraNF = [tblDadosConexaoNFeCTe].[codMod] " & _
         "   ,tblCompraNF.Sit_CompraNF = [tblDadosConexaoNFeCTe].[Sit_CompraNF] " & _
         "   ,tblCompraNF.Fil_CompraNF = [tblDadosConexaoNFeCTe].[ID_Empresa] " & _
