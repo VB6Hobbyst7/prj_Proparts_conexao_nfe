@@ -4,7 +4,7 @@ Option Compare Database
 
 '' ### TO-DO ###
 ''
-'' #20210823_enviarDadosServidor
+'' #20210823_CadastroDeComprasEmServidor
 '' #20210823_qryUpdateNumPed_CompraNF
 '' #20210823_FornecedoresValidos
 
@@ -31,7 +31,7 @@ Option Compare Database
 ''
 '' 01. processarDadosGerais
 '' 02. processarArquivosPendentes
-'' 04. enviarDadosServidor
+'' 04. CadastroDeComprasEmServidor
 '' 05. tratamentoDeArquivosValidos
 '' 06. tratamentoDeArquivosInvalidos
 '' 07. criacaoArquivosJson
@@ -208,34 +208,34 @@ adm_Err:
 End Sub
 
 
-'' 04. ENVIAR DADOS PARA SERVIDOR
-'' #20210823_enviarDadosServidor
-Sub enviarDadosServidor()
-
-''==================================================
-''### PROCESSAMENTO
-''==================================================
-
-''' #ANALISE_DE_PROCESSAMENTO
-'Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
+''' 04. ENVIAR DADOS PARA SERVIDOR
+''' #20210823_CadastroDeComprasEmServidor
+'Sub enviarDadosServidor()
 '
-'    '' CADASTRO DE CABEÇALHO DE COMPRAS
-'    enviar_ComprasParaServidor "tblCompraNF"
+'''==================================================
+'''### PROCESSAMENTO
+'''==================================================
 '
-'    '' RELACIONAMENTO DE ID_COMPRAS COM CHAVES DE ACESSO CADASTRADAS DO SERVIDOR
-'    criarTabelaTemporariaParaRelacionarIdCompraComChvAcesso
-'    relacionarIdCompraComChvAcesso
+'''' #ANALISE_DE_PROCESSAMENTO
+''Dim DT_PROCESSO As Date: DT_PROCESSO = Now()
+''
+''    '' CADASTRO DE CABEÇALHO DE COMPRAS
+''    enviar_ComprasParaServidor "tblCompraNF"
+''
+''    '' RELACIONAMENTO DE ID_COMPRAS COM CHAVES DE ACESSO CADASTRADAS DO SERVIDOR
+''    criarTabelaTemporariaParaRelacionarIdCompraComChvAcesso
+''    relacionarIdCompraComChvAcesso
+''
+''    '' CADASTRO DE ITENS DE COMPRAS
+''    enviar_ComprasParaServidor "tblCompraNFItem"
+''
+''    '' #ANALISE_DE_PROCESSAMENTO
+''    statusFinal DT_PROCESSO, "enviarDadosServidor"
+''
+''    Debug.Print "Concluido! - enviarDadosServidor"
+''    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - enviarDadosServidor"
 '
-'    '' CADASTRO DE ITENS DE COMPRAS
-'    enviar_ComprasParaServidor "tblCompraNFItem"
-'
-'    '' #ANALISE_DE_PROCESSAMENTO
-'    statusFinal DT_PROCESSO, "enviarDadosServidor"
-'
-'    Debug.Print "Concluido! - enviarDadosServidor"
-'    If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - enviarDadosServidor"
-
-End Sub
+'End Sub
 
 '' #20210823_XML_CONTROLE
 '' 05. TRATAMENTO DE ARQUIVOS VALIDOS

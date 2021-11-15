@@ -41,7 +41,7 @@ Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "
 
 
     If retVal = vbOK Then
-        enviarDadosServidor
+        CadastroDeComprasEmServidor
         tratamentoDeArquivosValidos
         tratamentoDeArquivosInvalidos
         
