@@ -388,7 +388,6 @@ Dim strRepositorio As String
     '' REPOSITORIO
     strRepositorio = "tblCompraNF"
 
-'' #AZS - DESLIGAR
     '' LIMPAR TABELA DE PROCESSAMENTOS
     s.DeleteProcessamento
 
@@ -411,7 +410,6 @@ Dim strRepositorio As String
     ''### TRANSFERIR DADOS PROCESSADOS PARA REPOSITORIO
     ''#######################################################################################
 
-'' #AZS - DESLIGAR
     '' TRANSFERIR DADOS PROCESSADOS
     s.ProcessamentoTransferir strRepositorio
     s.ProcessamentoTransferir strRepositorio & "Item"

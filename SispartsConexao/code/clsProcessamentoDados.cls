@@ -275,6 +275,8 @@ End Function
 Public Sub ProcessamentoTransferir(pDestino As String)
 On Error Resume Next
 
+Dim tmp As String
+
 Dim DadosGerais As New clsConexaoNfeCte
 
 '' CONTROLE DE CADASTRO DE REGISTRO
@@ -319,7 +321,8 @@ Do While Not rstPendentes.EOF
     t = 0
     
     '' #COMPRAS
-    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+    tmp = Replace(DadosGerais.UpdateProcessamentoConcluido, "strChave", rstPendentes.Fields("pk").value)
+    If (pDestino = "tblCompraNF") Then Application.CurrentDb.Execute tmp
 
     '' #DADOS_GERAIS
     '' qryUpdateRegistroValido - Valor padrao ( 0 - INVALIDO )

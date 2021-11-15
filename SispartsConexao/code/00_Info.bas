@@ -17,17 +17,10 @@ Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[
     '' Carregar todos os arquivos para processamento.
     processarDadosGerais
 
-    '' REPROCESSAR ARQUIVOS VALIDOS
-    If dataBaseReplay Then Application.CurrentDb.Execute _
-            "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.registroProcessado=0 WHERE tblDadosConexaoNFeCTe.registroValido=1 AND tblDadosConexaoNFeCTe.ID_Tipo>0"
 
     ''==================================================
     '' REPOSITORIOS DE COMPRAS
     ''==================================================
-
-'    '' ZERAR CONTADOR DE NUMERO DE PEDIDOS
-'    If dataBaseClear Then Application.CurrentDb.Execute _
-'            "UPDATE tblParametros SET tblParametros.ValorDoParametro = 0 WHERE (((tblParametros.TipoDeParametro)=""NumPed_CompraNF""));"
 
     '' LIMPAR REPOSITORIO DE ITENS DE COMPRAS
     If dataBaseClear Then Application.CurrentDb.Execute _
@@ -40,7 +33,6 @@ Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[
     '' Processamento de arquivos pendentes da pasta de coleta.
     processarArquivosPendentes
 
-
     ''==================================================
     '' EXPORTAR DADOS PARA O SERVIDOR
     ''==================================================
@@ -48,10 +40,10 @@ Dim dataBaseReplay As Boolean: dataBaseReplay = DLookup("[ValorDoParametro]", "[
     '' EXPORTAÇÃO DE DADOS
     CadastroDeComprasEmServidor
 
-'    ''==================================================
-'    '' PROCESSAMENTO DE ARQUIVOS
-'    ''==================================================
-'
+    ''==================================================
+    '' PROCESSAMENTO DE ARQUIVOS
+    ''==================================================
+
 '    '' Transferir Arquivos Validos para pasta de processados
 '    tratamentoDeArquivosValidos
 '

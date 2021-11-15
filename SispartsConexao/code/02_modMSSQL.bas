@@ -2,7 +2,7 @@ Attribute VB_Name = "02_modMSSQL"
 Public Const DATE_TIME_FORMAT               As String = "yyyy/mm/dd hh:mm:ss"
 Public Const DATE_FORMAT                    As String = "yyyy/mm/dd"
 
-'' #20210823_qryUpdateNumPed_CompraNF
+''' #20210823_qryUpdateNumPed_CompraNF
 Sub CadastroDeComprasEmServidor()
 
 '' #ANALISE_DE_PROCESSAMENTO
@@ -21,6 +21,7 @@ Dim db As DAO.Database: Set db = CurrentDb
 Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Scripts.SelectRegistroValidoPorcessado)
 Dim qryCompras_Insert_Compras As String
 Dim qryComprasItens_Update_IDCompraNF As String
+Dim tmp As String
 
 Dim contador As Long: contador = 1
 
@@ -51,6 +52,10 @@ Dim contador As Long: contador = 1
             '' .................
         End If
                 
+                
+        '' MUDAR STATUS DO REGISTRO
+        Application.CurrentDb.Execute Replace(Scripts.compras_atualizarEnviadoParaServidor, "strChave", rstChvAcesso.Fields("chvAcesso_CompraNF").value)
+
         rstChvAcesso.MoveNext
         contador = contador + 1
         DoEvents
@@ -96,7 +101,7 @@ Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(Replace(Scripts
 Dim rstOrigem As DAO.Recordset
 
 Dim tmpScript As String
-Dim Tmp As String: Tmp = right(pRepositorio, Len(pRepositorio) - 3)
+Dim tmp As String: tmp = right(pRepositorio, Len(pRepositorio) - 3)
 
     Set rstOrigem = db.OpenRecordset("Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'")
     
@@ -109,7 +114,7 @@ Dim Tmp As String: Tmp = right(pRepositorio, Len(pRepositorio) - 3)
     
             '' CRIAR SCRIPT DE INCLUSAO DE DADOS NA TABELA DESTINO
             '' 2. campos x formatacao
-            If InStr(rstCampos.Fields("campo").value, Tmp) Then
+            If InStr(rstCampos.Fields("campo").value, tmp) Then
     
                 If InStr(rstCampos.Fields("campo").value, "NumPed_CompraNF") Then tmpScript = tmpScript & "strNumPed_CompraNF,": GoTo pulo
     
@@ -152,7 +157,7 @@ Dim Scripts As New clsConexaoNfeCte
 Dim db As DAO.Database: Set db = CurrentDb
 Dim rstCampos As DAO.Recordset
 Dim tmpScript As String
-Dim Tmp As String
+Dim tmp As String
 
     '' 1. cabecalho
     Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
