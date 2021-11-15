@@ -365,6 +365,8 @@ Else
        
         '' #AILTON - VALIDAR
        
+       
+        '' #20210823_ID_Prod_CompraNFItem
         '' #AILTON - ITENS DA COMPRANF ( CONSULTA NFE )
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 - CADASTRO DE ITENS DA COMPRA SEPARADA DA TELA DE CADASTRO
@@ -1077,7 +1079,7 @@ If (XMLdoc.parseError.errorCode <> 0) Then
 Else
     For i = 0 To qtdProd - 1 'Varrendo todos os itens
         nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").item(i).Attributes(0).value)             '' Item_CompraNFItem
-        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cProd").item(0).Text)   '' ID_Prod_CompraNFItem
+        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cProd").item(0).Text)   '' ID_Prod_CompraNFItem '' #20210823_ID_Prod_CompraNFItem
         xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xProd").item(0).Text)   ''
         cEAN = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cEAN").item(0).Text)
         NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/NCM").item(0).Text)

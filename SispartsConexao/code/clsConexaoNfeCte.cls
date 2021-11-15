@@ -301,6 +301,7 @@ Private Const qryCompras_Update_Dados As String = _
 '' #tblCompraNFItem - COMPRAS ITENS
 '' ########################################
 
+'' #20210823_ID_Prod_CompraNFItem
 '' #tblCompraNFItem.InsertItensCTe
 Private Const qryComprasItens_Insert_Dados_CTeItens As String = _
         "INSERT INTO tblCompraNFItem (ChvAcesso_CompraNF, Num_CompraNFItem, DebICMS_CompraNFItem, VTotBaseCalcICMS_CompraNFItem, ID_NatOp_CompraNFItem " & _
@@ -333,7 +334,7 @@ Private Const qryComprasItens_Update_CFOP_CompraNF As String = _
         "       AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1) " & _
         "       AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0));"
 
-
+'' #20210823_ID_Prod_CompraNFItem
 ''' UPDATE - ID_Prod_CompraNFItem
 '' #tblCompraNFItem.ID_Prod_CompraNFItem
 Private Const qryComprasItens_Update_Dados_ID_Prod_CompraNFItem As String = _
@@ -453,10 +454,6 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                     qryComprasItens_Update_Dados_ID_Prod_CompraNFItem, _
                                                     qryDadosGerais_Update_ProcessamentoConcluido_CTE): executarComandos qryProcessos
                                                     
-'qryCompras_Update_Dados_NFe, _
-'qryCompras_Update_Dados_CTe, _
-'qryComprasItens_Update_Dados_CTeItens, _
-
 End Sub
 
 Public Sub TratamentoDeDadosGerais()
