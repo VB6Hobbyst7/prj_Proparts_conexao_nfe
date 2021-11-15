@@ -1,6 +1,16 @@
 Attribute VB_Name = "00_Info"
 Option Compare Database
 
+
+'tmpClientes
+'tmpEmpresa
+'tmpGradeProdutos
+'tmpNatOp
+'tmpProdutos
+
+
+
+
 '' LIMPAR TODA A BASE DE DADOS
 Public Const dataBaseClear As Boolean = True
 
@@ -115,6 +125,7 @@ Debug.Print "### Concluido! - testeDeFuncionamentoGeral"
 TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - testeDeFuncionamentoGeral"
 
 End Sub
+
 
 
 Sub TransferirProcessamentoParaRepositorios(pChave As String)

@@ -1,6 +1,47 @@
 Attribute VB_Name = "00_Processamento"
 Option Compare Database
 
+'' 32210268365501000296550000000637741001351624 | 55
+'' 32210304884082000569570000040073831040073834 | 57
+
+
+Sub teste_TransferirProcessamentoParaRepositorios()
+Dim Processamento As New clsProcessamentoDados
+Dim strChave As String: strChave = "32210268365501000296550000000637741001351624" ' 55
+'Dim strChave As String: strChave = "32210304884082000569570000040073831040073834" ' 57
+Dim strRepositorio As String: strRepositorio = "tblCompraNF"
+
+Dim strArquivo As String: strArquivo = DLookup("[CaminhoDoArquivo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & strChave & "'")
+
+    '' LIMPAR TABELA DE PROCESSAMENTOS
+    Processamento.DeleteProcessamento
+    
+    '' PROCESSAMENTO
+    Processamento.ProcessamentoDeArquivo strArquivo, opCompras
+        
+    '' IDENTIFICAR CAMPOS
+    Processamento.UpdateProcessamentoIdentificarCampos "tblCompraNF"
+    
+    '' CORREÇÃO DE DADOS MARCADOS ERRADOS EM ITENS DE COMPRAS
+    Processamento.UpdateProcessamentoLimparItensMarcadosErrados
+
+    '' IDENTIFICAR CAMPOS
+    Processamento.UpdateProcessamentoIdentificarCampos "tblCompraNFItem"
+            
+    '' FORMATAR DADOS
+    Processamento.UpdateProcessamentoFormatarDados
+            
+            
+    '' TRANSFERIR
+'    TransferirProcessamentoParaRepositorios strChave
+
+
+Set Processamento = Nothing
+
+End Sub
+
+
+
 '' 01. Seleção
 Sub teste_CarregarArquivosDeColeta()
 Dim arquivo As Variant
