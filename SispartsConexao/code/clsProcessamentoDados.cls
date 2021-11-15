@@ -287,6 +287,7 @@ Dim tmpSql As String: tmpSql = "Select Distinct pk from tblProcessamento where N
 
 If (pDestino = "tblCompraNFItem") Then tmpSql = "SELECT tblProcessamento.pk FROM tblProcessamento WHERE (((tblProcessamento.valor) In (SELECT tblProcessamento.valor as chave FROM tblProcessamento WHERE (((tblProcessamento.NomeCampo)='ChvAcesso_CompraNF') AND ((tblProcessamento.NomeTabela)='tblCompraNF')) ORDER BY tblProcessamento.ID)) AND ((tblProcessamento.NomeTabela)='tblCompraNFItem')) ORDER BY tblProcessamento.ID;"
 
+Debug.Print tmpSql
 Dim rstPendentes As DAO.Recordset: Set rstPendentes = db.OpenRecordset(tmpSql)
 Dim rstOrigem As DAO.Recordset
 
@@ -301,12 +302,14 @@ Do While Not rstPendentes.EOF
     tmpSqlOrigem = "Select * from tblProcessamento where NomeTabela = '" & pDestino & "' and pk = '" & rstPendentes.Fields("pk").value & "' and len(formatacao)>0  and len(NomeCampo)>0 Order by ID "
     
     '' REGISTROS DO PROCESSAMENTO PENDENTE
+    Debug.Print tmpSqlOrigem
     Set rstOrigem = db.OpenRecordset(tmpSqlOrigem)
     Do While Not rstOrigem.EOF
     
         '' CONTROLE DE CADASTRO
         If T = 0 Then rstDestino.AddNew: T = 1
         rstDestino.Fields(rstOrigem.Fields("NomeCampo").value).value = rstOrigem.Fields("Valor").value
+        'Debug.Print rstOrigem.Fields("NomeCampo").value & " | " & rstOrigem.Fields("Valor").value
         
         '' #CAMPO_CHAVE_RELACIONAMENO
         If (pDestino = "tblDadosConexaoNFeCTe") Then rstDestino.Fields("Chave").value = rstOrigem.Fields("pk").value

@@ -21,12 +21,9 @@ Dim db As DAO.Database: Set db = CurrentDb
 
 '' #AILTON - TESTES
 Dim TMP2 As String: TMP2 = "select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF") & ") as tmp where tmp.ChvAcesso_CompraNF = '42210300634453001303570010001139451001171544'"
-Debug.Print TMP2
-
-'Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF"))
 Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(TMP2)
 
-
+'Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF"))
 
 Dim qryCompras_Insert_Compras As String
 Dim qryComprasItens_Update_IDCompraNF As String
@@ -133,6 +130,16 @@ SysCmd acSysCmdRemoveMeter
 Debug.Print "Concluido!"
 
 End Sub
+
+'' #AILTON - DESEVENVOLVIMENTO
+Sub teste_carregarCamposValores_PROCESSAMENTO()
+
+'For Each item In carregarCamposValores("tblProcessamento", "42210348740351012767570000021186731952977908-cteproc")
+'
+'Next
+
+End Sub
+
 
 Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As Collection
 Set carregarCamposValores = New Collection

@@ -4,6 +4,9 @@ Option Compare Database
 
 '' ### TO-DO ###
 ''
+'' #20210823_BaseCalcICMS_CompraNF
+'' #20210823_VTotICMS_CompraNF
+
 '' #20210823_CadastroDeComprasEmServidor
 '' #20210823_qryUpdateNumPed_CompraNF
 '' #20210823_FornecedoresValidos
@@ -24,25 +27,6 @@ Option Compare Database
 '' #20210823_XML_FORMULARIO | Não encontrei um formulário com os XML´s que não foram processados e o motivo. | <<< ATENÇÃO - NÃO DEFINIMOS COMO CLASSIFICAREMOS OS MOTIMOS DE NÃO PROCESSAMENTO DE ARQUIVOS >>>
 '' #20210823_VTotProd_CompraNF
 '' #20210823_ID_Prod_CompraNFItem
-
-
-''----------------------------
-'' ### EXEMPLOS DE FUNÇÕES
-''
-'' 01. processarDadosGerais
-'' 02. processarArquivosPendentes
-'' 04. CadastroDeComprasEmServidor
-'' 05. tratamentoDeArquivosValidos
-'' 06. tratamentoDeArquivosInvalidos
-'' 07. criacaoArquivosJson
-''
-'' 99. FUNÇÃO_AUXILIAR: carregarDadosGerais(strArquivo As String)
-'' 99. FUNÇÃO_AUXILIAR: carregarArquivosPendentes(strArquivo As String)
-'' 99. FUNÇÃO_AUXILIAR: azsProcessamentoDeArquivos(sqlArquivos As String, qryUpdate As String, strOrigem As String, strDestino As String)
-'' 99. FUNÇÃO_AUXILIAR: tratamentoDeArquivosValidos()
-'' 99. FUNÇÃO_AUXILIAR: tratamentoDeArquivosInvalidos()
-''
-''----------------------------
 
 
 '' 01. PROCESSAR DADOS GERAIS
@@ -74,9 +58,7 @@ DadosGerais.CriarRepositorios
 For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColeta'"))
     For Each caminhoNovo In carregarParametros(DadosGerais.SelectColetaEmpresa)
         For Each item In GetFilesInSubFolders(CStr(Replace(Replace(caminhoAntigo, "empresa", caminhoNovo), "recebimento\", "")))
-            Debug.Print CStr(item)
-        
-            'arquivos.add CStr(item)
+            arquivos.add CStr(item)
         Next
     Next
 Next

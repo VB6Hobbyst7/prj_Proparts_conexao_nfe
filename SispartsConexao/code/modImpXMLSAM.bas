@@ -512,6 +512,8 @@ Function LerNodes(ByRef Nodes As IXMLDOMNodeList)
                 XMLValNF = objNode.NodeValue / 100
             End If
         End If
+        
+        '' #20210823_BaseCalcICMS_CompraNF
         If XMLBCICMS = 0 Then
             If objNode.ParentNode.nodeName = "vBC" Then
                 XMLBCICMS = objNode.NodeValue / 100
@@ -523,6 +525,7 @@ Function LerNodes(ByRef Nodes As IXMLDOMNodeList)
             End If
         End If
         
+        '' #20210823_VTotICMS_CompraNF
         If XMLValICMS = 0 Then
             If objNode.ParentNode.nodeName = "vICMS" Then
                 XMLValICMS = objNode.NodeValue / 100
