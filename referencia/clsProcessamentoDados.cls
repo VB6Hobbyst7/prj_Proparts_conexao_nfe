@@ -185,49 +185,49 @@ End Sub
 
 '' #20211110_0730
 Private Sub InsertProcessamento_ID_NatOp(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_ID_NatOp_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_ID_NatOp_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730
 Private Sub InsertProcessamento_ID_Forn(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_ID_Forn_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_ID_Forn_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730
 Private Sub InsertProcessamento_ModeloDoc(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_ModeloDoc_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_ModeloDoc_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730
 Private Sub InsertProcessamento_Sit(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_Sit_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_Sit_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730
 Private Sub InsertProcessamento_Fil(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_Fil_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_Fil_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Sub InsertProcessamento_VTotNF(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_VTotNF_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotNF_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Sub InsertProcessamento_VTotProd(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_VTotProd_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotProd_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
 '' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Sub InsertProcessamento_BaseCalcICMS(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_BaseCalcICMS_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_BaseCalcICMS_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
@@ -238,7 +238,7 @@ End Sub
 
 '' #20211110_0730 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Sub InsertProcessamento_DTEntd(strChvAcesso As String)
-    Debug.Print Replace(qryInsertProcessamento_CFOP_CompraNF, "strChvAcesso", strChvAcesso)
+    Debug.Print Replace(qryInsertProcessamento_DTEntd_CompraNF, "strChvAcesso", strChvAcesso)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_DTEntd_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
@@ -251,8 +251,6 @@ End Sub
 Private Sub InsertProcessamento_VTotIPI(strChvAcesso As String)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotIPI_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
-
-
 
 
 

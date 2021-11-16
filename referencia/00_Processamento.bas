@@ -33,8 +33,8 @@ Option Compare Database
 '' #20211110_0730
 '' #20211109_1449
 Sub teste_ProcessamentoDeArquivo_Pendentes()
-Dim pColArquivos As Collection: Set pColArquivos = New Collection
-Dim pColProcessamento As Collection
+'Dim pColArquivos As Collection: Set pColArquivos = New Collection
+Dim pColProcessamento As Collection: Set pColProcessamento = New Collection
 Dim Processamento As New clsProcessamentoDados
 Dim DadosGerais As New clsConexaoNfeCte
 Dim item As Variant
@@ -42,11 +42,11 @@ Dim contador As Long
 
     '' 01.Coleta
     For Each item In carregarParametros(DadosGerais.SelectArquivosPendentes)
-        pColArquivos.add CStr(item)
+        pColProcessamento.add CStr(item)
         DoEvents
     Next
 
-    Set pColProcessamento = pColArquivos
+'    Set pColProcessamento = pColArquivos
     contador = pColProcessamento.count
 
     '' 04.Exportação
@@ -59,8 +59,10 @@ Dim contador As Long
     
 
     '' COMPRAS ATUALIAR CAMPOS
-    DadosGerais.compras_atualizarCampos
+'    DadosGerais.compras_atualizarCampos
 
+
+    ClearCollection pColProcessamento
 
 Set Processamento = Nothing
 Set DadosGerais = Nothing

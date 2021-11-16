@@ -1,3 +1,16 @@
+SELECT COUNT(*) 
+	-- DELETE
+	-- SELECT * 
+	-- SELECT ChvAcesso_CompraNF,NumPed_CompraNF,ID_Forn_CompraNF
+	-- SELECT max(NumPed_CompraNF)
+FROM tblCompraNF
+-- where ChvAcesso_CompraNF = '32210204884082000569570000039547081039547081'
+
+SELECT COUNT(*) 
+	-- DELETE
+	-- SELECT DISTINCT(ID_Prod_CompraNFItem)
+FROM tblCompraNFItem;
+
 INSERT INTO tblCompraNF (
 	ChvAcesso_CompraNF
 	,CNPJ_CPF_CompraNF
@@ -80,18 +93,7 @@ SELECT 1972.30
 
 
 
-SELECT COUNT(*) 
-	-- DELETE
-	-- SELECT * 
-	-- SELECT ChvAcesso_CompraNF,NumPed_CompraNF,ID_Forn_CompraNF
-	-- SELECT max(NumPed_CompraNF)
-FROM tblCompraNF
--- where ChvAcesso_CompraNF = '32210204884082000569570000039547081039547081'
 
-SELECT COUNT(*) 
-	-- DELETE
-	-- SELECT DISTINCT(ID_Prod_CompraNFItem)
-FROM tblCompraNFItem;
 
 
 SELECT DISTINCT * FROM (VALUES (1), (1), (1), (2), (5), (1), (6)) AS X(a);
