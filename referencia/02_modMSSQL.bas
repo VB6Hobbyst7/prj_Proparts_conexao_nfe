@@ -269,6 +269,11 @@ puloCampoNome:
         rstCampos.MoveFirst
         Do While Not rstCampos.EOF
                   
+            If rstDados.Fields("NomeTabela").value = "tblCompraNF" And rstCampos.Fields("NomeCampo").value = "NumPed_CompraNF" Then
+                tmpCampoValor = tmpCampoValor & "(SELECT max(IsNull(NumPed_CompraNF,0))+1 as contador from tblCompraNF),"
+                GoTo puloCampoValor
+            End If
+                  
             If rstDados.Fields("NomeTabela").value = "tblCompraNFItem" And rstCampos.Fields("NomeCampo").value = "ChvAcesso_CompraNF" Then
                 tmpCampoValor = tmpCampoValor & "(SELECT ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & rstCampos.Fields("valor").value & "'),"
                 GoTo puloCampoValor
@@ -313,7 +318,6 @@ puloCampoValor:
 End Function
 
 
-
 Sub CadastroDeCompra(colCadastros As Collection)
 
 '' BANCO_DESTINO
@@ -323,8 +327,6 @@ Dim strOrigem As String: strOrigem = DLookup("[ValorDoParametro]", "[tblParametr
 Dim strBanco As String: strBanco = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Banco'")
 Dim dbDestino As New Banco
 Dim i As Variant
-
-'' Dim t As String: t = "INSERT INTO tblCompraNFItem (Item_CompraNFItem,ID_Prod_CompraNFItem,CFOP_CompraNFItem,BaseCalcICMSSubsTrib_CompraNFItem,BaseCalcIPI_CompraNFItem,DebICMS_CompraNFItem,DebIPI_CompraNFItem,ICMS_CompraNFItem,IPI_CompraNFItem,QtdFat_CompraNFItem,VUnt_CompraNFItem,VTot_CompraNFItem,VTotBaseCalcICMS_CompraNFItem,ID_CompraNF_CompraNFItem) SELECT 1,(select CodigoProd_Grade from tabGradeProdutos where CodigoForn_Grade='00.1918.117.006') as tmpID_Prod_CompraNFItem,'6152',00,4527.48,181.10,452.75,4.00,10.00,1.0000,4527.4818,4527.48,4527.48,(Select ID_CompraNF from tblCompraNF where ChvAcesso_CompraNF='32210268365501000296550000000637741001351624') as tmpPK;"
 
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer

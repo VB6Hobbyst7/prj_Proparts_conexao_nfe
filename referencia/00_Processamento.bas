@@ -89,7 +89,6 @@ Dim contador As Long
         DoEvents
     Next
 
-'    Set pColProcessamento = pColArquivos
     contador = pColProcessamento.count
 
     '' 04.Exportação

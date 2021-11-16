@@ -113,6 +113,10 @@ Private Const qryInsertProcessamento_TPNF_CompraNF As String = _
 Private Const qryInsertProcessamento_VTotIPI_CompraNF As String = _
     "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'VTotIPI_CompraNF','tblCompraNF','opMoeda',0;"
         
+'' azs
+Private Const qryInsertProcessamento_NumPed_CompraNF As String = _
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'NumPed_CompraNF','tblCompraNF','opNumero',0;"
+        
 Private Const qryUpdateProcessamento_ID_Prod_CompraNFItem As String = _
     "UPDATE tblProcessamento SET tblProcessamento.valor = DLookUp(""CodigoProd_Grade"",""tmpGradeProdutos"",""CodigoForn_Grade='"" & [tblProcessamento].[valor] & ""'"") WHERE (((tblProcessamento.NomeCampo)=""ID_Prod_CompraNFItem""));"
         
@@ -230,10 +234,16 @@ Private Sub InsertProcessamento_VTotIPI(strChvAcesso As String)
     Application.CurrentDb.Execute Replace(qryInsertProcessamento_VTotIPI_CompraNF, "strChvAcesso", strChvAcesso)
 End Sub
 
-'' qryUpdateProcessamento_ID_Prod_CompraNFItem
+'' #20211110_0730
 Private Sub updateProcessamento_ID_Prod()
     Application.CurrentDb.Execute qryUpdateProcessamento_ID_Prod_CompraNFItem
 End Sub
+
+'' #20211110_0730
+Private Sub InsertProcessamento_NumPed(strChvAcesso As String)
+    Application.CurrentDb.Execute Replace(qryInsertProcessamento_NumPed_CompraNF, "strChvAcesso", strChvAcesso)
+End Sub
+
 
 
 '' #01. PROCESSAMENTO DE ARQUIVOS POR TIPO
@@ -431,6 +441,8 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
             InsertProcessamento_DTEntd pChvAcesso
             InsertProcessamento_TPNF pChvAcesso
             InsertProcessamento_VTotIPI pChvAcesso
+            
+            InsertProcessamento_NumPed pChvAcesso
             
             updateProcessamento_ID_Prod
             
