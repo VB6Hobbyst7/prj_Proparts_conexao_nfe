@@ -251,7 +251,15 @@ Dim tmpCampoValor As String
         '' MONTAR STRING DE NOME DE COLUNAS
         Set rstCampos = db.OpenRecordset(Replace("Select * from qryProcessamento_Select_CompraComItens where NomeTabela='pRepositorio';", "pRepositorio", rstDados.Fields("NomeTabela").value))
         Do While Not rstCampos.EOF
+            
+            If rstDados.Fields("NomeTabela").value = "tblCompraNFItem" And rstCampos.Fields("NomeCampo").value = "ChvAcesso_CompraNF" Then
+                tmpCampoNome = tmpCampoNome & "ID_CompraNF_CompraNFItem,"
+                GoTo puloCampoNome
+            End If
+            
             tmpCampoNome = tmpCampoNome & rstCampos.Fields("NomeCampo").value & ","
+            
+puloCampoNome:
             rstCampos.MoveNext
             DoEvents
         Loop
@@ -260,6 +268,11 @@ Dim tmpCampoValor As String
     
         rstCampos.MoveFirst
         Do While Not rstCampos.EOF
+                  
+            If rstDados.Fields("NomeTabela").value = "tblCompraNFItem" And rstCampos.Fields("NomeCampo").value = "ChvAcesso_CompraNF" Then
+                tmpCampoValor = tmpCampoValor & "(SELECT ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & rstCampos.Fields("valor").value & "'),"
+                GoTo puloCampoValor
+            End If
                   
             If rstCampos.Fields("formatacao").value = "opTexto" Then
                 tmpCampoValor = tmpCampoValor & "'" & rstCampos.Fields("Valor").value & "',"
@@ -275,6 +288,7 @@ Dim tmpCampoValor As String
     
             End If
             
+puloCampoValor:
             rstCampos.MoveNext
             DoEvents
         Loop
@@ -289,12 +303,7 @@ Dim tmpCampoValor As String
         DoEvents
     Loop
 
-
-Dim i As Variant
-
-    For Each i In colCadastros
-        Debug.Print CStr(i)
-    Next
+    CadastroDeCompra colCadastros
 
     Set Scripts = Nothing
     rstCampos.Close
@@ -305,7 +314,7 @@ End Function
 
 
 
-Sub teste()
+Sub CadastroDeCompra(colCadastros As Collection)
 
 '' BANCO_DESTINO
 Dim strUsuarioNome As String: strUsuarioNome = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Usuario'")
@@ -313,14 +322,16 @@ Dim strUsuarioSenha As String: strUsuarioSenha = DLookup("[ValorDoParametro]", "
 Dim strOrigem As String: strOrigem = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Origem'")
 Dim strBanco As String: strBanco = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='BancoDados_Banco'")
 Dim dbDestino As New Banco
+Dim i As Variant
 
-Dim t As String: t = "INSERT INTO tblCompraNFItem (Item_CompraNFItem,ID_Prod_CompraNFItem,CFOP_CompraNFItem,BaseCalcICMSSubsTrib_CompraNFItem,BaseCalcIPI_CompraNFItem,DebICMS_CompraNFItem,DebIPI_CompraNFItem,ICMS_CompraNFItem,IPI_CompraNFItem,QtdFat_CompraNFItem,VUnt_CompraNFItem,VTot_CompraNFItem,VTotBaseCalcICMS_CompraNFItem,ID_CompraNF_CompraNFItem) SELECT 1,(select CodigoProd_Grade from tabGradeProdutos where CodigoForn_Grade='00.1918.117.006') as tmpID_Prod_CompraNFItem,'6152',00,4527.48,181.10,452.75,4.00,10.00,1.0000,4527.4818,4527.48,4527.48,(Select ID_CompraNF from tblCompraNF where ChvAcesso_CompraNF='32210268365501000296550000000637741001351624') as tmpPK;"
+'' Dim t As String: t = "INSERT INTO tblCompraNFItem (Item_CompraNFItem,ID_Prod_CompraNFItem,CFOP_CompraNFItem,BaseCalcICMSSubsTrib_CompraNFItem,BaseCalcIPI_CompraNFItem,DebICMS_CompraNFItem,DebIPI_CompraNFItem,ICMS_CompraNFItem,IPI_CompraNFItem,QtdFat_CompraNFItem,VUnt_CompraNFItem,VTot_CompraNFItem,VTotBaseCalcICMS_CompraNFItem,ID_CompraNF_CompraNFItem) SELECT 1,(select CodigoProd_Grade from tabGradeProdutos where CodigoForn_Grade='00.1918.117.006') as tmpID_Prod_CompraNFItem,'6152',00,4527.48,181.10,452.75,4.00,10.00,1.0000,4527.4818,4527.48,4527.48,(Select ID_CompraNF from tblCompraNF where ChvAcesso_CompraNF='32210268365501000296550000000637741001351624') as tmpPK;"
 
     '' BANCO_DESTINO
     dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
 
-    dbDestino.SqlExecute t
-
+    For Each i In colCadastros
+        dbDestino.SqlExecute CStr(i)
+    Next
 
 End Sub
 
