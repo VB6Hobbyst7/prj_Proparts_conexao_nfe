@@ -18,34 +18,6 @@ Public Enum enumTipoProcessamento
     opCompras = 1
 End Enum
 
-
-'' -- SELEÇÃO DE ITENS UNICOS PARA PROCESSAMENTO
-'' #tblProcessamento
-'Private Const sqyProcessamentosPendentes As String = _
-'        "SELECT DISTINCT pk from tblProcessamento;"
-
-
-
-'' -- ATUALIZAR CAMPOS ( Nometabela e NomeCampo ) PARA USO DA TABELA DE PROCESSAMENTO
-'' #tblProcessamento.Tabela = [qryOrigemDestino].[Tabela]
-'' #tblProcessamento.Campo = [qryOrigemDestino].[Campo]
-'' #tblProcessamento.formatacao = [qryOrigemDestino].[formatacao]
-'Private Const qryUpdateProcessamento As String = _
-'        "UPDATE (SELECT tblOrigemDestino.Destino " & _
-'        "           ,tblOrigemDestino.Tag " & _
-'        "           ,tblOrigemDestino.Tabela " & _
-'        "           ,tblOrigemDestino.Campo " & _
-'        "           ,tblOrigemDestino.formatacao " & _
-'        "       FROM tblOrigemDestino " & _
-'        "       WHERE tblOrigemDestino.Tabela = 'strParametro' " & _
-'        "       ) AS qryOrigemDestino INNER JOIN tblProcessamento ON qryOrigemDestino.Tag = tblProcessamento.chave  " & _
-'        "SET tblProcessamento.nomeTabela = [qryOrigemDestino].[Tabela] " & _
-'        "   ,tblProcessamento.NomeCampo = [qryOrigemDestino].[Campo] " & _
-'        "   ,tblProcessamento.formatacao = [qryOrigemDestino].[formatacao];"
-
-
-
-
 '' #tblProcessamento
 Private Const qrySelecaoDeCampos As String = _
     "SELECT tblOrigemDestino.Tag FROM tblOrigemDestino WHERE (((tblOrigemDestino.tabela)='strParametro') AND ((Len([Tag]))>0) AND ((tblOrigemDestino.TagOrigem)=1)) ORDER BY tblOrigemDestino.Tag, tblOrigemDestino.tabela;"
@@ -97,47 +69,49 @@ Private Const qryUpdateProcessamento_opTime As String = _
 Private Const qryInsertProcessamento_IDVD_CompraNF As String = _
     "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT Distinct PK,'IDVD_CompraNF','tblCompraNF','opTexto',val((Left(Trim(Replace(Replace(Valor, 'PEDIDO: ', ''), 'PEDIDO ', '')), 6)))  as IDVD_CompraNF FROM tblProcessamento WHERE NomeTabela = 'tblCompraNF' AND len(formatacao) > 0 AND len(NomeCampo) > 0 AND Left(Valor, 6) = 'PEDIDO ' AND NomeCampo = 'Obs_CompraNF';"
 
+'' DLookUp("Chave","tblDadosConexaoNFeCTe","chvAcesso='42210348740351012767570000021186701559009401'")
 Private Const qryInsertProcessamento_CFOP_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','CFOP_CompraNF','tblCompraNF','opTexto',tDados.FiltroCFOP  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'CFOP_CompraNF','tblCompraNF','opTexto',tDados.FiltroCFOP  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    ''"INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','CFOP_CompraNF','tblCompraNF','opTexto',tDados.FiltroCFOP  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 Private Const qryInsertProcessamento_ID_NatOp_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','ID_NatOp_CompraNF','tblCompraNF','opNumero',tDados.ID_NatOp_CompraNF  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'ID_NatOp_CompraNF','tblCompraNF','opNumero',tDados.ID_NatOp_CompraNF  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 Private Const qryInsertProcessamento_ID_Forn_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','ID_Forn_CompraNF','tblCompraNF','opNumero',tDados.ID_Forn_CompraNF  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'ID_Forn_CompraNF','tblCompraNF','opNumero',tDados.ID_Forn_CompraNF  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 Private Const qryInsertProcessamento_ModeloDoc_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','ModeloDoc_CompraNF','tblCompraNF','opTexto',tDados.codMod  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'ModeloDoc_CompraNF','tblCompraNF','opTexto',tDados.codMod  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 Private Const qryInsertProcessamento_Sit_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','Sit_CompraNF','tblCompraNF','opNumero',IIF([tblDadosConexaoNFeCTe].[codMod]=57,6,IIF([tDados].[ID_Tipo]=5,6,[tDados].[Sit_CompraNF]))  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'Sit_CompraNF','tblCompraNF','opNumero',IIF([tblDadosConexaoNFeCTe].[codMod]=57,6,IIF([tDados].[ID_Tipo]=5,6,[tDados].[Sit_CompraNF]))  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 Private Const qryInsertProcessamento_Fil_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','Fil_CompraNF','tblCompraNF','opTexto',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'Fil_CompraNF','tblCompraNF','opTexto',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Const qryInsertProcessamento_VTotNF_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','VTotNF_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'VTotNF_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Const qryInsertProcessamento_VTotProd_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','VTotProd_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'VTotProd_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 '' #PENDENTE - AJUSTAR CAMPO VINDO DO PROCESSAMENTO
 Private Const qryInsertProcessamento_BaseCalcICMS_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','BaseCalcICMS_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'BaseCalcICMS_CompraNF','tblCompraNF','opMoeda',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
         
 Private Const qryInsertProcessamento_HoraEntd_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','HoraEntd_CompraNF','tblCompraNF','opTime',NULL;"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'HoraEntd_CompraNF','tblCompraNF','opTime',NULL;"
 
 Private Const qryInsertProcessamento_DTEntd_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','DTEntd_CompraNF','tblCompraNF','opData',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'DTEntd_CompraNF','tblCompraNF','opData',tDados.ID_Empresa  FROM tblDadosConexaoNFeCTe AS tDados WHERE ChvAcesso='strChvAcesso';"
 
 Private Const qryInsertProcessamento_TPNF_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','TPNF_CompraNF','tblCompraNF','opTexto',1;"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'TPNF_CompraNF','tblCompraNF','opTexto',1;"
 
 Private Const qryInsertProcessamento_VTotIPI_CompraNF As String = _
-    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT 'strChvAcesso','VTotIPI_CompraNF','tblCompraNF','opMoeda',0;"
+    "INSERT INTO tblProcessamento (PK,NomeCampo,NomeTabela,formatacao,Valor) SELECT DLookUp(""Chave"",""tblDadosConexaoNFeCTe"",""chvAcesso='strChvAcesso'""),'VTotIPI_CompraNF','tblCompraNF','opMoeda',0;"
         
         
 Public Sub DeleteProcessamento()

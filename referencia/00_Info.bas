@@ -9,8 +9,6 @@ Option Compare Database
 'tmpProdutos
 
 
-
-
 '' LIMPAR TODA A BASE DE DADOS
 Public Const dataBaseClear As Boolean = True
 
