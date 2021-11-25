@@ -212,7 +212,7 @@ Public Sub ShowColor()
     Dim lCustomColorAddress As Long
     Dim lMemHandle As Long
     
-    Dim N As Integer
+    Dim n As Integer
         
     On Error GoTo ShowColorError
     
@@ -239,8 +239,8 @@ Public Sub ShowColor()
     
     'lpCustColors As Long
     ' Fill custom colors array with all white
-    For N = 0 To UBound(alCustomColors)
-        alCustomColors(N) = &HFFFFFF
+    For n = 0 To UBound(alCustomColors)
+        alCustomColors(n) = &HFFFFFF
     Next
     ' Get size of memory needed for custom colors
     lCustomColorSize = Len(alCustomColors(0)) * 16

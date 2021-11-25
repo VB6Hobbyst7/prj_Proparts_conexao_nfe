@@ -1,50 +1,5 @@
 Attribute VB_Name = "libUteis"
 Option Compare Database
-
-'' ### TO-DO ###
-''
-'' #20210823_BaseCalcICMS_CompraNF
-'' #20210823_VTotICMS_CompraNF
-'' #20210823_CadastroDeComprasEmServidor
-'' #20210823_qryUpdateNumPed_CompraNF
-'' #20210823_FornecedoresValidos
-
-'' ### DONE ###
-''
-'' Consultas
-'' #20210823_EXPORTACAO_LIMITE
-'' #20210823_qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP -- FiltroCFOP
-'' #20210823_qryDadosGerais_Update_IDVD
-'' #20210823_qryUpdateID_NatOp_CompraNF
-'' #20210823_qryUpdateCFOP_FilCompra
-'' #20210823_qryUpdate_ModeloDoc_CFOP
-'' #20210823_qryUpdateFilCompraNF
-'' #20210823_qryDadosGerais_Update_IdFornCompraNF
-'' #20210823_qryDadosGerais_Update_Sit_CompraNF
-'' #20210823_XML_CONTROLE | Quando importar cada XML, precisa recortar o arquivo da pasta da empresa e colar dentro de uma pasta chama “Processados”, porém dentro de cada pasta de cada empresa, pois não podemos misturar os XML´s de cada empresa.
-'' #20210823_XML_FORMULARIO | Não encontrei um formulário com os XML´s que não foram processados e o motivo. | <<< ATENÇÃO - NÃO DEFINIMOS COMO CLASSIFICAREMOS OS MOTIMOS DE NÃO PROCESSAMENTO DE ARQUIVOS >>>
-'' #20210823_VTotProd_CompraNF
-'' #20210823_ID_Prod_CompraNFItem
-
-
-''----------------------------
-'' ### EXEMPLOS DE FUNÇÕES
-''
-'' 01. processarDadosGerais
-'' 02. processarArquivosPendentes
-'' 04. CadastroDeComprasEmServidor
-'' 05. tratamentoDeArquivosValidos
-'' 06. tratamentoDeArquivosInvalidos
-'' 07. criacaoArquivosJson
-''
-'' 99. FUNÇÃO_AUXILIAR: carregarDadosGerais(strArquivo As String)
-'' 99. FUNÇÃO_AUXILIAR: carregarArquivosPendentes(strArquivo As String)
-'' 99. FUNÇÃO_AUXILIAR: azsProcessamentoDeArquivos(sqlArquivos As String, qryUpdate As String, strOrigem As String, strDestino As String)
-'' 99. FUNÇÃO_AUXILIAR: tratamentoDeArquivosValidos()
-'' 99. FUNÇÃO_AUXILIAR: tratamentoDeArquivosInvalidos()
-''
-''----------------------------
-
 Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 Public Enum enumOperacao
@@ -159,8 +114,8 @@ Public Sub executarComandos(comandos() As Variant)
 Dim Comando As Variant
 
     For Each Comando In comandos
-'        Debug.Print Comando
-'        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), CStr(Comando)
+        Debug.Print Comando
+        If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), CStr(Comando)
         
         Application.CurrentDb.Execute Comando, dbSeeChanges
     Next Comando
@@ -262,17 +217,6 @@ Public Sub ClearCollection(ByRef container As Collection)
         container.remove 1
     Next
 End Sub
-
-
-'' VERIFICAR A EXISTENCIA DE UM ITEM DENTRO DA COLEÇÃO
-Function ExistsCollection(coll As Collection, key As String) As Boolean
-' https://excelmacromastery.com/
-On Error GoTo EH
-    IsObject (coll.item(key))
-    ExistsCollection = True
-EH:
-End Function
-
 
 '' STATUS DE PROCESSAMENTO
 Public Function statusFinal(pDate As Date, strTitulo As String)
@@ -410,16 +354,16 @@ Dim strDestino As String
         
         '' 01. IDENTIFICAR CAMINHOS DE ORIGEM E DESTINO
         strOrigem = rstArquivos.Fields("strOrigem").value
-'        Debug.Print strOrigem
+        Debug.Print strOrigem
         If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), strOrigem
         
         strDestino = rstArquivos.Fields("strDestino").value
-'        Debug.Print strDestino
+        Debug.Print strDestino
         If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), strDestino
         
         '' 02. CLASSIFICAÇÃO DO ARQUIVO E ALTERAÇÃO DO CAMINHO DO ARQUIVO
         qryTemp = Replace(qryUpdate, "strChave", rstArquivos.Fields("ChvAcesso").value)
-'        Debug.Print qryTemp
+        Debug.Print qryTemp
         If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryTemp
         Application.CurrentDb.Execute qryTemp
                 

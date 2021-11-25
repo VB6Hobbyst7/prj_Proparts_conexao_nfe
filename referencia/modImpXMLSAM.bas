@@ -404,7 +404,7 @@ End Function
 
 '' #DUVIDA - QUAL O OBJETIVO ?
 '' #ENTENDIMENTO - CARREGAR DADOS DO ARQUIVO
-Function LerXML(arquivo As String)
+Function LerXML(Arquivo As String)
     Dim objXML As MSXML2.DOMDocument60
     Set objXML = New MSXML2.DOMDocument60
 
@@ -425,18 +425,18 @@ Function LerXML(arquivo As String)
     XMLCFOP = ""
 
     objXML.validateOnParse = False
-    If objXML.Load(arquivo) Then ' Verifico se carregou o XML
+    If objXML.Load(Arquivo) Then ' Verifico se carregou o XML
     
         '' #AILTON
         If Forms!frmCompraNF_ImpXML!Finalidade = 0 Or Forms!frmCompraNF_ImpXML!Finalidade = 6 Or Forms!frmCompraNF_ImpXML!Finalidade = 7 Then
             '' #DUVIDA - QUAL O OBJETIVO ?
             '' #ENTENDIMENTO_01 - CARREGAR CAMPOS DA TELA - Form_frmCompraNF_ImpXML
-            LerNodesRem objXML.ChildNodes
+            LerNodesRem objXML.childNodes
         End If
         
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 - CARREGAR CABEÇALHO DA COMPRA
-        LerNodes objXML.ChildNodes ' Se carregou, leio os Nodes
+        LerNodes objXML.childNodes ' Se carregou, leio os Nodes
         
     Else
     
@@ -579,7 +579,7 @@ Function LerNodes(ByRef Nodes As IXMLDOMNodeList)
       
      
         If objNode.HasChildNodes Then 'Verifico se é ChildNode, se for leio o próximo.
-            LerNodes objNode.ChildNodes
+            LerNodes objNode.childNodes
         End If
    Next objNode
 
@@ -754,7 +754,7 @@ Dim objNode As IXMLDOMNode
         End If
         
         If objNode.HasChildNodes Then 'Verifico se é ChildNode, se for leio o próximo.
-            LerNodesRem objNode.ChildNodes
+            LerNodesRem objNode.childNodes
         End If
     
     Next objNode

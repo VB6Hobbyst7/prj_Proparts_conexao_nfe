@@ -1696,12 +1696,12 @@ End Sub
 Private Function ConverteParaBlob(ByVal valor As String) As String
 '('), aspas duplas ("), barra invertida (\) e NUL (o byte NULL).
 Dim imgValor As String
-Dim N As Integer
+Dim n As Integer
 'Muda um arquivo binário (.gif, .jpg, .exe) para texto
-N = FreeFile
-Open valor For Binary Access Read As #N
- imgValor = Input(LOF(N), 1)
-Close #N
+n = FreeFile
+Open valor For Binary Access Read As #n
+ imgValor = Input(LOF(n), 1)
+Close #n
 
 'Converte caracteres que anulam a string
 imgValor = Replace(imgValor, "'", "\'")

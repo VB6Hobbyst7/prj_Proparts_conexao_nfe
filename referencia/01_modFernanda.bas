@@ -1,8 +1,60 @@
 Attribute VB_Name = "01_modFernanda"
 Option Compare Database
 
+
+'' ### TO-DO ###
+''
+'' #20211123_  ''tmpCompraNF, mod 55, Tipo 4 - NF-e Retorno Armazém
+'' #20211123_  ''tmpCompraNFItem, mod55, Tipo 4 - NF-e Retorno Armazém
+'' #20211123_  ''tmpCompraNF, mod 55, Tipo 6 - NF-e Transferência com código Sisparts
+'' #20211123_  ''tmpCompraNFItem, mod 55, Tipo 6 - NF-e Transferência com código Sisparts
+
+'' ### DONE ###
+''
+'' #20211122_AjusteDeCampos_CTe_tblCompraNFItem
+'' #20211122_AjusteDeCampos_CTe
+'' Consultas
+'' #20210823_EXPORTACAO_LIMITE
+'' #20210823_qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP -- FiltroCFOP
+'' #20210823_qryDadosGerais_Update_IDVD
+'' #20210823_qryUpdateID_NatOp_CompraNF
+'' #20210823_qryUpdateCFOP_FilCompra
+'' #20210823_qryUpdate_ModeloDoc_CFOP
+'' #20210823_qryUpdateFilCompraNF
+'' #20210823_qryDadosGerais_Update_IdFornCompraNF
+'' #20210823_qryDadosGerais_Update_Sit_CompraNF
+'' #20210823_XML_CONTROLE | Quando importar cada XML, precisa recortar o arquivo da pasta da empresa e colar dentro de uma pasta chama “Processados”, porém dentro de cada pasta de cada empresa, pois não podemos misturar os XML´s de cada empresa.
+'' #20210823_XML_FORMULARIO | Não encontrei um formulário com os XML´s que não foram processados e o motivo. | <<< ATENÇÃO - NÃO DEFINIMOS COMO CLASSIFICAREMOS OS MOTIMOS DE NÃO PROCESSAMENTO DE ARQUIVOS >>>
+'' #20210823_VTotProd_CompraNF
+'' #20210823_ID_Prod_CompraNFItem
+'' #20210823_BaseCalcICMS_CompraNF
+'' #20210823_VTotICMS_CompraNF
+'' #20210823_CadastroDeComprasEmServidor
+'' #20210823_qryUpdateNumPed_CompraNF
+'' #20210823_FornecedoresValidos
+
+
+''----------------------------
+'' ### EXEMPLOS DE FUNÇÕES
+''
+'' 01. processarDadosGerais
+'' 02. processarArquivosPendentes
+'' 04. CadastroDeComprasEmServidor
+'' 05. tratamentoDeArquivosValidos
+'' 06. tratamentoDeArquivosInvalidos
+'' 07. criacaoArquivosJson
+''
+'' 99. FUNÇÃO_AUXILIAR: carregarDadosGerais(strArquivo As String)
+'' 99. FUNÇÃO_AUXILIAR: carregarArquivosPendentes(strArquivo As String)
+'' 99. FUNÇÃO_AUXILIAR: azsProcessamentoDeArquivos(sqlArquivos As String, qryUpdate As String, strOrigem As String, strDestino As String)
+'' 99. FUNÇÃO_AUXILIAR: tratamentoDeArquivosValidos()
+'' 99. FUNÇÃO_AUXILIAR: tratamentoDeArquivosInvalidos()
+''
+''----------------------------
+
+
 '' 01. PROCESSAR DADOS GERAIS
-Sub ProcessarDadosGerais()
+Sub processarDadosGerais()
 On Error GoTo adm_Err
 
 Dim DadosGerais As New clsConexaoNfeCte
@@ -24,10 +76,8 @@ DadosGerais.CriarRepositorios
 
 ''#######################################################################################
 ''### REPOSITORIO
-'' Carregar arquivos
 ''#######################################################################################
 
-'' #20211109_1346
 '' REPOSITORIOS
 For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColeta'"))
     For Each caminhoNovo In carregarParametros(DadosGerais.SelectColetaEmpresa)
@@ -37,17 +87,9 @@ For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]",
     Next
 Next
 
-'''' RETORNO SIMBÓLICO DE MERCADORIA DEPOSITADA EM DEPÓSITO FECHA
-'arquivos.add "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210212680452000302550020000886301507884230-nfeproc.xml"
-'
-'''' TRANSF. DE MERCADORIAS
-'arquivos.add "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210368365501000296550000000638811001361356-nfeproc.xml"
-'
-'''' #TIPO 01 - CTE - TRANSPORTE RODOVIARIO
-'arquivos.add "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210220147617000494570010009539201999046070-cteproc.xml"
-'
-'''' PREST. SERV. TRANSPORTE A ESTABELECIMENTO COMERCIAL
-'arquivos.add "C:\xmls\68.365.5010002-96 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210304884082000569570000040073831040073834-cteproc.xml"
+'' #20211116_1839
+'arquivos.add "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210348740351012767570000021186731952977908-cteproc.xml"
+'arquivos.add "C:\Sisparts\SispartsConexao\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210348740351012767570000021186731952977908-cteproc.xml"
 
 ''#######################################################################################
 ''### PROCESSAMENTO
@@ -116,6 +158,12 @@ Dim totalDeRegistros As Long
 For Each item In carregarParametros(DadosGerais.SelectArquivosPendentes)
     arquivos.add CStr(item)
 Next
+
+
+'' #20211116_1839
+'arquivos.add "C:\xmls\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210348740351012767570000021186731952977908-cteproc.xml"
+''    arquivos.add "C:\Sisparts\SispartsConexao\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210348740351012767570000021186731952977908-cteproc.xml"
+''    arquivos.add "C:\Sisparts\SispartsConexao\68.365.5010003-77 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\32210368365501000296550000000638791001361285-nfeproc.xml"
 
 ''#######################################################################################
 ''### PROCESSAMENTO

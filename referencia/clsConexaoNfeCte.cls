@@ -72,19 +72,19 @@ Private Const qryDadosGerais_Update_IdTipo As String = _
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 0 - CT-e -> ( ID_Tipo: 1 )
 '' #tblDadosConexaoNFeCTe.ID_Tipo
-Private Const qryDadosGerais_Update_IdTipo_CTe As String = _
+Private Const qryDadosGerais_Update_CTe As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_Tipo = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='CTe'"") WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0) AND ((tblDadosConexaoNFeCTe.codMod) = CInt('57')));"
 
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 4 - NF-e Retorno Armazém -> ( ID_Tipo: 5 )
 '' #tblDadosConexaoNFeCTe.ID_Tipo
-Private Const qryDadosGerais_Update_IdTipo_RetornoArmazem As String = _
+Private Const qryDadosGerais_Update_RetornoArmazem As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_Tipo = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='RetornoArmazem'"") WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0) AND ((tblDadosConexaoNFeCTe.codMod) = CInt('55')) AND ((tblDadosConexaoNFeCTe.CNPJ_emit) IN ('12680452000302')));"
 
 
 '' RELACIONAR COM ID DE TIPOS DE CADASTROS (tblTipos) - 6 - NF-e Transferência com código Sisparts -> ( ID_Tipo: 7 )
 '' #tblDadosConexaoNFeCTe.ID_Tipo
-Private Const qryDadosGerais_Update_IdTipo_TransferenciaSisparts As String = _
+Private Const qryDadosGerais_Update_TransferenciaSisparts As String = _
         "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_Tipo = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='TransferenciaSisparts'"") WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = 0) AND ((tblDadosConexaoNFeCTe.codMod) = CInt('55')) AND ((tblDadosConexaoNFeCTe.CNPJ_emit) IN (SELECT CNPJ_Empresa FROM [tmpEmpresa])));"
 
 
@@ -200,21 +200,23 @@ Private Const qryDadosGerais_Select_ArquivosPendentes As String = _
 '        "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi]))>0));"
 
 
-'' -- FiltroFil
-'' #tblDadosConexaoNFeCTe.ID_Empresa
-'' -- CTE
-Private Const qryDadosGerais_Update_IdEmpresa As String = _
-        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas " & _
-        " INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_Rem " & _
-        " SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa;"
-
-
-'' #tblDadosConexaoNFeCTe.ID_Empresa
-Private Const qryDadosGerais_Update_IdEmpresa_TransferenciaEntreFiliais As String = _
-        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas " & _
-        " INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CPNJ_Dest " & _
-        " SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa" & _
-        " WHERE (((tblDadosConexaoNFeCTe.CFOP) = '6152'));"
+''' -- FiltroFil
+''' #tblDadosConexaoNFeCTe.ID_Empresa
+''' -- CTE
+'Private Const qryDadosGerais_Update_IdEmpresa As String = _
+'        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas " & _
+'        " INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_Rem " & _
+'        " SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa;"
+'
+'
+''' #tblDadosConexaoNFeCTe.ID_Empresa
+'Private Const qryDadosGerais_Update_IdEmpresa_TransferenciaEntreFiliais As String = _
+'    "UPDATE qryEmpresas AS qryEmpresas_1 INNER JOIN (qryEmpresas INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CPNJ_Dest) ON qryEmpresas_1.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa;"
+'
+''        "UPDATE (SELECT tmpEmpresa.ID_Empresa, STRPontos(tmpEmpresa.CNPJ_Empresa) AS strCNPJ_CPF FROM tmpEmpresa) AS qryEmpresas " & _
+''        " INNER JOIN tblDadosConexaoNFeCTe ON qryEmpresas.strCNPJ_CPF = tblDadosConexaoNFeCTe.CPNJ_Dest " & _
+''        " SET tblDadosConexaoNFeCTe.ID_Empresa = qryEmpresas.ID_Empresa" & _
+''        " WHERE (((tblDadosConexaoNFeCTe.CFOP) = '6152'));"
 
 
 '' #20210823_qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP -- FiltroCFOP
@@ -288,8 +290,8 @@ Private Const qryCompras_Update_Dados As String = _
         "   ,tblCompraNF.VTotProd_CompraNF = replace(Nz([tblCompraNF].[VTotNF_CompraNF], 0) / 100, "","", ""."") " & _
         "   ,tblCompraNF.BaseCalcICMS_CompraNF = replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, "","", ""."") " & _
         "   ,tblCompraNF.DTEmi_CompraNF = [tblDadosConexaoNFeCTe].[dhEmi]  " & _
-        "   ,tblCompraNF.HoraEntd_CompraNF = NULL " & _
-        "   ,tblCompraNF.DTEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,Format(DATE(), ""yyyy-mm-dd""),tblCompraNF.DTEntd_CompraNF) " & _
+        "   ,tblCompraNF.HoraEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[ID_Tipo]<>5,NULL,tblCompraNF.HoraEntd_CompraNF) " & _
+        "   ,tblCompraNF.DTEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,Format(DATE(), ""yyyy-mm-dd""),tblCompraNF.DTEmi_CompraNF) " & _
         "   ,tblCompraNF.TPNF_CompraNF = 1 " & _
         "   ,tblCompraNF.VTotIPI_CompraNF = 0 " & _
         "WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1)) AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0);"
@@ -303,24 +305,25 @@ Private Const qryCompras_Update_Dados As String = _
 '' #20210823_ID_Prod_CompraNFItem
 '' #tblCompraNFItem.InsertItensCTe
 Private Const qryComprasItens_Insert_Dados_CTeItens As String = _
-        "INSERT INTO tblCompraNFItem (ChvAcesso_CompraNF, Num_CompraNFItem, DebICMS_CompraNFItem, VTotBaseCalcICMS_CompraNFItem, ID_NatOp_CompraNFItem " & _
-        "   ,Item_CompraNFItem, ID_Grade_CompraNFItem, QtdFat_CompraNFItem, IPI_CompraNFItem, FlagEst_CompraNFItem " & _
-        "   ,BaseCalcICMS_CompraNFItem, IseICMS_CompraNFItem, BaseCalcIPI_CompraNFItem, DebIPI_CompraNFItem, IseIPI_CompraNFItem " & _
-        "   ,TxMLSubsTrib_CompraNFItem, BaseCalcICMSSubsTrib_CompraNFItem, VTotICMSSubsTrib_compranfitem, VTotDesc_CompraNFItem, VTotFrete_CompraNFItem " & _
-        "   ,VTotPIS_CompraNFItem, VTotBaseCalcPIS_CompraNFItem, VTotCOFINS_CompraNFItem, VTotIseICMS_CompraNFItem, VTotBaseCalcCOFINS_CompraNFItem " & _
-        "   ,VTotSNCredICMS_CompraNFItem, VTotSeg_CompraNFItem, VTotOutDesp_CompraNFItem, VUnt_CompraNFItem, VTot_CompraNFItem, ID_Prod_CompraNFItem) " & _
-        "SELECT tblCompraNF.ChvAcesso_CompraNF, tblCompraNF.NumNF_CompraNF,IIf([VTotICMS_CompraNF] <> """", Replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, "","", "".""), 0) AS strVTotICMS " & _
-        "   ,tblCompraNF.BaseCalcICMS_CompraNF, tblCompraNF.ID_NatOp_CompraNF, 1 AS str_Item_CompraNFItem, 1 AS str_ID_Grade_CompraNFItem, 1 AS str_QtdFat_CompraNFItem " & _
-        "   ,0 AS str_IPI_CompraNFItem, 0 AS str_FlagEst_CompraNFItem, 100 AS str_BaseCalcICMS_CompraNFItem, 0 AS str_IseICMS_CompraNFItem, 0 AS str_BaseCalcIPI_CompraNFItem " & _
-        "   ,0 AS str_DebIPI_CompraNFItem, 0 AS str_IseIPI_CompraNFItem, 0 AS str_TxMLSubsTrib_CompraNFItem, 0 AS str_BaseCalcICMSSubsTrib_CompraNFItem, 0 AS str_VTotICMSSubsTrib_compranfitem " & _
-        "   ,0 AS str_VTotDesc_CompraNFItem, 0 AS str_VTotFrete_CompraNFItem, 0 AS str_VTotPIS_CompraNFItem, 0 AS str_VTotBaseCalcPIS_CompraNFItem, 0 AS str_VTotCOFINS_CompraNFItem " & _
-        "   ,0 AS str_VTotIseICMS_CompraNFItem, 0 AS str_VTotBaseCalcCOFINS_CompraNFItem, 0 AS str_VTotSNCredICMS_CompraNFItem, 0 AS str_VTotSeg_CompraNFItem, 0 AS str_VTotOutDesp_CompraNFItem " & _
-        "   ,[tblCompraNF].[VTotNF_CompraNF] AS str_VUnt_CompraNFItem, [tblCompraNF].[VTotNF_CompraNF] AS str_VTot_CompraNFItem " & _
-        "   ,DLookUp(""[Código]"", ""[tmpProdutos]"", ""[Modelo] = 'TRANSPORTE'"") AS str_ID_Prod_CompraNFItem " & _
-        "FROM tblCompraNF " & _
-        "INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso " & _
-        "WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='Cte'"")) " & _
-        "   AND ((tblDadosConexaoNFeCTe.registroValido) = 1) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1));"
+        "qryComprasItem_Insert"
+'        "INSERT INTO tblCompraNFItem (ChvAcesso_CompraNF, Num_CompraNFItem, DebICMS_CompraNFItem, VTotBaseCalcICMS_CompraNFItem, ID_NatOp_CompraNFItem " & _
+'        "   ,Item_CompraNFItem, ID_Grade_CompraNFItem, QtdFat_CompraNFItem, IPI_CompraNFItem, FlagEst_CompraNFItem " & _
+'        "   ,BaseCalcICMS_CompraNFItem, IseICMS_CompraNFItem, BaseCalcIPI_CompraNFItem, DebIPI_CompraNFItem, IseIPI_CompraNFItem " & _
+'        "   ,TxMLSubsTrib_CompraNFItem, BaseCalcICMSSubsTrib_CompraNFItem, VTotICMSSubsTrib_compranfitem, VTotDesc_CompraNFItem, VTotFrete_CompraNFItem " & _
+'        "   ,VTotPIS_CompraNFItem, VTotBaseCalcPIS_CompraNFItem, VTotCOFINS_CompraNFItem, VTotIseICMS_CompraNFItem, VTotBaseCalcCOFINS_CompraNFItem " & _
+'        "   ,VTotSNCredICMS_CompraNFItem, VTotSeg_CompraNFItem, VTotOutDesp_CompraNFItem, VUnt_CompraNFItem, VTot_CompraNFItem, ID_Prod_CompraNFItem) " & _
+'        "SELECT tblCompraNF.ChvAcesso_CompraNF, tblCompraNF.NumNF_CompraNF,IIf([VTotICMS_CompraNF] <> """", Replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, "","", "".""), 0) AS strVTotICMS " & _
+'        "   ,tblCompraNF.BaseCalcICMS_CompraNF, tblCompraNF.ID_NatOp_CompraNF, 1 AS str_Item_CompraNFItem, 1 AS str_ID_Grade_CompraNFItem, 1 AS str_QtdFat_CompraNFItem " & _
+'        "   ,0 AS str_IPI_CompraNFItem, 0 AS str_FlagEst_CompraNFItem, 100 AS str_BaseCalcICMS_CompraNFItem, 0 AS str_IseICMS_CompraNFItem, 0 AS str_BaseCalcIPI_CompraNFItem " & _
+'        "   ,0 AS str_DebIPI_CompraNFItem, 0 AS str_IseIPI_CompraNFItem, 0 AS str_TxMLSubsTrib_CompraNFItem, 0 AS str_BaseCalcICMSSubsTrib_CompraNFItem, 0 AS str_VTotICMSSubsTrib_compranfitem " & _
+'        "   ,0 AS str_VTotDesc_CompraNFItem, 0 AS str_VTotFrete_CompraNFItem, 0 AS str_VTotPIS_CompraNFItem, 0 AS str_VTotBaseCalcPIS_CompraNFItem, 0 AS str_VTotCOFINS_CompraNFItem " & _
+'        "   ,0 AS str_VTotIseICMS_CompraNFItem, 0 AS str_VTotBaseCalcCOFINS_CompraNFItem, 0 AS str_VTotSNCredICMS_CompraNFItem, 0 AS str_VTotSeg_CompraNFItem, 0 AS str_VTotOutDesp_CompraNFItem " & _
+'        "   ,[tblCompraNF].[VTotNF_CompraNF] AS str_VUnt_CompraNFItem, [tblCompraNF].[VTotNF_CompraNF] AS str_VTot_CompraNFItem " & _
+'        "   ,DLookUp(""[Código]"", ""[tmpProdutos]"", ""[Modelo] = 'TRANSPORTE'"") AS str_ID_Prod_CompraNFItem " & _
+'        "FROM tblCompraNF " & _
+'        "INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso " & _
+'        "WHERE (((tblDadosConexaoNFeCTe.ID_Tipo) = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro]='Cte'"")) " & _
+'        "   AND ((tblDadosConexaoNFeCTe.registroValido) = 1) AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1));"
 
 
 '' #20210823_qryComprasItens_Update_CFOP_CompraNF
@@ -331,6 +334,7 @@ Private Const qryComprasItens_Update_CFOP_CompraNF As String = _
         "SET tblCompraNFItem.CFOP_CompraNFItem = [tblCompraNF].[CFOP_CompraNF] " & _
         "WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1) " & _
         "       AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1) " & _
+        "       AND ((tblDadosConexaoNFeCTe.codMod) = 57) " & _
         "       AND ((tblDadosConexaoNFeCTe.ID_Tipo) > 0));"
 
 '' #20210823_ID_Prod_CompraNFItem
@@ -459,9 +463,11 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                     qryComprasItens_Insert_Dados_CTeItens, _
                                                     qryComprasItens_Update_CFOP_CompraNF, _
                                                     qryComprasItens_Update_Dados_ID_Prod_CompraNFItem, _
+                                                    "qryComprasCTe_Update_AjustesCampos", _
                                                     qryDadosGerais_Update_ProcessamentoConcluido_CTE): executarComandos qryProcessos
-                                                    
+
 End Sub
+
 
 Public Sub TratamentoDeDadosGerais()
 If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - TratamentoDeDadosGerais()"
@@ -469,15 +475,20 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                 qryDadosGerais_Update_FornecedoresValidos, _
                                                 qryDadosGerais_Update_RegistrosValidos, _
                                                 qryDadosGerais_Update_IdTipo, _
-                                                qryDadosGerais_Update_IdTipo_RetornoArmazem, _
-                                                qryDadosGerais_Update_IdTipo_TransferenciaSisparts, _
-                                                qryDadosGerais_Update_IdTipo_CTe, _
+                                                qryDadosGerais_Update_RetornoArmazem, _
+                                                qryDadosGerais_Update_TransferenciaSisparts, _
+                                                qryDadosGerais_Update_CTe, _
                                                 qryDadosGerais_Update_Sit_CompraNF, _
-                                                qryDadosGerais_Update_IdEmpresa, _
-                                                qryDadosGerais_Update_IdEmpresa_TransferenciaEntreFiliais, _
+                                                "qryProcessamento_FiltroFil_DestinatarioNaoProparts", _
+                                                "qryProcessamento_FiltroFil_DestinatarioProparts", _
+                                                "qryProcessamento_FiltroFil_RemetenteProparts", _
                                                 qryDadosGerais_Update_IDVD, _
                                                 qryDadosGerais_Update_IdFornCompraNF, _
                                                 qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP): executarComandos qryProcessos
+
+
+'        qryDadosGerais_Update_IdEmpresa, _
+'        qryDadosGerais_Update_IdEmpresa_TransferenciaEntreFiliais, _
 
 End Sub
 

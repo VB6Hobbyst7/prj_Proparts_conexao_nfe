@@ -14,7 +14,7 @@ Dim strTitulo As String: strTitulo = "Processar Dados Gerais"
 Dim retVal As Variant: retVal = MsgBox("Deseja iniciar o processamento de arquivo para dados gerais ?", vbQuestion + vbOKCancel, strTitulo)
 
     If retVal = vbOK Then
-        ProcessarDadosGerais
+        processarDadosGerais
         Me.Requery
         MsgBox "Concluido!", vbOKOnly, strTitulo
     End If

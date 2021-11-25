@@ -1,13 +1,13 @@
 SELECT ChvAcesso_CompraNF,NumPed_CompraNF,CNPJ_CPF_CompraNF,NomeCompleto_CompraNF,NumNF_CompraNF,DTEmi_CompraNF,HoraEntd_CompraNF,ModeloDoc_CompraNF,Obs_CompraNF,Serie_CompraNF,TPNF_CompraNF,BaseCalcICMS_CompraNF,VTotICMS_CompraNF,VTotIPI_CompraNF,VTotNF_CompraNF,IDVD_CompraNF
 	-- SELECT ChvAcesso_CompraNF,NumPed_CompraNF,ID_Forn_CompraNF
-	-- SELECT COUNT(*)	-- DELETE
+	-- SELECT COUNT(*)	-- SELECT * -- DELETE
 FROM tblCompraNF
 -- where ChvAcesso_CompraNF = '32210204884082000569570000039547081039547081'
 
 SELECT Item_CompraNFItem,ID_Prod_CompraNFItem,CFOP_CompraNFItem,BaseCalcICMSSubsTrib_CompraNFItem,BaseCalcIPI_CompraNFItem,DebICMS_CompraNFItem,DebIPI_CompraNFItem,ICMS_CompraNFItem,IPI_CompraNFItem,QtdFat_CompraNFItem,VUnt_CompraNFItem,VTot_CompraNFItem,VTotBaseCalcICMS_CompraNFItem,ID_CompraNF_CompraNFItem
 	-- SELECT ID_CompraNFItem
 	-- SELECT DISTINCT(ID_Prod_CompraNFItem)
-	-- SELECT COUNT(*)	-- DELETE
+	-- SELECT COUNT(*)	-- SELECT * -- DELETE
 FROM tblCompraNFItem;
 
 INSERT INTO tblCompraNF (
