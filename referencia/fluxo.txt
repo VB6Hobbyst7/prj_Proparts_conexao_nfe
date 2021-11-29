@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- opDadosGerais
 -- teste_ProcessamentoDeArquivo_Diretorios
 -- opCompras
@@ -18,4 +19,26 @@ INSERT INTO tblCompraNF (ChvAcesso_CompraNF,CNPJ_CPF_CompraNF,NomeCompleto_Compr
 INSERT INTO tblCompraNFItem (Item_CompraNFItem,ID_Prod_CompraNFItem,CFOP_CompraNFItem,BaseCalcICMSSubsTrib_CompraNFItem,BaseCalcIPI_CompraNFItem,DebICMS_CompraNFItem,DebIPI_CompraNFItem,ICMS_CompraNFItem,IPI_CompraNFItem,QtdFat_CompraNFItem,VUnt_CompraNFItem,VTot_CompraNFItem,VTotBaseCalcICMS_CompraNFItem,ChvAcesso_CompraNF) Select 1,'20393','6152',00,4527.48,181.10,452.75,4.00,10.00,1.0000,4527.4818000000,4527.48,4527.48,'32210268365501000296550000000637741001351624';
 
 
+=======
+-- opDadosGerais
+-- teste_ProcessamentoDeArquivo_Diretorios
+-- opCompras
+-- teste_ProcessamentoDeArquivo_Pendentes
+
+
+-- ID_Prod_CompraNFItem
+
+-- GERAL
+DLookUp("CodigoProd_Grade", "tmpGradeProdutos", "CodigoForn_Grade='" & [tblCompraNFItem].[ID_Prod_CompraNFItem] & "'")
+
+UPDATE tblProcessamento SET tblProcessamento.valor = DLookUp("CodigoProd_Grade","tmpGradeProdutos","CodigoForn_Grade='" & [tblProcessamento].[valor] & "'") WHERE (((tblProcessamento.NomeCampo)="ID_Prod_CompraNFItem"));
+
+-- TRANSPORTE
+DLookUp("[Código]", "[tmpProdutos]", "[Modelo] = 'TRANSPORTE'") AS str_ID_Prod_CompraNFItem
+
+INSERT INTO tblCompraNF (ChvAcesso_CompraNF,CNPJ_CPF_CompraNF,NomeCompleto_CompraNF,NumNF_CompraNF,DTEmi_CompraNF,HoraEntd_CompraNF,ModeloDoc_CompraNF,Obs_CompraNF,Serie_CompraNF,TPNF_CompraNF,BaseCalcICMS_CompraNF,VTotICMS_CompraNF,VTotIPI_CompraNF,VTotNF_CompraNF,IDVD_CompraNF) Select '32210268365501000296550000000637741001351624','68365501000296','PROPARTS COM ART ESPORTIVOS E TECN EIRELI',63774,'2021/02/15','1899/12/30 09:44:00','55','PEDIDO 322295    TICKET TRANSF;','0','1',4527.48,181.10,0,4980.23,'322295';
+INSERT INTO tblCompraNFItem (Item_CompraNFItem,ID_Prod_CompraNFItem,CFOP_CompraNFItem,BaseCalcICMSSubsTrib_CompraNFItem,BaseCalcIPI_CompraNFItem,DebICMS_CompraNFItem,DebIPI_CompraNFItem,ICMS_CompraNFItem,IPI_CompraNFItem,QtdFat_CompraNFItem,VUnt_CompraNFItem,VTot_CompraNFItem,VTotBaseCalcICMS_CompraNFItem,ChvAcesso_CompraNF) Select 1,'20393','6152',00,4527.48,181.10,452.75,4.00,10.00,1.0000,4527.4818000000,4527.48,4527.48,'32210268365501000296550000000637741001351624';
+
+
+>>>>>>> f4084cb29d769387d25e7b837853d2119e0da429
 SELECT ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '32210268365501000296550000000637741001351624'

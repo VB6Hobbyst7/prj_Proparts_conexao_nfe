@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+Attribute VB_Name = "00_Info"
+
+'' #20210823_CadastroDeComprasEmServidor
+
+=======
 Attribute VB_Name = "00_Info"
 Option Compare Database
 
@@ -116,3 +122,4 @@ TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - testeDeFunci
 
 End Sub
 
+>>>>>>> f4084cb29d769387d25e7b837853d2119e0da429
