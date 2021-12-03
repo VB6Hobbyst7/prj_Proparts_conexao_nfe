@@ -1,0 +1,28 @@
+INSERT INTO tblCompraNF (
+	BaseCalcICMS_CompraNF
+	,ChvAcesso_CompraNF
+	,CNPJ_CPF_CompraNF
+	,DTEmi_CompraNF
+	,DTEntd_CompraNF
+	,HoraEntd_CompraNF
+	,NomeCompleto_CompraNF
+	,NumNF_CompraNF
+	,Obs_CompraNF
+	,Serie_CompraNF
+	,TPNF_CompraNF
+	,VTotICMS_CompraNF
+	)
+VALUES (
+	0
+	,'32210204884082000569570000039547081039547080'
+	,'04884082000569'
+	,'2021-02-15'
+	,''
+	,'00:00:00'
+	,'JADLOG LOGISTICA S.A.'
+	,3954708
+	,''
+	,'0'
+	,'0'
+	,7.48
+	)

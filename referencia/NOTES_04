@@ -1,7 +1,0 @@
-SELECT DISTINCT tblParametros.TipoDeParametro
-	,tblOrigemDestino.campo
-	,tblOrigemDestino.formatacao
-	,tblOrigemDestino.valorPadrao
-FROM tblParametros
-INNER JOIN tblOrigemDestino ON tblParametros.ValorDoParametro = tblOrigemDestino.campo
-WHERE (((tblParametros.TipoDeParametro) = 'tblCompraNFItem'));

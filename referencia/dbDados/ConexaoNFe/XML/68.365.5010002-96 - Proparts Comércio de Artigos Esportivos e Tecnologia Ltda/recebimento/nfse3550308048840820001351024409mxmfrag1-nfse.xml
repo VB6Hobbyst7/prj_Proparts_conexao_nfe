@@ -1,0 +1,80 @@
+<Nfse versao="2.02">
+   <InfNfse>
+      <Numero>1024409</Numero>
+      <CodigoVerificacao>MXMFRAG1</CodigoVerificacao>
+      <DataEmissao>2021-02-15T16:20:58</DataEmissao>
+      <ValoresNfse>
+         <BaseCalculo>28.85</BaseCalculo>
+         <Aliquota>0.05</Aliquota>
+         <ValorIss>1.44</ValorIss>
+         <ValorLiquidoNfse>28.85</ValorLiquidoNfse>
+      </ValoresNfse>
+      <ValorCredito>0</ValorCredito>
+      <PrestadorServico>
+         <IdentificacaoPrestador>
+            <CpfCnpj>
+               <Cnpj>04884082000135</Cnpj>
+            </CpfCnpj>
+         </IdentificacaoPrestador>
+         <RazaoSocial>JADLOG LOGISTICA S. A.</RazaoSocial>
+         <NomeFantasia>JADLOG LOGISTICA S. A.</NomeFantasia>
+         <Endereco>
+            <Endereco>AV JORNALISTA PAULO ZINGG</Endereco>
+            <Numero>00810</Numero>
+            <Bairro>JD JARAGUA (SAO DOMING</Bairro>
+            <CodigoMunicipio>3550308</CodigoMunicipio>
+            <Uf>SP</Uf>
+            <Cep>5157030</Cep>
+         </Endereco>
+      </PrestadorServico>
+      <OrgaoGerador>
+         <CodigoMunicipio>3550308</CodigoMunicipio>
+         <Uf>SP</Uf>
+      </OrgaoGerador>
+      <DeclaracaoPrestacaoServico>
+         <InfDeclaracaoPrestacaoServico>
+            <Rps>
+               <IdentificacaoRps>
+                  <Numero>1170008</Numero>
+                  <Serie>FRA</Serie>
+                  <Tipo>RPS</Tipo>
+               </IdentificacaoRps>
+               <DataEmissao>2021-02-15</DataEmissao>
+            </Rps>
+            <Servico>
+               <Valores>
+                  <ValorServicos>28.85</ValorServicos>
+                  <ValorIss>1.44</ValorIss>
+                  <Aliquota>0.05</Aliquota>
+               </Valores>
+               <IssRetido>false</IssRetido>
+               <Discriminacao>Serviços de coleta, remessa ou entrega de correspondências, documentos, objetos, bens ou valores, inclusive pelos correios e suas agências franqueadas; courrier e congêneres referente minuta 18163900021358. NOTA(S): 063746-000.</Discriminacao>
+               <CodigoMunicipio>3550308</CodigoMunicipio>
+               <MunicipioIncidencia>3550308</MunicipioIncidencia>
+            </Servico>
+            <Prestador>
+               <CpfCnpj>
+                  <Cnpj>04884082000135</Cnpj>
+               </CpfCnpj>
+               <InscricaoMunicipal>36717703</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+               <IdentificacaoTomador>
+                  <CpfCnpj>
+                     <Cnpj>68365501000296</Cnpj>
+                  </CpfCnpj>
+               </IdentificacaoTomador>
+               <RazaoSocial>PROPARTS COM E IMP DE BICICLETAS LTDA EPP</RazaoSocial>
+               <Endereco>
+                  <Endereco> AVENIDA 100 MOD 16Q SALA 48</Endereco>
+                  <Complemento>-----</Complemento>
+                  <Bairro>TIMS</Bairro>
+                  <CodigoMunicipio>3205002</CodigoMunicipio>
+                  <Uf>ES</Uf>
+               </Endereco>
+            </Tomador>
+            <OptanteSimplesNacional>0</OptanteSimplesNacional>
+         </InfDeclaracaoPrestacaoServico>
+      </DeclaracaoPrestacaoServico>
+   </InfNfse>
+</Nfse>
