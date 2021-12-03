@@ -1,0 +1,19 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: dbPrints_20211203-0759.7z
+
+Testing     dbPrints\evidencia_MSSQL.jpg
+Testing     dbPrints\LINK_TABLE_MANAGER.jpg
+Testing     dbPrints\passos.jpg
+Testing     dbPrints\Folders.png
+Testing     dbPrints\tblDadosGerais.png
+Testing     dbPrints\Untitled.png
+Testing     dbPrints
+
+Everything is Ok
+
+Folders: 1
+Files: 6
+Size:       666417
+Compressed: 522628
