@@ -1,0 +1,96 @@
+<Nfse versao="2.02">
+   <InfNfse>
+      <Numero>122831</Numero>
+      <CodigoVerificacao>AA22EUEA</CodigoVerificacao>
+      <DataEmissao>2021-03-06T01:19:16</DataEmissao>
+      <ValoresNfse>
+         <BaseCalculo>592.86</BaseCalculo>
+         <Aliquota>0.05</Aliquota>
+         <ValorIss>29.64</ValorIss>
+         <ValorLiquidoNfse>592.86</ValorLiquidoNfse>
+      </ValoresNfse>
+      <ValorCredito>0</ValorCredito>
+      <PrestadorServico>
+         <IdentificacaoPrestador>
+            <CpfCnpj>
+               <Cnpj>03802115000279</Cnpj>
+            </CpfCnpj>
+         </IdentificacaoPrestador>
+         <RazaoSocial>CLEAR SALE S.A.</RazaoSocial>
+         <NomeFantasia>CLEAR SALE S.A.</NomeFantasia>
+         <Endereco>
+            <Endereco>R ACHILLES ORLANDO CURTOLO</Endereco>
+            <Numero>349</Numero>
+            <Complemento>ANDARES 1 E 2</Complemento>
+            <Bairro>PQ IND TOMAS EDSON</Bairro>
+            <CodigoMunicipio>3550308</CodigoMunicipio>
+            <Uf>SP</Uf>
+            <Cep>1144010</Cep>
+         </Endereco>
+         <Contato>
+            <Email>fiscal@proparts.esp.br</Email>
+         </Contato>
+      </PrestadorServico>
+      <OrgaoGerador>
+         <CodigoMunicipio>3550308</CodigoMunicipio>
+         <Uf>SP</Uf>
+      </OrgaoGerador>
+      <DeclaracaoPrestacaoServico>
+         <InfDeclaracaoPrestacaoServico>
+            <Rps>
+               <IdentificacaoRps>
+                  <Numero>124157</Numero>
+                  <Serie>1</Serie>
+                  <Tipo>RPS</Tipo>
+               </IdentificacaoRps>
+               <DataEmissao>2021-02-28</DataEmissao>
+            </Rps>
+            <Servico>
+               <Valores>
+                  <ValorServicos>592.86</ValorServicos>
+                  <ValorIss>29.64</ValorIss>
+                  <Aliquota>0.05</Aliquota>
+               </Valores>
+               <IssRetido>false</IssRetido>
+               <Discriminacao>Validação de Dados de pedidos por telefone 
+ T-CS 
+ Período 01/2/2021 a 28/2/2021 
+ Vencimento 20/03/2021
+ 
+ 
+Serviço não sujeito ás retenções de impostos federais conforme SOLUÇÃO  DE CONSULTA COSIT Nº 186, DE 29/07/2015.
+Em atendimento a Lei nº 12741/12, o percentual aproximado dos tributos incidentes nesta prestação de serviços é 6,65% Trib. Federais - 5% Trib. Municipais.</Discriminacao>
+               <CodigoMunicipio>3550308</CodigoMunicipio>
+               <MunicipioIncidencia>3550308</MunicipioIncidencia>
+            </Servico>
+            <Prestador>
+               <CpfCnpj>
+                  <Cnpj>03802115000279</Cnpj>
+               </CpfCnpj>
+               <InscricaoMunicipal>55457789</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+               <IdentificacaoTomador>
+                  <CpfCnpj>
+                     <Cnpj>68365501000105</Cnpj>
+                  </CpfCnpj>
+                  <InscricaoMunicipal>20951230</InscricaoMunicipal>
+               </IdentificacaoTomador>
+               <RazaoSocial>PROPARTS COMERCIO DE ARTIGOS ESPORTIVOS E TECNOLOGIA EIRELI</RazaoSocial>
+               <Endereco>
+                  <Endereco>R ENG     MESQUITA SAMPAIO</Endereco>
+                  <Numero>00329</Numero>
+                  <Bairro>CHACARA SANTO ANTONIO</Bairro>
+                  <CodigoMunicipio>3550308</CodigoMunicipio>
+                  <Uf>SP</Uf>
+                  <Cep>4711000</Cep>
+               </Endereco>
+               <Contato>
+                  <Email>fiscal@proparts.esp.br</Email>
+               </Contato>
+            </Tomador>
+            <OptanteSimplesNacional>0</OptanteSimplesNacional>
+         </InfDeclaracaoPrestacaoServico>
+      </DeclaracaoPrestacaoServico>
+   </InfNfse>
+</Nfse>

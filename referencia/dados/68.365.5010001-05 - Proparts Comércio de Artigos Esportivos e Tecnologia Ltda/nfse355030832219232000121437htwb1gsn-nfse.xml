@@ -1,0 +1,82 @@
+<Nfse versao="2.02">
+   <InfNfse>
+      <Numero>437</Numero>
+      <CodigoVerificacao>HTWB1GSN</CodigoVerificacao>
+      <DataEmissao>2021-03-04T10:50:09</DataEmissao>
+      <ValoresNfse>
+         <BaseCalculo>175.43</BaseCalculo>
+         <Aliquota>0.02</Aliquota>
+         <ValorIss>3.5</ValorIss>
+         <ValorLiquidoNfse>175.43</ValorLiquidoNfse>
+      </ValoresNfse>
+      <ValorCredito>0</ValorCredito>
+      <PrestadorServico>
+         <IdentificacaoPrestador>
+            <CpfCnpj>
+               <Cnpj>32219232000121</Cnpj>
+            </CpfCnpj>
+         </IdentificacaoPrestador>
+         <RazaoSocial>SPIN PAY SERVICOS DE PAGAMENTOS LTDA.</RazaoSocial>
+         <NomeFantasia>SPIN PAY SERVICOS DE PAGAMENTOS LTDA.</NomeFantasia>
+         <Endereco>
+            <Endereco>AV S GABRIEL</Endereco>
+            <Numero>149</Numero>
+            <Bairro>JARDIM PAULISTA</Bairro>
+            <CodigoMunicipio>3550308</CodigoMunicipio>
+            <Uf>SP</Uf>
+            <Cep>1435001</Cep>
+         </Endereco>
+         <Contato>
+            <Email>fiscal@proparts.esp.br</Email>
+         </Contato>
+      </PrestadorServico>
+      <OrgaoGerador>
+         <CodigoMunicipio>3550308</CodigoMunicipio>
+         <Uf>SP</Uf>
+      </OrgaoGerador>
+      <DeclaracaoPrestacaoServico>
+         <InfDeclaracaoPrestacaoServico>
+            <Servico>
+               <Valores>
+                  <ValorServicos>175.43</ValorServicos>
+                  <ValorIss>3.5</ValorIss>
+                  <Aliquota>0.02</Aliquota>
+               </Valores>
+               <IssRetido>false</IssRetido>
+               <Discriminacao>NOTA FISCAL REFERENTE A TRANSACOES REALIZADAS EM FEVEREIRO-21
+DATA BASE 01/02/2021 - 28/02/2021
+VALOR TOTAL: R$ 175,43</Discriminacao>
+               <CodigoMunicipio>3550308</CodigoMunicipio>
+               <MunicipioIncidencia>3550308</MunicipioIncidencia>
+            </Servico>
+            <Prestador>
+               <CpfCnpj>
+                  <Cnpj>32219232000121</Cnpj>
+               </CpfCnpj>
+               <InscricaoMunicipal>61380598</InscricaoMunicipal>
+            </Prestador>
+            <Tomador>
+               <IdentificacaoTomador>
+                  <CpfCnpj>
+                     <Cnpj>68365501000105</Cnpj>
+                  </CpfCnpj>
+                  <InscricaoMunicipal>20951230</InscricaoMunicipal>
+               </IdentificacaoTomador>
+               <RazaoSocial>PROPARTS COMERCIO DE ARTIGOS ESPORTIVOS E TECNOLOGIA EIRELI</RazaoSocial>
+               <Endereco>
+                  <Endereco>R ENG     MESQUITA SAMPAIO</Endereco>
+                  <Numero>00329</Numero>
+                  <Bairro>CHACARA SANTO ANTONIO</Bairro>
+                  <CodigoMunicipio>3550308</CodigoMunicipio>
+                  <Uf>SP</Uf>
+                  <Cep>4711000</Cep>
+               </Endereco>
+               <Contato>
+                  <Email>fiscal@proparts.esp.br</Email>
+               </Contato>
+            </Tomador>
+            <OptanteSimplesNacional>0</OptanteSimplesNacional>
+         </InfDeclaracaoPrestacaoServico>
+      </DeclaracaoPrestacaoServico>
+   </InfNfse>
+</Nfse>
