@@ -1,11 +1,31 @@
-select 
-		ID_NatOper
-		,CFOP_NatOper
-		,Fil_NatOper 
-		,descr_natoper
-	-- SELECT COUNT(*)	-- SELECT * -- DELETE
-	from tblNatOp
-	where CFOP_NatOper='2.152'
+
+
+
+-- #20211202_update_Almox_CompraNFItem
+UPDATE tblCompraNFItem
+SET tblCompraNFItem.Almox_CompraNFItem = tabEstoqueAlmox.Codigo_Almox
+FROM tabEstoqueAlmox RIGHT JOIN tblCompraNF ON tabEstoqueAlmox.CodUnid_Almox = tblCompraNF.Fil_CompraNF
+INNER JOIN tblCompraNFItem ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem
+WHERE tabEstoqueAlmox.Codigo_Almox IN (12,1,6) AND tblCompraNFItem.Almox_CompraNFItem IS NULL; 
+
+-- VALIDAR DADOS
+-- #20211202_update_Almox_CompraNFItem
+SELECT ID_CompraNF,Fil_CompraNF, Almox_CompraNFItem,ID_CompraNF_CompraNFItem,Codigo_Almox,Desc_Almox,CodUnid_Almox
+FROM tabEstoqueAlmox RIGHT JOIN tblCompraNF ON tabEstoqueAlmox.CodUnid_Almox = tblCompraNF.Fil_CompraNF
+INNER JOIN tblCompraNFItem ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem
+WHERE tabEstoqueAlmox.Codigo_Almox IN (12,1,6) AND tblCompraNFItem.Almox_CompraNFItem IS NULL;
+
+SELECT Almox_CompraNFItem,ID_CompraNF_CompraNFItem
+-- SELECT DISTINCT Almox_CompraNFItem
+from 
+	tblCompraNFItem
+
+
+SELECT 
+	Codigo_Almox,Desc_Almox,CodUnid_Almox
+FROM tabEstoqueAlmox
+
+
 
 SELECT ChvAcesso_CompraNF
 	,NumPed_CompraNF
@@ -27,16 +47,21 @@ SELECT ChvAcesso_CompraNF
 	,IDVD_CompraNF
 -- SELECT ChvAcesso_CompraNF,NumPed_CompraNF,ID_Forn_CompraNF
 -- SELECT COUNT(*)	-- SELECT * -- DELETE
-FROM tblCompraNF INNER JOIN tblNatOp ON tblCompraNF.ID_NatOp_CompraNF = tblNatOp.ID_NatOper
-where ModeloDoc_CompraNF = 55 and ID_NatOp_CompraNF = 122;
-
+FROM tblCompraNF
+INNER JOIN tblNatOp ON tblCompraNF.ID_NatOp_CompraNF = tblNatOp.ID_NatOper
+WHERE ModeloDoc_CompraNF = 55
+	AND ID_NatOp_CompraNF = 122;
 
 SELECT Item_CompraNFItem
-	,ID_NatOp_CompraNFItem
 	,ID_Grade_CompraNFItem
-	,ID_Prod_CompraNFItem
-	,CFOP_CompraNFItem
+	,FlagEst_CompraNFItem
+	,BaseCalcICMS_CompraNFItem
 	,BaseCalcICMSSubsTrib_CompraNFItem
+	,ID_NatOp_CompraNFItem
+	,tblCompraNF.ID_NatOp_CompraNF
+	,CFOP_CompraNFItem
+	,tblCompraNF.CFOP_CompraNF
+	,ID_Prod_CompraNFItem
 	,BaseCalcIPI_CompraNFItem
 	,DebICMS_CompraNFItem
 	,DebIPI_CompraNFItem
@@ -50,13 +75,22 @@ SELECT Item_CompraNFItem
 -- SELECT ID_CompraNFItem
 -- SELECT DISTINCT(ID_Prod_CompraNFItem)
 -- SELECT COUNT(*)	-- SELECT * -- DELETE
-FROM tblCompraNFItem INNER JOIN tblCompraNF ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem
-where tblCompraNF.ModeloDoc_CompraNF = 55 and tblCompraNF.ChvAcesso_CompraNF = '42210212680452000302550020000886301507884230'
+FROM tblCompraNFItem
+INNER JOIN tblCompraNF ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem
+WHERE tblCompraNF.ModeloDoc_CompraNF = 55
+	AND tblCompraNF.ChvAcesso_CompraNF = '42210212680452000302550020000886301507884230'
+	
+	
+	
+	/*** CADASTRO DE NATUREZA DE OPERAÇÃO
 
 
+	SispartsConexao
+	WINAP6LLZINDIHW
+	41L70n@#
+	sa
 
 
-/*** CADASTRO DE NATUREZA DE OPERAÇÃO
 
 	select 
 		ID_NatOper
@@ -70,12 +104,7 @@ where tblCompraNF.ModeloDoc_CompraNF = 55 and tblCompraNF.ChvAcesso_CompraNF = '
 	where ID_NatOper=419
  
  */
-
-
-
-
-
-/*** CADASTRO DE CLIENTES
+	/*** CADASTRO DE CLIENTES
 	
 	SET IDENTITY_INSERT Clientes ON
 
@@ -90,9 +119,7 @@ where tblCompraNF.ModeloDoc_CompraNF = 55 and tblCompraNF.ChvAcesso_CompraNF = '
 	
 	
 	*/
-
-
-/*** CADASTRO DE COMPRAS ( SEM ITENS )
+	/*** CADASTRO DE COMPRAS ( SEM ITENS )
 	
 	INSERT INTO tblCompraNF (
 		ChvAcesso_CompraNF

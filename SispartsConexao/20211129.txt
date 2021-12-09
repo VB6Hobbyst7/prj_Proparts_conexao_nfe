@@ -24,19 +24,14 @@ UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.ID_NatOp_CompraNF = "419"
 
 tblCompraNFItem:
 (*)ID_Grade_CompraNFItem   é sempre 1 engessado, veio com zero
-(***)Almox_CompraNFItem   é o Almox de cada Proparst, eu passei para vc as regras, veio com zero. PSC = 12    PES = 1      PSP = 6
+(**)Almox_CompraNFItem   é o Almox de cada Proparst, eu passei para vc as regras, veio com zero. PSC = 12    PES = 1      PSP = 6
 
-(**)ID_NatOp_CompraNFItem veio com zero, o correto é o mesmo ID da tblCompraNF
-(**)CFOP_CompraNFItem veio 5907, o correto é o mesmo CFOP da tblCompraNF
+(*)ID_NatOp_CompraNFItem veio com zero, o correto é o mesmo ID da tblCompraNF
+(*)CFOP_CompraNFItem veio 5907, o correto é o mesmo CFOP da tblCompraNF
 
 (*)FlagEst_CompraNFItem engessar = 1
 
-	ST_CompraNFItem
-	, STIPI_CompraNFItem
-	, STPIS_CompraNFItem
-	, STCOFINS_CompraNFItem 
-
-(**)vieram vazio, mas deve ser consequencia do ID_NatOp_CompraNFItem que veio com zero
+(***)ST_CompraNFItem, STIPI_CompraNFItem, STPIS_CompraNFItem e STCOFINS_CompraNFItem vieram vazio, mas deve ser consequencia do ID_NatOp_CompraNFItem que veio com zero
 
 (*)BaseCalcICMS_CompraNFItem = 100 engessado, veio zero
 (*)BaseCalcICMSSubsTrib_CompraNFItem = 0, veio 50 ????
@@ -48,10 +43,13 @@ tblCompraNFItem:
 	FlagEst_CompraNFItem engessar = 1
 	BaseCalcICMS_CompraNFItem = 100 engessado
 	BaseCalcICMSSubsTrib_CompraNFItem = 0
-
-** qry
-
-*** qry
+	ID_NatOp_CompraNFItem veio com zero, o correto é o mesmo ID da tblCompraNF
+	CFOP_CompraNFItem veio 5907, o correto é o mesmo CFOP da tblCompraNF
+	
+** qryComprasItem_Update_Almox_CompraNFItem 
+	Almox_CompraNFItem   é o Almox de cada Proparst, eu passei para vc as regras, veio com zero. PSC = 12    PES = 1      PSP = 6
+	
+*** qryComprasItem_Update_STs
 
 
 -------------------------------
@@ -76,18 +74,37 @@ Chave que eu testei: 42210368365501000377550000000066921001366297
 -------------------------------
 
 tblCompraNFItem:
-ID_Grade_CompraNFItem   é sempre 1 engessado, veio com zero
-Almox_CompraNFItem   é o Almox de cada Proparst, regras abaixo, veio com zero.
+(*)ID_Grade_CompraNFItem   é sempre 1 engessado, veio com zero
+(**)Almox_CompraNFItem   é o Almox de cada Proparst, regras abaixo, veio com zero.
+
 tabEstoqueAlmox:
 Codigo_Almox	Desc_Almox	               CodUnid_Almox
 97	                ES - Em conferência	PES
 98	                SP - Em conferência	PSP
 99	                SC - Em conferência	PSC
-ID_NatOp_CompraNFItem veio com zero, o correto é o mesmo ID da tblCompraNF
-CFOP_CompraNFItem veio 6152, o correto é o mesmo CFOP da tblCompraNF
-ST_CompraNFItem, STIPI_CompraNFItem, STPIS_CompraNFItem e STCOFINS_CompraNFItem vieram vazio, mas deve ser consequencia do ID_NatOp_CompraNFItem que veio com zero
-FlagEst_CompraNFItem engessar = 1
-BaseCalcICMS_CompraNFItem = 100 engessado, veio zero
+
+(*)ID_NatOp_CompraNFItem veio com zero, o correto é o mesmo ID da tblCompraNF
+(*)CFOP_CompraNFItem veio 6152, o correto é o mesmo CFOP da tblCompraNF
+
+(***)ST_CompraNFItem, STIPI_CompraNFItem, STPIS_CompraNFItem e STCOFINS_CompraNFItem vieram vazio, mas deve ser consequencia do ID_NatOp_CompraNFItem que veio com zero
+
+(*)FlagEst_CompraNFItem engessar = 1
+(*)BaseCalcICMS_CompraNFItem = 100 engessado, veio zero
+
+* qryComprasItem_Update_AjustesCampos
+
+	ID_Grade_CompraNFItem   é sempre 1
+	FlagEst_CompraNFItem engessar = 1
+	BaseCalcICMS_CompraNFItem = 100 engessado
+	BaseCalcICMSSubsTrib_CompraNFItem = 0
+	ID_NatOp_CompraNFItem veio com zero, o correto é o mesmo ID da tblCompraNF
+	CFOP_CompraNFItem veio 5907, o correto é o mesmo CFOP da tblCompraNF
+	
+** qryComprasItem_Update_Almox_CompraNFItem
+	Almox_CompraNFItem   é o Almox de cada Proparst, regras abaixo, veio com zero.
+	
+*** qryComprasItem_Update_STs
+
 
 Chave que eu testei: 42210368365501000377550000000066921001366297
 
