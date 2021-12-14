@@ -16,6 +16,7 @@ INNER JOIN tblCompraNF ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_
 
 
 
+
 SELECT 
 	Codigo_Almox,Desc_Almox,CodUnid_Almox
 FROM tabEstoqueAlmox

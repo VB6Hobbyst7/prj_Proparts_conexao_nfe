@@ -25,8 +25,6 @@ SELECT
 	Codigo_Almox,Desc_Almox,CodUnid_Almox
 FROM tabEstoqueAlmox
 
-
-
 SELECT ChvAcesso_CompraNF
 	,NumPed_CompraNF
 	,ID_NatOp_CompraNF
@@ -49,8 +47,14 @@ SELECT ChvAcesso_CompraNF
 -- SELECT COUNT(*)	-- SELECT * -- DELETE
 FROM tblCompraNF
 INNER JOIN tblNatOp ON tblCompraNF.ID_NatOp_CompraNF = tblNatOp.ID_NatOper
+WHERE ChvAcesso_CompraNF = '42210312680452000302550020000902571508970265'
+
+
 WHERE ModeloDoc_CompraNF = 55
 	AND ID_NatOp_CompraNF = 122;
+	
+
+
 
 SELECT Item_CompraNFItem
 	,ID_Grade_CompraNFItem
@@ -78,7 +82,7 @@ SELECT Item_CompraNFItem
 FROM tblCompraNFItem
 INNER JOIN tblCompraNF ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem
 WHERE tblCompraNF.ModeloDoc_CompraNF = 55
-	AND tblCompraNF.ChvAcesso_CompraNF = '42210212680452000302550020000886301507884230'
+	AND tblCompraNF.ChvAcesso_CompraNF = '42210312680452000302550020000902571508970265'
 	
 	
 	

@@ -33,8 +33,19 @@ tblCompraNFItem:
 
 (***)ST_CompraNFItem, STIPI_CompraNFItem, STPIS_CompraNFItem e STCOFINS_CompraNFItem vieram vazio, mas deve ser consequencia do ID_NatOp_CompraNFItem que veio com zero
 
+	,"0" & DLookUp("[STICMS_NatOper]", "[tmpNatOp]", "[ID_NatOper] = " & tblDadosConexaoNFeCTe.ID_NatOp_CompraNF & "") AS str_ST_CompraNFItem
+	,DLookUp("[STPC_NatOper]", "[tmpNatOp]", "[ID_NatOper] = " & tblDadosConexaoNFeCTe.ID_NatOp_CompraNF & "") AS str_STCOFINS_CompraNFItem
+	,DLookUp("[STPC_NatOper]", "[tmpNatOp]", "[ID_NatOper] = " & tblDadosConexaoNFeCTe.ID_NatOp_CompraNF & "") AS str_STPIS_CompraNFItem
+	,DLookUp("[STIPI_NatOper]", "[tmpNatOp]", "[ID_NatOper] = " & tblDadosConexaoNFeCTe.ID_NatOp_CompraNF & "") AS str_STIPI_CompraNFItem
+
+
+
 (*)BaseCalcICMS_CompraNFItem = 100 engessado, veio zero
 (*)BaseCalcICMSSubsTrib_CompraNFItem = 0, veio 50 ????
+
+
+qryComprasItem_Update_AjustesCampos, qryComprasItem_Update_Almox_CompraNFItem, qryComprasItem_Update_STs
+
 
 
 * qryComprasItem_Update_AjustesCampos
