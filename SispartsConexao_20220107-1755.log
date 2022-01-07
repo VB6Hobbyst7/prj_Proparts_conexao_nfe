@@ -1,0 +1,40 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: SispartsConexao_20220107-1755.7z
+
+Testing     SispartsConexao\SispartsConexao_20220107_1754.7z
+Testing     SispartsConexao\20211201_0009_Nao_Processado.png
+Testing     SispartsConexao\20211201_0009_Nao_Processado_02.png
+Testing     SispartsConexao\20211201_ItensCompra.sql
+Testing     SispartsConexao\20211203_0845_tblNatOp.sql
+Testing     SispartsConexao\20211214_0735_tblNatOp.sql
+Testing     SispartsConexao\20211214_0837_validar_ComprasComItens.sql
+Testing     SispartsConexao\20211214_1342_AjustesFinais.sql
+Testing     SispartsConexao\20211214_1342_AjustesFinais_qryComprasItem_Insert.sql
+Testing     SispartsConexao\qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP.sql
+Testing     SispartsConexao\templates.sql
+Testing     SispartsConexao\validar_tblCompraNFItem_Almox_CompraNFItem.sql
+Testing     SispartsConexao\validar_tblCompraNFItem_campos.sql
+Testing     SispartsConexao\20211201_0009_Nao_Processado_32210304884082000569570000040073831040073834-cteproc.xml
+Testing     SispartsConexao\20211129.txt
+Testing     SispartsConexao\SispartsConexao.accdb
+Testing     SispartsConexao\SispartsConexao_azs_20211129_0017.accdb
+Testing     SispartsConexao\20211206.log
+Testing     SispartsConexao\20211208.log
+Testing     SispartsConexao\20211209.log
+Testing     SispartsConexao\20211214.log
+Testing     SispartsConexao\20211216.log
+Testing     SispartsConexao\20220105.log
+Testing     SispartsConexao\20220106.log
+Testing     SispartsConexao\20220107.log
+Testing     SispartsConexao\tblNatOper.xlsx
+Testing     SispartsConexao\~$tblNatOper.xlsx
+Testing     SispartsConexao
+
+Everything is Ok
+
+Folders: 1
+Files: 27
+Size:       9780195
+Compressed: 1284971
