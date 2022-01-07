@@ -123,7 +123,10 @@ totalDeRegistros = arquivos.count
     SysCmd acSysCmdInitMeter, "Pendentes ...", totalDeRegistros
 
     For Each item In arquivos
-    
+        '' CONTROLE DE CADASTRO
+        'If (IsNull(DLookup("ID_CompraNF", "tblCompraNF", "ChvAcesso_CompraNF='" & DLookup("ChvAcesso", "tblDadosConexaoNFeCTe", "Chave='" & getFileName(CStr("C:\ConexaoNFe\XML\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210368365501000377550000000064441001362668-nfeproc.xml")) & "'") & "'"))) Then _
+            carregarArquivosPendentes CStr(item)
+
         carregarArquivosPendentes CStr(item)
 
         '' #BARRA_PROGRESSO
@@ -207,25 +210,46 @@ Dim tmpScriptItens As String: _
 Dim qryComprasCTe_Update_AjustesCampos As String: _
     qryComprasCTe_Update_AjustesCampos = "UPDATE tblCompraNF SET tblCompraNF.HoraEntd_CompraNF = NULL ,tblCompraNF.IDVD_CompraNF = NULL WHERE (((tblCompraNF.ChvAcesso_CompraNF) IN (pLista_ChvAcesso_CompraNF)));"
 
+Dim sql_comprasItens_count As String:
+    sql_comprasItens_count = "SELECT COUNT(*) as contador FROM tblCompraNFItem where ID_CompraNF_CompraNFItem = (SELECT ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = 'strID_Compra')"
+
+
+Dim sql_comprasItens_update_IdProd As String:
+    sql_comprasItens_update_IdProd = "UPDATE tblCompraNFItem SET ID_Prod_CompraNFItem = tbProdutos.[código] " & _
+                                        "FROM tblCompraNFItem AS tbItens " & _
+                                        "INNER JOIN tblCompraNF as tbCompras ON tbCompras.ID_CompraNF = tbItens.ID_CompraNF_CompraNFItem " & _
+                                        "INNER join [Cadastro de Produtos] as tbProdutos on tbProdutos.modelo = 'Transporte'  " & _
+                                        "WHERE tbCompras.Sit_CompraNF = 6 and tbItens.ID_Prod_CompraNFItem=0;"
+    
+    
+'Dim sql_comprasItens_update_Almox_CompraNFItem As String:
+'    sql_comprasItens_update_Almox_CompraNFItem = "UPDATE tblCompraNFItem " & _
+'                                                    "SET tblCompraNFItem.Almox_CompraNFItem = tabEstoqueAlmox.Codigo_Almox " & _
+'                                                    "FROM tabEstoqueAlmox RIGHT JOIN tblCompraNF ON tabEstoqueAlmox.CodUnid_Almox = tblCompraNF.Fil_CompraNF " & _
+'                                                    "INNER JOIN tblCompraNFItem ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem " & _
+'                                                    "WHERE tabEstoqueAlmox.Codigo_Almox IN (12,1,6) AND tblCompraNFItem.Almox_CompraNFItem IS NULL; "
+
 '' #CONTADOR
 Dim contadorDeRegistros As Long: contadorDeRegistros = 1
-Dim totalDeRegistros As Long: totalDeRegistros = rstChvAcesso.RecordCount
 
 '' VALIDAR CONCILIAÇÃO
 Dim TMP As String
 
-    If (totalDeRegistros > 0) Then
+    If (rstChvAcesso.RecordCount > 0) Then
         '' BANCO_DESTINO
         dbDestino.Start strUsuarioNome, strUsuarioSenha, strOrigem, strBanco, drSqlServer
         
         '' #BARRA_PROGRESSO
-        SysCmd acSysCmdInitMeter, "Exportação...", totalDeRegistros
+        rstChvAcesso.MoveLast
+        rstChvAcesso.MoveFirst
+        SysCmd acSysCmdInitMeter, "Exportação...", rstChvAcesso.RecordCount
     
         '' CADASTRO
         Do While Not rstChvAcesso.EOF
+                
             pRepositorio = "tblCompraNF"
             pChvAcesso = rstChvAcesso.Fields("ChvAcesso_CompraNF").value
-            
+                       
             tmpCamposNomes = carregarCamposNomes(pRepositorio)
             strCamposNomes = Replace(tmpScript, "strCamposNomes", tmpCamposNomes)
             strCamposNomesTmp = Replace(Replace(tmpScript, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
@@ -238,56 +262,67 @@ Dim TMP As String
             '' CADASTRO DE COMPRAS
             For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
                 TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-                Debug.Print TMP
                 dbDestino.SqlExecute TMP
             Next item
                    
-            '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
-            dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & pChvAcesso & "';"
-            qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", pChvAcesso), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
-            If Not dbDestino.rs.EOF Then
-                pRepositorio = "tblCompraNFItem"
-                
-                tmpCamposNomes = carregarCamposNomes(pRepositorio)
-                strCamposNomes = Replace(tmpScriptItens, "strCamposNomes", tmpCamposNomes)
-                strCamposNomesTmp = Replace(Replace(tmpScriptItens, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
-                strRepositorio = Replace(strCamposNomesTmp, "pRepositorio", pRepositorio)
-    
-                '' #20210823_qryUpdateNumPed_CompraNF
-                Application.CurrentDb.Execute qryComprasItens_Update_IDCompraNF
-                
-                '' CADASTRO DE ITENS DE COMPRAS
-                For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
-                    TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
-                    Debug.Print TMP
-                    dbDestino.SqlExecute TMP
-                Next item
+            '' CONTROLE DE RECADASTRO
+            dbDestino.SqlSelect Replace(sql_comprasItens_count, "strID_Compra", pChvAcesso)
+            If (dbDestino.rs.Fields("contador").value = 0) Then
+            
+                '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
+                dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & pChvAcesso & "';"
+                qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", pChvAcesso), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
+                If Not dbDestino.rs.EOF Then
+                    pRepositorio = "tblCompraNFItem"
+                    
+                    tmpCamposNomes = carregarCamposNomes(pRepositorio)
+                    strCamposNomes = Replace(tmpScriptItens, "strCamposNomes", tmpCamposNomes)
+                    strCamposNomesTmp = Replace(Replace(tmpScriptItens, "strCamposNomes", tmpCamposNomes), "strCamposTmp", Replace(tmpCamposNomes, "_" & right(pRepositorio, Len(pRepositorio) - 3), ""))
+                    strRepositorio = Replace(strCamposNomesTmp, "pRepositorio", pRepositorio)
+        
+                    '' #20210823_qryUpdateNumPed_CompraNF
+                    Application.CurrentDb.Execute qryComprasItens_Update_IDCompraNF
+                    
+                    '' CADASTRO DE ITENS DE COMPRAS
+                    For Each item In carregarCamposValores(pRepositorio, pChvAcesso)
+                        TMP = Replace(Replace(strRepositorio, "strCamposValores", item), "strNumPed_CompraNF", contador)
+                        dbDestino.SqlExecute TMP
+                    Next item
+        
+                End If
+                        
+                '' MUDAR STATUS DO REGISTRO
+                Application.CurrentDb.Execute Replace(Scripts.compras_atualizarEnviadoParaServidor, "strChave", rstChvAcesso.Fields("chvAcesso_CompraNF").value)
+        
+                '' #20211122_AjusteDeCampos_CTe
+                If (Len(carregarComprasCTe) > 0) Then dbDestino.SqlExecute Replace(qryComprasCTe_Update_AjustesCampos, "pLista_ChvAcesso_CompraNF", carregarComprasCTe)
+                dbDestino.SqlExecute "UPDATE tblCompraNF SET HoraEntd_CompraNF = NULL, IDVD_CompraNF = NULL WHERE tblCompraNF.IDVD_CompraNF=0;"
     
             End If
-                    
-            '' MUDAR STATUS DO REGISTRO
-            Application.CurrentDb.Execute Replace(Scripts.compras_atualizarEnviadoParaServidor, "strChave", rstChvAcesso.Fields("chvAcesso_CompraNF").value)
-    
-            rstChvAcesso.MoveNext
+            
             contador = contador + 1
             contadorDeRegistros = contadorDeRegistros + 1
             
             '' #BARRA_PROGRESSO
             SysCmd acSysCmdUpdateMeter, contadorDeRegistros
-        
+            
+            Debug.Print contadorDeRegistros
+            
+            rstChvAcesso.MoveNext
             DoEvents
         Loop
-
-    
-        '' #20211122_AjusteDeCampos_CTe
-        dbDestino.SqlExecute Replace(qryComprasCTe_Update_AjustesCampos, "pLista_ChvAcesso_CompraNF", carregarComprasCTe)
-        dbDestino.SqlExecute "UPDATE tblCompraNF SET HoraEntd_CompraNF = NULL, IDVD_CompraNF = NULL WHERE tblCompraNF.IDVD_CompraNF=0;"
         
+'        '' #20211202_update_Almox_CompraNFItem
+'        dbDestino.SqlExecute sql_comprasItens_update_Almox_CompraNFItem
+        
+        '' #20220106_update_IdProd_CompraNFItem
+        dbDestino.SqlExecute sql_comprasItens_update_IdProd
+            
         '' #20211128_LimparRepositorios
         '' Limpar repositorio de itens de compras
         Application.CurrentDb.Execute _
                 "Delete from tblCompraNFItem"
-    
+
         '' Limpar repositorio de compras
         Application.CurrentDb.Execute _
                 "Delete from tblCompraNF"
@@ -308,7 +343,7 @@ statusFinal DT_PROCESSO, "CadastroDeComprasEmServidor - Exportar compras ( Quant
 '' #BARRA_PROGRESSO
 SysCmd acSysCmdRemoveMeter
 
-Debug.Print "Concluido!"
+Debug.Print "CadastroDeComprasEmServidor() - Concluido!"
 
 End Sub
 
@@ -328,7 +363,6 @@ Dim sql_Select_tblDadosConexaoNFeCTe_registroValido As String: sql_Select_tblDad
                     "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi]))>0) AND ((tblDadosConexaoNFeCTe.registroValido)=1));"
     End If
     
-    Debug.Print sql_Select_tblDadosConexaoNFeCTe_registroValido
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), sql_Select_tblDadosConexaoNFeCTe_registroValido
 
     '' CAMINHO DE SAIDA DO ARQUIVO
@@ -344,7 +378,7 @@ Dim sql_Select_tblDadosConexaoNFeCTe_registroValido As String: sql_Select_tblDad
     '' EXECUCAO
     s.criarArquivoJson pArquivo, sql_Select_tblDadosConexaoNFeCTe_registroValido, strCaminhoDeSaida
 
-    Debug.Print "Concluido! - criacaoArquivosJson"
+    Debug.Print "gerarArquivosJson() - Concluido!"
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "Concluido! - criacaoArquivosJson"
 
 Cleanup:
@@ -389,7 +423,6 @@ Dim strRepositorio As String
         
     '' TRANSFERENCIA DE DADOS
     s.ProcessamentoTransferir strRepositorio
-
 
 adm_Exit:
     Set s = Nothing
@@ -565,11 +598,13 @@ Dim rstCampos As DAO.Recordset
 '' VALIDAR CONCILIAÇÃO
 Dim tmpScript As String
 
+Dim sql_Compras_CTe_Select_AjustesCampos As String: sql_Compras_CTe_Select_AjustesCampos = _
+    "SELECT tblCompraNF.ChvAcesso_CompraNF FROM tblCompraNF INNER JOIN tblDadosConexaoNFeCTe ON tblCompraNF.ChvAcesso_CompraNF = tblDadosConexaoNFeCTe.ChvAcesso WHERE (((tblDadosConexaoNFeCTe.codMod)=57) AND ((tblDadosConexaoNFeCTe.registroProcessado)=2));"
+
     '' MONTAR STRING DE NOME DE COLUNAS
-    Set rstCampos = db.OpenRecordset("qryCompras_CTe_Select_AjustesCampos")
+    Set rstCampos = db.OpenRecordset(sql_Compras_CTe_Select_AjustesCampos)
     Do While Not rstCampos.EOF
         tmpScript = tmpScript & "'" & rstCampos.Fields("ChvAcesso_CompraNF").value & "',"
-        
         rstCampos.MoveNext
         DoEvents
     Loop
@@ -578,7 +613,7 @@ Dim tmpScript As String
     rstCampos.Close
     db.Close
 
-    carregarComprasCTe = left(tmpScript, Len(tmpScript) - 1)
+    If (Len(tmpScript) > 0) Then carregarComprasCTe = left(tmpScript, Len(tmpScript) - 1)
 
 End Function
 
@@ -636,6 +671,7 @@ Dim sql_Select_CaminhoDestino As String: sql_Select_CaminhoDestino = _
     Set rst = db.OpenRecordset(sql_Select_CaminhoDestino)
     Do While Not rst.EOF
         If (Dir(rst.Fields("CaminhoDoArquivo").value) <> "") Then
+''            If (Dir(rst.Fields("CaminhoDestino").value) <> "") Then Kill rst.Fields("CaminhoDestino").value
             FileCopy rst.Fields("CaminhoDoArquivo").value, rst.Fields("CaminhoDestino").value
             Kill rst.Fields("CaminhoDoArquivo").value
         End If
@@ -651,3 +687,5 @@ Set db = Nothing
 Set rst = Nothing
 
 End Sub
+
+

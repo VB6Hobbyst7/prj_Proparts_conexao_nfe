@@ -1,7 +1,10 @@
 Attribute VB_Name = "azs_Info"
 
-'' Done
+'' Done | Subistituição deste item
 '' ----------------------------------------------------------------------------------
+'' #20220106_update_IdProd_CompraNFItem
+'' #20211202_qryComprasItem_Update_STs
+'' #20211202_qryComprasItens_Update_Almox_CompraNFItem | #20211202_update_Almox_CompraNFItem
 '' #20211128_MoverArquivosProcessados
 '' #20211128_LimparRepositorios
 '' #20211127_qryDadosGerais_Update_FiltroFil_DestinatarioNaoProparts
