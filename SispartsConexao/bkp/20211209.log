@@ -1,0 +1,11 @@
+INFO 12/09/2021 01:54:53 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 0 ) - 00:00:02
+INFO 12/09/2021 01:54:54 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 0 ) - 00:00:01
+INFO 12/09/2021 01:54:54 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 1 ) - 00:00:00
+Concluido! - testeDeFuncionamentoGeral
+INFO 12/09/2021 02:06:03 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:09:51
+INFO 12/09/2021 02:29:09 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:23:06
+INFO 12/09/2021 02:36:49 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 563 ) - 00:07:40
+Concluido! - testeDeFuncionamentoGeral
+INFO 12/09/2021 07:49:09 - azs_teste_update_Almox_CompraNFItem() - 00:00:00
+INFO 12/09/2021 07:49:55 - azs_teste_update_Almox_CompraNFItem() - 00:00:02
+INFO 12/09/2021 07:51:40 - azs_teste_update_Almox_CompraNFItem() - 00:00:01
