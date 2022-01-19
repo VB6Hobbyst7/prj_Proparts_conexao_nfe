@@ -1,3 +1,11 @@
+UPDATE tblCompraNFItem SET tblCompraNFItem.FlagEst_CompraNFItem = 1 WHERE (((tblCompraNFItem.FlagEst_CompraNFItem)=0));
+
+
+
+select distinct FlagEst_CompraNFItem 
+from tblCompraNFItem;
+
+
 INSERT INTO tblCompraNFItem (
 	ID_Grade_CompraNFItem
 	, Almox_CompraNFItem
