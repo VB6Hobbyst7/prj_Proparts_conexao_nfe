@@ -1,8 +1,8 @@
 SELECT COUNT(*)	-- SELECT * -- DELETE
-FROM tblCompraNF
+FROM tblCompraNF;
 
 SELECT COUNT(*)	-- SELECT * -- DELETE
-FROM tblCompraNFItem
+FROM tblCompraNFItem;
 
 
 SELECT ChvAcesso_CompraNF
