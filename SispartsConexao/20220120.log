@@ -1,0 +1,11 @@
+INFO 01/20/2022 02:05:22 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:02:54
+INFO 01/20/2022 02:15:09 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:08:28
+INFO 01/20/2022 02:27:51 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:03
+INFO 01/20/2022 02:27:54 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:03
+INFO 01/20/2022 02:34:49 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:02:44
+INFO 01/20/2022 02:41:45 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:06:49
+INFO 01/20/2022 02:46:08 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:03
+INFO 01/20/2022 02:46:10 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:02
+INFO 01/20/2022 02:46:10 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 563 ) - 00:02:35
+INFO 01/20/2022 02:46:11 - Processamento - CriarTipoDeArquivo () - 00:00:00
+INFO 01/20/2022 02:46:11 - Processamento - CriarTipoDeArquivo () - 00:00:00

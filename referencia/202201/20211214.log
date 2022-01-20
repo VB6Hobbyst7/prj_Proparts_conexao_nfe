@@ -1,0 +1,8 @@
+INFO 12/14/2021 07:49:37 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 0 ) - 00:00:01
+INFO 12/14/2021 07:49:37 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 0 ) - 00:00:00
+INFO 12/14/2021 07:49:37 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 1 ) - 00:00:00
+Concluido! - testeDeFuncionamentoGeral
+INFO 12/14/2021 07:54:18 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:04:15
+INFO 12/14/2021 08:04:19 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:10:01
+INFO 12/14/2021 08:08:27 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 563 ) - 00:04:08
+Concluido! - testeDeFuncionamentoGeral
