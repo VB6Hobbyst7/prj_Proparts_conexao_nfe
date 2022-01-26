@@ -1,0 +1,57 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: dbCode_20220125-2231.7z
+
+Testing     dbCode\00_AreaDeTestes.bas
+Testing     dbCode\00_azsCadastroRegistros.bas
+Testing     dbCode\00_Info.bas
+Testing     dbCode\00_modConexaoNfeCte.bas
+Testing     dbCode\00_Processamento.bas
+Testing     dbCode\01_modConexaoNfeCte.bas
+Testing     dbCode\01_modFernanda.bas
+Testing     dbCode\02_modMSSQL.bas
+Testing     dbCode\99_Testes_Dev.bas
+Testing     dbCode\azsCadastroRegistros.bas
+Testing     dbCode\azsExportAllCodeMSAccess.bas
+Testing     dbCode\azsModConexaoNfeCte.bas
+Testing     dbCode\azsRepositorioDeTestes.bas
+Testing     dbCode\azs_Info.bas
+Testing     dbCode\azs_modMSSQL.bas
+Testing     dbCode\azs_VALIDAR_DADOS.bas
+Testing     dbCode\basConexao.bas
+Testing     dbCode\basUtilitarios.bas
+Testing     dbCode\libUteis.bas
+Testing     dbCode\modConexaoNfeCte.bas
+Testing     dbCode\modDeclaracoes.bas
+Testing     dbCode\modFuncoesGerais.bas
+Testing     dbCode\modImpXMLSAM.bas
+Testing     dbCode\Module1.bas
+Testing     dbCode\Banco.cls
+Testing     dbCode\clsCommonDialog.cls
+Testing     dbCode\clsConexaoNfeCte.cls
+Testing     dbCode\clsConexaoNFeCTeDados.cls
+Testing     dbCode\clsCriarArquivos.cls
+Testing     dbCode\clsProcessamento.cls
+Testing     dbCode\clsProcessamentoDados.cls
+Testing     dbCode\Form_frmCompraNF_ImpXML.cls
+Testing     dbCode\Form_frmControleDeArquivos.cls
+Testing     dbCode\azsCompactador.bat
+Testing     dbCode\BACKUP_dbProparts.bat
+Testing     dbCode\BACKUP_SispartsConexao.bat
+Testing     dbCode\importFiles.bat
+Testing     dbCode\parseXmlInDirectory03.py
+Testing     dbCode\enviar_ComprasParaServidor.vba
+Testing     dbCode\modelo_antigo_001.vba
+Testing     dbCode\modelo_antigo_002.vba
+Testing     dbCode\modelo_antigo_003.vba
+Testing     dbCode\TESTE_EnviarDadosParaServidor.vba
+Testing     dbCode\TransferirDadosProcessados.vba
+Testing     dbCode
+
+Everything is Ok
+
+Folders: 1
+Files: 44
+Size:       551077
+Compressed: 65593

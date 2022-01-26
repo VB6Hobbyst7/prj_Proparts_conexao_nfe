@@ -26,7 +26,7 @@ Dim totalDeRegistros As Long
 DadosGerais.CriarRepositorios
 
 ''#######################################################################################
-''### REPOSITORIO
+''### LEITURA DE REPOSITORIOS
 ''#######################################################################################
 
     '' REPOSITORIOS
@@ -39,7 +39,7 @@ DadosGerais.CriarRepositorios
         For Each caminhoAntigo In Array(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColeta'"))
             For Each caminhoNovo In carregarParametros(DadosGerais.SelectColetaEmpresa)
                 For Each item In GetFilesInSubFolders(CStr(Replace(Replace(caminhoAntigo, "empresa", caminhoNovo), "recebimento\", "")))
-                    If (IsNull(DLookup("ID", "tblDadosConexaoNFeCTe", "Chave='" & getFileName(CStr(item)) & "'"))) Then arquivos.add CStr(item)
+                    If (IsNull(DLookup("Chave", "logArquivosProcessados", "Chave='" & getFileName(CStr(item)) & "'"))) Then arquivos.add CStr(item)
                 Next
             Next
         Next
@@ -47,7 +47,7 @@ DadosGerais.CriarRepositorios
     End If
 
 ''#######################################################################################
-''### PROCESSAMENTO
+''### PROCESSAMENTO DE ARQUIVOS COLETADOS
 ''#######################################################################################
 totalDeRegistros = arquivos.count
 
@@ -106,7 +106,7 @@ Dim contadorDeRegistros As Long: contadorDeRegistros = 0
 Dim totalDeRegistros As Long
 
 ''#######################################################################################
-''### REPOSITORIO
+''### LEITURA DE REPOSITORIOS
 ''#######################################################################################
 
 '' REPOSITORIO
@@ -115,7 +115,7 @@ For Each item In carregarParametros(DadosGerais.SelectArquivosPendentes)
 Next
 
 ''#######################################################################################
-''### PROCESSAMENTO
+''### PROCESSAMENTO DE ARQUIVOS COLETADOS
 ''#######################################################################################
 totalDeRegistros = arquivos.count
 
@@ -123,9 +123,6 @@ totalDeRegistros = arquivos.count
     SysCmd acSysCmdInitMeter, "Pendentes ...", totalDeRegistros
 
     For Each item In arquivos
-        '' CONTROLE DE CADASTRO
-        'If (IsNull(DLookup("ID_CompraNF", "tblCompraNF", "ChvAcesso_CompraNF='" & DLookup("ChvAcesso", "tblDadosConexaoNFeCTe", "Chave='" & getFileName(CStr("C:\ConexaoNFe\XML\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\42210368365501000377550000000064441001362668-nfeproc.xml")) & "'") & "'"))) Then _
-            carregarArquivosPendentes CStr(item)
 
         carregarArquivosPendentes CStr(item)
 
@@ -166,6 +163,9 @@ adm_Err:
 End Sub
 
 
+
+
+
 '' 03. ENVIAR DADOS PARA SERVIDOR
 '' #20210823_CadastroDeComprasEmServidor
 Sub CadastroDeComprasEmServidor()
@@ -181,9 +181,9 @@ Dim strBanco As String: strBanco = DLookup("[ValorDoParametro]", "[tblParametros
 Dim dbDestino As New Banco
 
 '' BANCO_LOCAL
-Dim Scripts As New clsConexaoNfeCte
+Dim scripts As New clsConexaoNfeCte
 Dim db As DAO.Database: Set db = CurrentDb
-Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF"))
+Dim rstChvAcesso As DAO.Recordset: Set rstChvAcesso = db.OpenRecordset(Replace(scripts.SelectRegistroValidoPorcessado, "pRepositorio", "tblCompraNF"))
 
 Dim qryCompras_Insert_Compras As String
 Dim qryComprasItens_Update_IDCompraNF As String
@@ -222,13 +222,14 @@ Dim sql_comprasItens_update_IdProd As String:
                                         "WHERE tbCompras.Sit_CompraNF = 6 and tbItens.ID_Prod_CompraNFItem=0;"
     
     
-'Dim sql_comprasItens_update_Almox_CompraNFItem As String:
-'    sql_comprasItens_update_Almox_CompraNFItem = "UPDATE tblCompraNFItem " & _
-'                                                    "SET tblCompraNFItem.Almox_CompraNFItem = tabEstoqueAlmox.Codigo_Almox " & _
-'                                                    "FROM tabEstoqueAlmox RIGHT JOIN tblCompraNF ON tabEstoqueAlmox.CodUnid_Almox = tblCompraNF.Fil_CompraNF " & _
-'                                                    "INNER JOIN tblCompraNFItem ON tblCompraNF.ID_CompraNF = tblCompraNFItem.ID_CompraNF_CompraNFItem " & _
-'                                                    "WHERE tabEstoqueAlmox.Codigo_Almox IN (12,1,6) AND tblCompraNFItem.Almox_CompraNFItem IS NULL; "
+    
+Dim sql_comprasItens_Update_FlagEst As String:
+    sql_comprasItens_Update_FlagEst = "UPDATE tblCompraNFItem SET tblCompraNFItem.FlagEst_CompraNFItem = 1 WHERE (((tblCompraNFItem.FlagEst_CompraNFItem)=0));"
 
+    
+Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
+    
+       
 '' #CONTADOR
 Dim contadorDeRegistros As Long: contadorDeRegistros = 1
 
@@ -271,7 +272,7 @@ Dim TMP As String
             
                 '' RELACIONAR ITENS DE COMPRAS COM COMPRAS JÁ CADASTRADAS NO SERVIDOR
                 dbDestino.SqlSelect "SELECT ChvAcesso_CompraNF,ID_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '" & pChvAcesso & "';"
-                qryComprasItens_Update_IDCompraNF = Replace(Replace(Scripts.UpdateComprasItens_IDCompraNF, "strChave", pChvAcesso), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
+                qryComprasItens_Update_IDCompraNF = Replace(Replace(scripts.UpdateComprasItens_IDCompraNF, "strChave", pChvAcesso), "strID_Compra", dbDestino.rs.Fields("ID_CompraNF").value)
                 If Not dbDestino.rs.EOF Then
                     pRepositorio = "tblCompraNFItem"
                     
@@ -292,7 +293,7 @@ Dim TMP As String
                 End If
                         
                 '' MUDAR STATUS DO REGISTRO
-                Application.CurrentDb.Execute Replace(Scripts.compras_atualizarEnviadoParaServidor, "strChave", rstChvAcesso.Fields("chvAcesso_CompraNF").value)
+                Application.CurrentDb.Execute Replace(scripts.compras_atualizarEnviadoParaServidor, "strChave", rstChvAcesso.Fields("chvAcesso_CompraNF").value)
         
                 '' #20211122_AjusteDeCampos_CTe
                 If (Len(carregarComprasCTe) > 0) Then dbDestino.SqlExecute Replace(qryComprasCTe_Update_AjustesCampos, "pLista_ChvAcesso_CompraNF", carregarComprasCTe)
@@ -317,6 +318,9 @@ Dim TMP As String
         
         '' #20220106_update_IdProd_CompraNFItem
         dbDestino.SqlExecute sql_comprasItens_update_IdProd
+        
+        '' #20220111_update_FlagEst_CompraNFItem
+        dbDestino.SqlExecute sql_comprasItens_Update_FlagEst
             
         '' #20211128_LimparRepositorios
         '' Limpar repositorio de itens de compras
@@ -326,6 +330,23 @@ Dim TMP As String
         '' Limpar repositorio de compras
         Application.CurrentDb.Execute _
                 "Delete from tblCompraNF"
+        
+        '' #20211128_MoverArquivosProcessados
+        MoverArquivosProcessados
+                
+        '' #20220119_GerarArquivosDeLancamentos_e_Manifestos
+        '' LANÇAMENTO
+        gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes
+        
+        '' MANIFESTO
+        gerarArquivosJson opManifesto, , strCaminhoAcoes
+        
+        '' Limpar repositorio de dados gerais
+        Application.CurrentDb.Execute _
+                scripts.InsertLogProcessados
+        Application.CurrentDb.Execute _
+                "Delete from tblDadosConexaoNFeCTe"
+        
     End If
     
 
@@ -333,7 +354,7 @@ rstChvAcesso.Close
 dbDestino.CloseConnection
 db.Close
 
-Set Scripts = Nothing
+Set scripts = Nothing
 Set rstChvAcesso = Nothing
 Set db = Nothing
 
@@ -347,20 +368,25 @@ Debug.Print "CadastroDeComprasEmServidor() - Concluido!"
 
 End Sub
 
-'' 04. GERAR ARQUIVOS JSONs
+
+''=======================================================================================================
+'' LIB
+''=======================================================================================================
+
+'' GERAR ARQUIVOS JSONs
 Sub gerarArquivosJson(pArquivo As enumTipoArquivo, Optional strConsulta As String, Optional strCaminho As String)
 Dim s As New clsCriarArquivos
 Dim strCaminhoDeSaida As String
 
 Dim sql_Select_tblDadosConexaoNFeCTe_registroValido As String: sql_Select_tblDadosConexaoNFeCTe_registroValido = _
-    "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi]))>0) AND ((tblDadosConexaoNFeCTe.registroValido)=1))"
+    "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi_copia FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi_copia]))>0) AND ((tblDadosConexaoNFeCTe.registroValido)=1))"
 
     '' SELEÇÃO DE REGISTRO
     If strConsulta <> "" Then
         sql_Select_tblDadosConexaoNFeCTe_registroValido = "SELECT * FROM (" & sql_Select_tblDadosConexaoNFeCTe_registroValido & ") AS tmpSelecao WHERE tmpSelecao.ChvAcesso =  '" & strConsulta & "';"
     Else
         sql_Select_tblDadosConexaoNFeCTe_registroValido = _
-                    "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi]))>0) AND ((tblDadosConexaoNFeCTe.registroValido)=1));"
+                    "SELECT DISTINCT tblDadosConexaoNFeCTe.ChvAcesso, tblDadosConexaoNFeCTe.dhEmi_copia FROM tblDadosConexaoNFeCTe WHERE (((Len([ChvAcesso]))>0) AND ((Len([dhEmi_copia]))>0) AND ((tblDadosConexaoNFeCTe.registroValido)=1));"
     End If
     
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), sql_Select_tblDadosConexaoNFeCTe_registroValido
@@ -385,10 +411,6 @@ Cleanup:
     Set s = Nothing
 
 End Sub
-
-''=======================================================================================================
-'' LIB
-''=======================================================================================================
 
 Function carregarDadosGerais(strArquivo As String)
 On Error GoTo adm_Err
@@ -489,7 +511,7 @@ End Function
 
 Function carregarCamposValores(pRepositorio As String, pChvAcesso As String) As Collection
 Set carregarCamposValores = New Collection
-Dim Scripts As New clsConexaoNfeCte
+Dim scripts As New clsConexaoNfeCte
 
 'Dim pRepositorio As String: pRepositorio = "tblCompraNFItem"
 'Dim pChvAcesso As String: pChvAcesso = "32210368365501000296550000000638791001361285"
@@ -497,7 +519,7 @@ Dim Scripts As New clsConexaoNfeCte
 '' BANCO_LOCAL
 Dim db As DAO.Database: Set db = CurrentDb
 
-Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
+Dim rstCampos As DAO.Recordset: Set rstCampos = db.OpenRecordset(Replace(scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
 Dim rstOrigem As DAO.Recordset
 
 '' VALIDAR CONCILIAÇÃO
@@ -505,7 +527,7 @@ Dim tmpScript As String
 Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pRepositorio) - 3)
 
 Dim sqlOrigem As String: sqlOrigem = _
-    "Select * from (" & Replace(Scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'"
+    "Select * from (" & Replace(scripts.SelectRegistroValidoPorcessado, "pRepositorio", pRepositorio) & ") as tmpRepositorio where tmpRepositorio.ChvAcesso_CompraNF = '" & pChvAcesso & "'"
     
     Set rstOrigem = db.OpenRecordset(sqlOrigem)
     
@@ -550,7 +572,7 @@ pulo:
         DoEvents
     Loop
 
-    Set Scripts = Nothing
+    Set scripts = Nothing
     rstCampos.Close
     rstOrigem.Close
     db.Close
@@ -558,7 +580,7 @@ pulo:
 End Function
 
 Function carregarCamposNomes(pRepositorio As String) As String
-Dim Scripts As New clsConexaoNfeCte
+Dim scripts As New clsConexaoNfeCte
 
 '' BANCO_LOCAL
 Dim db As DAO.Database: Set db = CurrentDb
@@ -570,7 +592,7 @@ Dim tmpValidarCampo As String: tmpValidarCampo = right(pRepositorio, Len(pReposi
 Dim tmpScript As String
 
     '' MONTAR STRING DE NOME DE COLUNAS
-    Set rstCampos = db.OpenRecordset(Replace(Scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
+    Set rstCampos = db.OpenRecordset(Replace(scripts.SelectCamposNomes, "pRepositorio", pRepositorio))
     Do While Not rstCampos.EOF
         If InStr(rstCampos.Fields("campo").value, tmpValidarCampo) Then
             tmpScript = tmpScript & rstCampos.Fields("campo").value & ","
@@ -579,7 +601,7 @@ Dim tmpScript As String
         DoEvents
     Loop
 
-    Set Scripts = Nothing
+    Set scripts = Nothing
     rstCampos.Close
     db.Close
 
@@ -589,7 +611,7 @@ End Function
 
 '' #20211122_AjusteDeCampos_CTe
 Function carregarComprasCTe() As String
-Dim Scripts As New clsConexaoNfeCte
+Dim scripts As New clsConexaoNfeCte
 
 '' BANCO_LOCAL
 Dim db As DAO.Database: Set db = CurrentDb
@@ -609,7 +631,7 @@ Dim sql_Compras_CTe_Select_AjustesCampos As String: sql_Compras_CTe_Select_Ajust
         DoEvents
     Loop
 
-    Set Scripts = Nothing
+    Set scripts = Nothing
     rstCampos.Close
     db.Close
 
@@ -667,11 +689,20 @@ Dim sql_Update_CaminhoDestino As String: sql_Update_CaminhoDestino = _
 Dim sql_Select_CaminhoDestino As String: sql_Select_CaminhoDestino = _
     "SELECT tblDadosConexaoNFeCTe.CaminhoDoArquivo, tblDadosConexaoNFeCTe.CaminhoDestino FROM tblDadosConexaoNFeCTe WHERE (((tblDadosConexaoNFeCTe.registroProcessado)=8));"
         
+    Debug.Print "############################"
+        
     '' MOVER ARQUIVOS
     Set rst = db.OpenRecordset(sql_Select_CaminhoDestino)
     Do While Not rst.EOF
         If (Dir(rst.Fields("CaminhoDoArquivo").value) <> "") Then
-''            If (Dir(rst.Fields("CaminhoDestino").value) <> "") Then Kill rst.Fields("CaminhoDestino").value
+            Debug.Print "# ORIGEM"
+            Debug.Print rst.Fields("CaminhoDoArquivo").value
+            
+            Debug.Print "# DESTINO"
+            Debug.Print rst.Fields("CaminhoDestino").value
+            
+            
+            Kill rst.Fields("CaminhoDestino").value
             FileCopy rst.Fields("CaminhoDoArquivo").value, rst.Fields("CaminhoDestino").value
             Kill rst.Fields("CaminhoDoArquivo").value
         End If

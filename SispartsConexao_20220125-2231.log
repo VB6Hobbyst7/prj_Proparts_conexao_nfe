@@ -1,0 +1,20 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: SispartsConexao_20220125-2231.7z
+
+Testing     SispartsConexao\templates.sql
+Testing     SispartsConexao\dbDados.accdb
+Testing     SispartsConexao\SispartsConexao.accdb
+Testing     SispartsConexao\20220120.log
+Testing     SispartsConexao\20220124.log
+Testing     SispartsConexao\20220125.log
+Testing     SispartsConexao\~$tblNatOper.xlsx
+Testing     SispartsConexao
+
+Everything is Ok
+
+Folders: 1
+Files: 7
+Size:       6440019
+Compressed: 515579

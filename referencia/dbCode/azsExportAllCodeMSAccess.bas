@@ -4,12 +4,12 @@ Attribute VB_Name = "azsExportAllCodeMSAccess"
 Public Sub ExportAllCode()
 '' https://stackoverflow.com/questions/16948215/exporting-ms-access-forms-and-class-modules-recursively-to-text-files
 
-    Dim C As VBComponent
+    Dim c As VBComponent
     Dim Sfx As String
     Dim pathExit As String: pathExit = Replace(CurrentProject.path, left(CurrentProject.Name, Len(CurrentProject.Name) - 6), "") & "referencia\" & strControle & "\"
     
-    For Each C In Application.VBE.VBProjects(1).VBComponents
-        Select Case C.Type
+    For Each c In Application.VBE.VBProjects(1).VBComponents
+        Select Case c.Type
             Case vbext_ct_ClassModule, vbext_ct_Document
                 Sfx = ".cls"
             Case vbext_ct_MSForm
@@ -22,9 +22,9 @@ Public Sub ExportAllCode()
 
         If Sfx <> "" Then
             CreateDir pathExit
-            C.Export fileName:=pathExit & C.Name & Sfx
+            c.Export fileName:=pathExit & c.Name & Sfx
         End If
-    Next C
+    Next c
 
 
 Shell "explorer " & pathExit, vbMaximizedFocus

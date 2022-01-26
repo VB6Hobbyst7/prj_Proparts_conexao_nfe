@@ -73,7 +73,7 @@ End Function
 
 '' EXECUÇÃO DE APLICATIVO EXTERNO
 Public Function execucao(pCol As Collection, strFileName As String, Optional strFilePath As String, Optional pOperacao As enumOperacao, Optional strApp As String)
-Dim C As Variant, TMP As String: TMP = ""
+Dim c As Variant, TMP As String: TMP = ""
     
     '' Path
     If ((strFilePath) = "") Then
@@ -85,9 +85,9 @@ Dim C As Variant, TMP As String: TMP = ""
     If (Dir(strFilePath & strFileName) <> "") Then Kill strFilePath & strFileName
     
     '' Criação
-    For Each C In pCol
-        TMP = TMP + CStr(C) + vbNewLine
-    Next C
+    For Each c In pCol
+        TMP = TMP + CStr(c) + vbNewLine
+    Next c
     
     '' Saida para arquivo
     TextFile_Append strFilePath & strFileName, TMP

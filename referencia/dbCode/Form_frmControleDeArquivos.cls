@@ -27,9 +27,17 @@ Private Sub cmdArquivosPendentes_Click()
 Dim strTitulo As String: strTitulo = "Processar arquivos pendentes"
 Dim retVal As Variant: retVal = MsgBox("Deseja iniciar o processamento dos arquivos pendentes?", vbQuestion + vbOKCancel, strTitulo)
 
+Dim scripts As New clsConexaoNfeCte
+Dim qryProcessos() As Variant: qryProcessos = Array( _
+                                                    scripts.UpdateItens_AjustesCampos, _
+                                                    scripts.UpdateItens_STs, _
+                                                    scripts.UpdateItens_STs_CTe_ST_CompraNFItem _
+                                                    )
+
     If retVal = vbOK Then
         If (DCount("[id]", "tblDadosConexaoNFeCTe", "[registroProcessado]=0") > 0) Then
             processarArquivosPendentes
+            executarComandos qryProcessos
             Me.Requery
             MsgBox "Concluido!", vbInformation + vbOKOnly, strTitulo
         Else
@@ -37,6 +45,7 @@ Dim retVal As Variant: retVal = MsgBox("Deseja iniciar o processamento dos arqui
         End If
     End If
 
+Set scripts = Nothing
 Debug.Print strTitulo & " - Concluido!"
 End Sub
 
@@ -49,7 +58,6 @@ Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "
     If retVal = vbOK Then
         If (DCount("[id]", "tblDadosConexaoNFeCTe", "[registroProcessado]=1") > 0) Then
             CadastroDeComprasEmServidor
-            MoverArquivosProcessados
             
             '' LANÇAMENTO
             gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes

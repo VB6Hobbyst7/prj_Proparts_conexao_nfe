@@ -148,6 +148,10 @@ Private Const qryDadosGerais_Update_ProcessamentoConcluido_Servidor As String = 
 Private Const qryDadosGerais_Update_FornecedoresValidos As String = _
         "UPDATE (SELECT STRPontos(tmpClientes.CNPJ_CPF) AS strCNPJ_CPF FROM tmpClientes) AS qryFornecedoresValidos INNER JOIN tblDadosConexaoNFeCTe ON qryFornecedoresValidos.strCNPJ_CPF = tblDadosConexaoNFeCTe.CNPJ_emit SET tblDadosConexaoNFeCTe.registroValido = 1 WHERE ((tblDadosConexaoNFeCTe.registroProcessado) = 0);"
 
+'' #20220119_dhEmiCopia
+Private Const qryDadosGerais_Update_dhEmiCopia As String = _
+        "UPDATE tblDadosConexaoNFeCTe SET tblDadosConexaoNFeCTe.dhEmi_copia = Mid(Replace([tblDadosConexaoNFeCTe].[dhEmi_copia], 'T', ' '), 1, 19) WHERE ((Len([tblDadosConexaoNFeCTe].[dhEmi_copia]) > '0'));"
+
 
 '' -- SELEÇÃO DE REGISTROS VALIDOS.qryRegistrosValidos
 '' #tblDadosConexaoNFeCTe.qryDadosGerais_Update_RegistrosValidos
@@ -175,7 +179,7 @@ Private Const qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP As String = _
             "               tblParametros  " & _
             "             WHERE  " & _
             "               TipoDeParametro='FiltroFil' And strSplit(ValorDoParametro,'|',0) In ('PSC','PES','PSP'))  AS qryPscPes  " & _
-            "       INNER JOIN tmpNatOp ON (qryPscPes.strCFOP_NatOper = tmpNatOp.CFOP_NatOper) AND (qryPscPes.strFil_NatOper = tmpNatOp.Fil_NatOper) )  AS tmpPscPes  " & _
+            "       INNER JOIN tmpNatOp ON (qryPscPes.strCFOP_NatOper = tmpNatOp.CFOP_NatOper) AND (qryPscPes.strFil_NatOper = tmpNatOp.Fil_NatOper) WHERE (((tmpNatOp.Descr_NatOper) Not Like 'Complemento*')))  AS tmpPscPes  " & _
             "INNER JOIN  " & _
             "   (   SELECT  *  " & _
             "       FROM  tblDadosConexaoNFeCTe  " & _
@@ -227,7 +231,7 @@ Private Const qryCompras_Update_Dados As String = _
         "   ,tblCompraNF.Fil_CompraNF = [tblDadosConexaoNFeCTe].[ID_Empresa] " & _
         "   ,tblCompraNF.IDVD_CompraNF = IIF([tblDadosConexaoNFeCTe].[codMod]=57,null,[tblDadosConexaoNFeCTe].[IDVD_CompraNF]) " & _
         "   ,tblCompraNF.VTotNF_CompraNF = replace(Nz([tblCompraNF].[VTotNF_CompraNF], 0) / 100, "","", ""."") " & _
-        "   ,tblCompraNF.VTotProd_CompraNF = replace(Nz([tblCompraNF].[VTotProd_CompraNF], 0) / 100, "","", ""."") " & _
+        "   ,tblCompraNF.VTotProd_CompraNF = replace(Nz(IIF([tblDadosConexaoNFeCTe].[codMod]=57,[tblCompraNF].[VTotNF_CompraNF],[tblCompraNF].[VTotProd_CompraNF]), 0) / 100, "","", ""."") " & _
         "   ,tblCompraNF.BaseCalcICMS_CompraNF = replace(Nz([tblCompraNF].[BaseCalcICMS_CompraNF], 0) / 100, "","", ""."") " & _
         "   ,tblCompraNF.DTEmi_CompraNF = [tblDadosConexaoNFeCTe].[dhEmi]  " & _
         "   ,tblCompraNF.HoraEntd_CompraNF = IIF([tblDadosConexaoNFeCTe].[ID_Tipo]<>5,NULL,tblCompraNF.HoraEntd_CompraNF) " & _
@@ -269,6 +273,63 @@ Private Const qryComprasItens_Update_Dados_ID_Prod_CompraNFItem As String = _
         "SET tblCompraNFItem.ID_Prod_CompraNFItem = DLookUp(""CodigoProd_Grade"", ""tmpGradeProdutos"", ""CodigoForn_Grade='"" & [tblCompraNFItem].[ID_Prod_CompraNFItem] & ""'"") " & _
         "WHERE (((tblDadosConexaoNFeCTe.registroValido) = 1)    AND ((tblDadosConexaoNFeCTe.registroProcessado) = 1));"
             
+'' #20220110_qryComprasItem_Update_AjustesCampos
+Private Const qryComprasItem_Update_AjustesCampos As String = _
+            "UPDATE tblCompraNF " & _
+            "INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF " & _
+            "SET tblCompraNFItem.ID_Grade_CompraNFItem = '1' " & _
+            "   ,tblCompraNFItem.FlagEst_CompraNFItem = '1' " & _
+            "   ,tblCompraNFItem.BaseCalcICMS_CompraNFItem = '100' " & _
+            "   ,tblCompraNFItem.BaseCalcICMSSubsTrib_CompraNFItem = '0' " & _
+            "   ,tblCompraNFItem.ID_NatOp_CompraNFItem = [tblCompraNF].[ID_NatOp_CompraNF] " & _
+            "   ,tblCompraNFItem.CFOP_CompraNFItem = [tblCompraNF].[CFOP_CompraNF];"
+
+
+'' #20220110_qryComprasItem_Update_STs
+Private Const qryComprasItem_Update_STs As String = _
+            "UPDATE tblCompraNFItem " & _
+            "SET tblCompraNFItem.ST_CompraNFItem = ""1"" & DLookUp(""[STICMS_NatOper]"", ""[tmpNatOp]"", ""[ID_NatOper] = "" & [tblCompraNFItem].[ID_NatOp_CompraNFItem] & """") " & _
+            "   ,tblCompraNFItem.STCOFINS_CompraNFItem = DLookUp(""[STPC_NatOper]"", ""[tmpNatOp]"", ""[ID_NatOper] = "" & [tblCompraNFItem].[ID_NatOp_CompraNFItem] & """") " & _
+            "   ,tblCompraNFItem.STPIS_CompraNFItem = DLookUp(""[STPC_NatOper]"", ""[tmpNatOp]"", ""[ID_NatOper] = "" & [tblCompraNFItem].[ID_NatOp_CompraNFItem] & """") " & _
+            "   ,tblCompraNFItem.STIPI_CompraNFItem = DLookUp(""[STIPI_NatOper]"", ""[tmpNatOp]"", ""[ID_NatOper] = "" & [tblCompraNFItem].[ID_NatOp_CompraNFItem] & """");"
+
+'' #20220112_qryComprasItem_Update_STs_CTe_ST_CompraNFItem
+Private Const qryComprasItem_Update_STs_CTe_ST_CompraNFItem As String = _
+        "UPDATE tblCompraNF INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF SET tblCompraNFItem.ST_CompraNFItem = '000' WHERE (((tblCompraNF.ModeloDoc_CompraNF)='57'));"
+
+'' #20220111_update_Almox_CompraNFItem
+Private Const qryComprasItem_Update_Almox_CompraNFItem_55_1907 As String = _
+            "UPDATE tblCompraNF " & _
+            "INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF " & _
+            "SET tblCompraNFItem.Almox_CompraNFItem = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro] = 'Almox_CompraNFItem|55|1.907'"") " & _
+            "WHERE (((tblCompraNF.CFOP_CompraNF) = ""1.907"") AND ((tblCompraNF.ModeloDoc_CompraNF) = ""55""));"
+
+'' #20220111_update_Almox_CompraNFItem
+Private Const qryComprasItem_Update_Almox_CompraNFItem_55_2152_PSC As String = _
+            "UPDATE tblCompraNF " & _
+            "INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF " & _
+            "SET tblCompraNFItem.Almox_CompraNFItem = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro] = 'Almox_CompraNFItem|55|2.152|PSC'"") " & _
+            "WHERE (((tblCompraNF.CFOP_CompraNF) = ""2.152"") AND ((tblCompraNF.Fil_CompraNF) = ""PSC"")    AND ((tblCompraNF.ModeloDoc_CompraNF) = ""55"") );"
+
+'' #20220111_update_Almox_CompraNFItem
+Private Const qryComprasItem_Update_Almox_CompraNFItem_55_2152_PSP As String = _
+            "UPDATE tblCompraNF " & _
+            "INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF " & _
+            "SET tblCompraNFItem.Almox_CompraNFItem = DLookUp(""[ValorDoParametro]"", ""[tblParametros]"", ""[TipoDeParametro] = 'Almox_CompraNFItem|55|2.152|PSP'"") " & _
+            "WHERE (((tblCompraNF.CFOP_CompraNF) = ""2.152"") AND ((tblCompraNF.Fil_CompraNF) = ""PSP"")    AND ((tblCompraNF.ModeloDoc_CompraNF) = ""55"") );"
+
+'' #20220111_update_Almox_CompraNFItem
+Private Const qryComprasItens_Update_Almox_CompraNFItem As String = _
+            "UPDATE (tmpEstoqueAlmox RIGHT JOIN tblCompraNF ON tmpEstoqueAlmox.CodUnid_Almox = tblCompraNF.Fil_CompraNF) INNER JOIN tblCompraNFItem ON tblCompraNF.ChvAcesso_CompraNF = tblCompraNFItem.ChvAcesso_CompraNF SET tblCompraNFItem.Almox_CompraNFItem = [tmpEstoqueAlmox].[Codigo_Almox] WHERE (((tmpEstoqueAlmox.Codigo_Almox) In (""12"",""1"",""6"")));"
+                        
+'' #20220112_InsertLogProcessados
+Private Const qryInsertLogProcessados As String = _
+            "INSERT INTO logArquivosProcessados ( Chave ) " & _
+            "SELECT tblDadosConexaoNFeCTe.Chave " & _
+            "FROM logArquivosProcessados RIGHT JOIN tblDadosConexaoNFeCTe ON logArquivosProcessados.Chave = tblDadosConexaoNFeCTe.Chave " & _
+            "WHERE (((logArquivosProcessados.Chave) Is Null));"
+
+            
 ''#######################################################################################
 ''### CONSULTAS DE CONTROLE DE DADOS
 ''#######################################################################################
@@ -284,6 +345,24 @@ Private Const qryComprasItens_Update_Dados_ID_Prod_CompraNFItem As String = _
 '    Next
 '
 'End Function
+
+
+Public Function InsertLogProcessados() As String
+    InsertLogProcessados = qryInsertLogProcessados
+End Function
+
+
+Public Function UpdateItens_AjustesCampos() As String
+    UpdateItens_AjustesCampos = qryComprasItem_Update_AjustesCampos
+End Function
+
+Public Function UpdateItens_STs() As String
+    UpdateItens_STs = qryComprasItem_Update_STs
+End Function
+
+Public Function UpdateItens_STs_CTe_ST_CompraNFItem() As String
+    UpdateItens_STs_CTe_ST_CompraNFItem = qryComprasItem_Update_STs_CTe_ST_CompraNFItem
+End Function
 
 Public Function UpdateProcessamentoConcluido() As String
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDadosGerais_Update_ProcessamentoConcluido
@@ -337,9 +416,13 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                     qryComprasItens_Update_CFOP_CompraNF, _
                                                     qryComprasItens_Update_Dados_ID_Prod_CompraNFItem, _
                                                     qryComprasCTe_Update_AjustesCampos_LOCAL, _
-                                                    "qryComprasItens_Update_Almox_CompraNFItem", _
-                                                    "qryComprasItem_Update_AjustesCampos", _
-                                                    "qryComprasItem_Update_STs" _
+                                                    qryComprasItens_Update_Almox_CompraNFItem, _
+                                                    qryComprasItem_Update_Almox_CompraNFItem_55_1907, _
+                                                    qryComprasItem_Update_Almox_CompraNFItem_55_2152_PSC, _
+                                                    qryComprasItem_Update_Almox_CompraNFItem_55_2152_PSP, _
+                                                    qryComprasItem_Update_AjustesCampos, _
+                                                    qryComprasItem_Update_STs, _
+                                                    qryComprasItem_Update_STs_CTe_ST_CompraNFItem _
                                                     ): executarComandos qryProcessos
 
 End Sub
@@ -368,9 +451,10 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
                                                 "qryDadosGerais_Update_FiltroFil_DestinatarioProparts_55", _
                                                 "qryDadosGerais_Update_FiltroFil_RemetenteProparts", _
                                                 qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP, _
-                                                "qryDadosGerais_Update_ID_NatOp_CompraNF" _
+                                                "qryDadosGerais_Update_ID_NatOp_CompraNF", _
+                                                qryDadosGerais_Update_dhEmiCopia _
                                                 ): executarComandos qryProcessos
-
+                                                
 '' qryDadosGerais_Delete_RegistrosInvalidos _
 
 End Sub

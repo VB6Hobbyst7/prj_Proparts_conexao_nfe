@@ -1,0 +1,49 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: SispartsConexao_20220119-1611.7z
+
+Testing     SispartsConexao\bkp\SispartsConexao_20220110_1424.7z
+Testing     SispartsConexao\bkp\SispartsConexao_20220110_1624.7z
+Testing     SispartsConexao\SispartsConexao_20220118_2120.7z
+Testing     SispartsConexao\SispartsConexao_20220119_1610.7z
+Testing     SispartsConexao\bkp\20211201_0009_Nao_Processado.png
+Testing     SispartsConexao\bkp\20211201_0009_Nao_Processado_02.png
+Testing     SispartsConexao\bkp\20211201_ItensCompra.sql
+Testing     SispartsConexao\bkp\20211203_0845_tblNatOp.sql
+Testing     SispartsConexao\bkp\20211214_0735_tblNatOp.sql
+Testing     SispartsConexao\bkp\20211214_0837_validar_ComprasComItens.sql
+Testing     SispartsConexao\bkp\20211214_1342_AjustesFinais.sql
+Testing     SispartsConexao\bkp\20211214_1342_AjustesFinais_qryComprasItem_Insert.sql
+Testing     SispartsConexao\bkp\qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP.sql
+Testing     SispartsConexao\bkp\templates.sql
+Testing     SispartsConexao\bkp\validar_tblCompraNFItem_Almox_CompraNFItem.sql
+Testing     SispartsConexao\bkp\validar_tblCompraNFItem_campos.sql
+Testing     SispartsConexao\bkp\20211201_0009_Nao_Processado_32210304884082000569570000040073831040073834-cteproc.xml
+Testing     SispartsConexao\bkp\20211129.txt
+Testing     SispartsConexao\SispartsConexao.accdb
+Testing     SispartsConexao\bkp\SispartsConexao_azs_20211129_0017.accdb
+Testing     SispartsConexao\bkp\20211206.log
+Testing     SispartsConexao\bkp\20211208.log
+Testing     SispartsConexao\bkp\20211209.log
+Testing     SispartsConexao\bkp\20211214.log
+Testing     SispartsConexao\bkp\20211216.log
+Testing     SispartsConexao\bkp\20220105.log
+Testing     SispartsConexao\bkp\20220106.log
+Testing     SispartsConexao\bkp\20220107.log
+Testing     SispartsConexao\20220110.log
+Testing     SispartsConexao\20220111.log
+Testing     SispartsConexao\20220112.log
+Testing     SispartsConexao\20220118.log
+Testing     SispartsConexao\20220119.log
+Testing     SispartsConexao\bkp\tblNatOper.xlsx
+Testing     SispartsConexao\~$tblNatOper.xlsx
+Testing     SispartsConexao\bkp
+Testing     SispartsConexao
+
+Everything is Ok
+
+Folders: 2
+Files: 35
+Size:       11658300
+Compressed: 2640830

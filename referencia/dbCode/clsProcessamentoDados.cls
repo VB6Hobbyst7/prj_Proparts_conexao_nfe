@@ -66,6 +66,7 @@ Private Const qryUpdateProcessamento_opData As String = _
 Private Const qryUpdateProcessamento_opTime As String = _
         "UPDATE tblProcessamento SET tblProcessamento.valor = Mid([tblProcessamento].[valor],12,8) WHERE formatacao = 'opTime';"
         
+        
 Public Sub DeleteProcessamento()
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), "######## - DeleteProcessamento()"
     If DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='processamentoLog'") Then TextFile_Append CurrentProject.path & "\" & strLog(), qryDeleteProcessamento
@@ -145,18 +146,21 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                 Select Case UBound(Split((item), "|"))
                     
                     Case 0
-'                        Debug.Print CStr(item)
-                        
-                        valor = XDoc.getElementsByTagName(Split((item), "|")(0)).item(0).Text
+                        valor = XDoc.getElementsByTagName(Split((item), "|")(0)).item(0).text
                         If valor <> "" Then pDados.add pPK & "|" & Replace(item, "|", ";") & "|" & valor
                         
                     Case 1
-'                        Debug.Print CStr(item)
-                        
                         regiao = Split((item), "|")(0)
                         campo = Split((item), "|")(1)
-                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).Text
+                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).text
                         If valor <> "" Then pDados.add pPK & "|" & Replace(item, "|", ";") & "|" & valor
+                        
+                    Case 2
+                        regiao = Split((item), "|")(0)
+                        campo = Split((item), "|")(1)
+                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).text
+                        If valor <> "" Then pDados.add pPK & "|" & Replace(item, "|", ";") & "|" & valor
+                        
                         
                     Case Else
                 End Select
@@ -185,7 +189,7 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                     Case 1
                         regiao = Split((item), "|")(0)
                         campo = Split((item), "|")(1)
-                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).Text
+                        valor = XDoc.SelectNodes(regiao).item(0).SelectNodes(campo).item(0).text
                         If valor <> "" Then pDados.add pPK & "|" & Replace(item, "|", ";") & "|" & valor
                     Case Else
                 End Select
@@ -213,7 +217,7 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                         Case 1
                             regiao = Split((item), "|")(0)
                             campo = Split((item), "|")(1)
-                            valor = XDoc.SelectNodes(regiao).item(i).SelectNodes(campo).item(0).Text
+                            valor = XDoc.SelectNodes(regiao).item(i).SelectNodes(campo).item(0).text
                             If valor <> "" Then pDados.add pPK & "_" & idItem & "|" & Replace(item, "|", ";") & "|" & valor
         
                         '' IMPOSTO
@@ -221,7 +225,7 @@ Dim repositorioComprasItens As String: repositorioComprasItens = "tblCompraNFIte
                             regiao = Split((item), "|")(0)
                             subRegiao = Split((item), "|")(1)
                             campo = Split((item), "|")(2)
-                            valor = XDoc.SelectNodes(regiao).item(i).SelectNodes(subRegiao).item(0).getElementsByTagName(campo).item(0).Text
+                            valor = XDoc.SelectNodes(regiao).item(i).SelectNodes(subRegiao).item(0).getElementsByTagName(campo).item(0).text
                             If valor <> "" Then pDados.add pPK & "_" & idItem & "|" & Replace(item, "|", ";") & "|" & valor
         
                         Case Else

@@ -1,0 +1,34 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: 20220120_0217_20220125-2231.7z
+
+Testing     20220120_0217\01_modConexaoNfeCte.bas
+Testing     20220120_0217\azsCadastroRegistros.bas
+Testing     20220120_0217\azsExportAllCodeMSAccess.bas
+Testing     20220120_0217\azs_Info.bas
+Testing     20220120_0217\azs_modMSSQL.bas
+Testing     20220120_0217\azs_VALIDAR_DADOS.bas
+Testing     20220120_0217\basConexao.bas
+Testing     20220120_0217\basUtilitarios.bas
+Testing     20220120_0217\libUteis.bas
+Testing     20220120_0217\modDeclaracoes.bas
+Testing     20220120_0217\modFuncoesGerais.bas
+Testing     20220120_0217\modImpXMLSAM.bas
+Testing     20220120_0217\Banco.cls
+Testing     20220120_0217\clsCommonDialog.cls
+Testing     20220120_0217\clsConexaoNfeCte.cls
+Testing     20220120_0217\clsConexaoNFeCTeDados.cls
+Testing     20220120_0217\clsCriarArquivos.cls
+Testing     20220120_0217\clsProcessamento.cls
+Testing     20220120_0217\clsProcessamentoDados.cls
+Testing     20220120_0217\Form_frmCompraNF_ImpXML.cls
+Testing     20220120_0217\Form_frmControleDeArquivos.cls
+Testing     20220120_0217
+
+Everything is Ok
+
+Folders: 1
+Files: 21
+Size:       376105
+Compressed: 52226

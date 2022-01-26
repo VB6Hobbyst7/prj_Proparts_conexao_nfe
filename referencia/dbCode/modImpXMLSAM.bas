@@ -40,9 +40,9 @@ If (XMLdoc.parseError.errorCode <> 0) Then
     MsgBox ("You have error " & myErr.reason)
 Else
     Set objNodeList = XMLdoc.getElementsByTagName("ide")
-    cCT = objNodeList.item(i).Text
+    cCT = objNodeList.item(i).text
     Set objNodeList = XMLdoc.getElementsByTagName("emit")
-    CNPJ = objNodeList.item(i).Text
+    CNPJ = objNodeList.item(i).text
 End If
 
 End Function
@@ -136,8 +136,8 @@ Else
         
         'Item = Item + 1
         nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").item(i).Attributes(0).value)
-        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cProd").item(0).Text)
-        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xProd").item(0).Text)
+        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cProd").item(0).text)
+        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xProd").item(0).text)
         
         Dim parts() As String
         Dim NumAtual As String
@@ -185,8 +185,8 @@ Else
        
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 - CARREGAR TODOS OS ITENS DA COMPRA
-        NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/NCM").item(0).Text)
-        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/CFOP").item(0).Text)
+        NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/NCM").item(0).text)
+        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/CFOP").item(0).text)
         
         
         '' #Ailton - qryUpdateFinalidade
@@ -210,8 +210,8 @@ Else
         
         '' #DUVIDA - QUAL O OBJETIVO ?
         '' #ENTENDIMENTO_01 - CARREGAR TODOS OS ITENS DA COMPRA
-        uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/uCom").item(0).Text)
-        qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/qCom").item(0).Text)
+        uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/uCom").item(0).text)
+        qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/qCom").item(0).text)
         
         '#05_XML_IPI
         '' #DUVIDA - QUAL O OBJETIVO ?
@@ -220,34 +220,34 @@ Else
         
         If rsIPI.RecordCount > 0 And Forms!frmCompraNF_ImpXML!Finalidade = 2 Then
             RatIPI = (Replace(rsIPI!VIPI, ".", ",") / 100) / Replace(qCom, ".", ",")
-            vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vUnCom").item(0).Text)
-            vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vProd").item(0).Text)
+            vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vUnCom").item(0).text)
+            vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vProd").item(0).text)
             vProd = (Val(vProd)) + Val(Replace(rsIPI!VIPI, ",", "."))
             vUnCom = vProd / Replace(qCom, ".", ",")
             vProd = Replace(vProd, ",", ".")
             vUnCom = Replace(vUnCom, ",", ".")
         Else
-            vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vUnCom").item(0).Text)
-            vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vProd").item(0).Text)
+            vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vUnCom").item(0).text)
+            vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vProd").item(0).text)
             vUnCom = Replace(vUnCom, ",", ".")
             vProd = Replace(vProd, ",", ".")
         End If
         
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vFrete").Length > 0 Then
-            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vFrete").item(0).Text)
+            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vFrete").item(0).text)
             VFrete = Replace(VFrete, ",", ".")
         Else
             VFrete = 0
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vDesc").Length > 0 Then
-            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vDesc").item(0).Text)
+            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vDesc").item(0).text)
             VDesc = Replace(VDesc, ",", ".")
         Else
             VDesc = 0
         End If
         
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vOutro").Length > 0 Then
-            vOutro = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vOutro").item(0).Text)
+            vOutro = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vOutro").item(0).text)
             vOutro = Replace(vOutro, ",", ".")
         Else
             vOutro = 0
@@ -819,112 +819,112 @@ Else
 
             'ICMS 00
             If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("CST").item(0).Text
-                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("modBC").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("vBC").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("pICMS").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("vICMS").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("CST").item(0).text
+                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("modBC").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("vBC").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("pICMS").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS00").item(0).getElementsByTagName("vICMS").item(0).text
             'ICMS 10
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("CST").item(0).Text
-                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("modBC").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vBC").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pICMS").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vICMS").item(0).Text
-                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("modBCST").item(0).Text
-                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pMVAST").item(0).Text
-                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pRedBCST").item(0).Text
-                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vBCST").item(0).Text
-                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pICMSST").item(0).Text
-                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vICMSST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("CST").item(0).text
+                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("modBC").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vBC").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pICMS").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vICMS").item(0).text
+                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("modBCST").item(0).text
+                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pMVAST").item(0).text
+                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pRedBCST").item(0).text
+                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vBCST").item(0).text
+                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("pICMSST").item(0).text
+                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS10").item(0).getElementsByTagName("vICMSST").item(0).text
             'ICMS 20
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("CST").item(0).Text
-                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("modBC").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("vBC").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("pICMS").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("vICMS").item(0).Text
-                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("pRedBC").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("CST").item(0).text
+                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("modBC").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("vBC").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("pICMS").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("vICMS").item(0).text
+                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS20").item(0).getElementsByTagName("pRedBC").item(0).text
             'ICMS 30
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("CST").item(0).Text
-                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("modBCST").item(0).Text
-                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("pMVAST").item(0).Text
-                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("pRedBCST").item(0).Text
-                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("vBCST").item(0).Text
-                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("pICMSST").item(0).Text
-                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("vICMSST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("CST").item(0).text
+                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("modBCST").item(0).text
+                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("pMVAST").item(0).text
+                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("pRedBCST").item(0).text
+                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("vBCST").item(0).text
+                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("pICMSST").item(0).text
+                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS30").item(0).getElementsByTagName("vICMSST").item(0).text
             'ICMS 40, 41, 50
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS40").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS40").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS40").item(0).getElementsByTagName("CST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS40").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS40").item(0).getElementsByTagName("CST").item(0).text
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS41").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS41").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS41").item(0).getElementsByTagName("CST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS41").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS41").item(0).getElementsByTagName("CST").item(0).text
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS50").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS50").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS50").item(0).getElementsByTagName("CST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS50").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS50").item(0).getElementsByTagName("CST").item(0).text
             'ICMS 51
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("CST").item(0).Text
-                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("modBC").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("vBC").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("pICMS").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("vICMS").item(0).Text
-                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("pRedBC").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("CST").item(0).text
+                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("modBC").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("vBC").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("pICMS").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("vICMS").item(0).text
+                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS51").item(0).getElementsByTagName("pRedBC").item(0).text
             'ICMS 60
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS60").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS60").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS60").item(0).getElementsByTagName("CST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS60").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS60").item(0).getElementsByTagName("CST").item(0).text
             'ICMS 70
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("CST").item(0).Text
-                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("modBC").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vBC").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pICMS").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vICMS").item(0).Text
-                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pRedBC").item(0).Text
-                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("modBCST").item(0).Text
-                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pMVAST").item(0).Text
-                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pRedBCST").item(0).Text
-                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vBCST").item(0).Text
-                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pICMSST").item(0).Text
-                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vICMSST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("CST").item(0).text
+                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("modBC").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vBC").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pICMS").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vICMS").item(0).text
+                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pRedBC").item(0).text
+                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("modBCST").item(0).text
+                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pMVAST").item(0).text
+                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pRedBCST").item(0).text
+                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vBCST").item(0).text
+                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("pICMSST").item(0).text
+                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS70").item(0).getElementsByTagName("vICMSST").item(0).text
             'ICMS 90
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("CST").item(0).Text
-                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("modBC").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vBC").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pICMS").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vICMS").item(0).Text
-                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pRedBC").item(0).Text
-                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("modBCST").item(0).Text
-                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pMVAST").item(0).Text
-                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pRedBCST").item(0).Text
-                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vBCST").item(0).Text
-                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pICMSST").item(0).Text
-                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vICMSST").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("CST").item(0).text
+                modBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("modBC").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vBC").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pICMS").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vICMS").item(0).text
+                pRedBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pRedBC").item(0).text
+                modBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("modBCST").item(0).text
+                pMVAST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pMVAST").item(0).text
+                pRedBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pRedBCST").item(0).text
+                vBCST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vBCST").item(0).text
+                pICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("pICMSST").item(0).text
+                vICMSST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMS90").item(0).getElementsByTagName("vICMSST").item(0).text
             'ICMSSN 102
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN102").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN102").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN102").item(0).getElementsByTagName("CSOSN").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN102").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN102").item(0).getElementsByTagName("CSOSN").item(0).text
             'ICMSSN 500
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN500").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN500").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN500").item(0).getElementsByTagName("CSOSN").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN500").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN500").item(0).getElementsByTagName("CSOSN").item(0).text
             'ICMSSN 101
             ElseIf XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").Length > 0 Then
-                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("orig").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("CSOSN").item(0).Text
-                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("pCredSN").item(0).Text
-                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("vCredICMSSN").item(0).Text
+                Orig = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("orig").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("CSOSN").item(0).text
+                pICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("pCredSN").item(0).text
+                VICMS = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/ICMS/ICMSSN101").item(0).getElementsByTagName("vCredICMSSN").item(0).text
             End If
         End If
         
@@ -985,11 +985,11 @@ Else
             nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").item(i).Attributes(0).value)
             
             If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").Length > 0 Then
-                cEnq = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI").item(0).getElementsByTagName("cEnq").item(0).Text
-                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("CST").item(0).Text
-                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("vBC").item(0).Text
-                pIPI = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("pIPI").item(0).Text
-                VIPI = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("vIPI").item(0).Text
+                cEnq = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI").item(0).getElementsByTagName("cEnq").item(0).text
+                CST = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("CST").item(0).text
+                vBC = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("vBC").item(0).text
+                pIPI = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("pIPI").item(0).text
+                VIPI = XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("imposto/IPI/IPITrib").item(0).getElementsByTagName("vIPI").item(0).text
             End If
         End If
         
@@ -1079,35 +1079,35 @@ If (XMLdoc.parseError.errorCode <> 0) Then
 Else
     For i = 0 To qtdProd - 1 'Varrendo todos os itens
         nitem = CStr(XMLdoc.getElementsByTagName("nfeProc/NFe/infNFe/det").item(i).Attributes(0).value)             '' Item_CompraNFItem
-        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cProd").item(0).Text)   '' ID_Prod_CompraNFItem '' #20210823_ID_Prod_CompraNFItem
-        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xProd").item(0).Text)   ''
-        cEAN = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cEAN").item(0).Text)
-        NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/NCM").item(0).Text)
-        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/CFOP").item(0).Text)     '' CFOP_CompraNFItem
-        uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/uCom").item(0).Text)
-        qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/qCom").item(0).Text)
-        vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vUnCom").item(0).Text) '' VUnt_CompraNFItem
-        vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vProd").item(0).Text)
-        cEANTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cEANTrib").item(0).Text)
-        uTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/uTrib").item(0).Text)
-        qTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/qTrib").item(0).Text)
-        indTot = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/indTot").item(0).Text)
+        cProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cProd").item(0).text)   '' ID_Prod_CompraNFItem '' #20210823_ID_Prod_CompraNFItem
+        xProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xProd").item(0).text)   ''
+        cEAN = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cEAN").item(0).text)
+        NCM = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/NCM").item(0).text)
+        CFOP = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/CFOP").item(0).text)     '' CFOP_CompraNFItem
+        uCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/uCom").item(0).text)
+        qCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/qCom").item(0).text)
+        vUnCom = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vUnCom").item(0).text) '' VUnt_CompraNFItem
+        vProd = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vProd").item(0).text)
+        cEANTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/cEANTrib").item(0).text)
+        uTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/uTrib").item(0).text)
+        qTrib = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/qTrib").item(0).text)
+        indTot = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/indTot").item(0).text)
         
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vFrete").Length > 0 Then
-            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vFrete").item(0).Text) '' VTotFrete_CompraNFItem
+            VFrete = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vFrete").item(0).text) '' VTotFrete_CompraNFItem
         Else
             VFrete = 0
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vDesc").Length > 0 Then
-            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vDesc").item(0).Text)   '' VTotDesc_CompraNFItem
+            VDesc = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/vDesc").item(0).text)   '' VTotDesc_CompraNFItem
         Else
             VDesc = 0
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xPed").Length > 0 Then
-            xPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xPed").item(0).Text)
+            xPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/xPed").item(0).text)
         End If
         If XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/nItemPed").Length > 0 Then
-            nItemPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/nItemPed").item(0).Text) '' Item_CompraNFItem
+            nItemPed = CStr(XMLdoc.SelectNodes("nfeProc/NFe/infNFe/det").item(i).SelectNodes("prod/nItemPed").item(0).text) '' Item_CompraNFItem
         End If
         
         Set gro = db.OpenRecordset("04_XML_prod", dbOpenDynaset)

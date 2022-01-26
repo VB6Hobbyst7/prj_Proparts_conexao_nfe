@@ -36,7 +36,7 @@ Dim nomeArquivo As String
     
         '' #CARREGAR_DADOS_ARQUIVO
         dados.ChvAcesso = rst.Fields("ChvAcesso").value
-        dados.dhEmi = rst.Fields("dhEmi").value
+        dados.dhEmi = DateDiff("s", "1/1/1970", Now) * 1000
         dados.codUsuarioErp = DLookup("ValorDoParametro", "tblParametros", "TipoDeParametro='UsuarioErpCod'")
         dados.nomeUsuarioErp = DLookup("ValorDoParametro", "tblParametros", "TipoDeParametro='UsuarioErpNome'")
         
