@@ -1,0 +1,48 @@
+
+7-Zip (A) 4.57  Copyright (c) 1999-2007 Igor Pavlov  2007-12-06
+
+Processing archive: dbSql_20220204-1239.7z
+
+Testing     dbSql\01_consultasCarregarDados.sql
+Testing     dbSql\02_consultasProcessamento.sql
+Testing     dbSql\20210912_2041.sql
+Testing     dbSql\20211105.sql
+Testing     dbSql\20211109.sql
+Testing     dbSql\20211111.sql
+Testing     dbSql\20211111_1937.sql
+Testing     dbSql\20211122.sql
+Testing     dbSql\20211122_AjusteDeCampos_CTe_tblCompraNFItem__SELECT.sql
+Testing     dbSql\20211122_AjusteDeCampos_CTe__SELECT.sql
+Testing     dbSql\20211122_AjusteDeCampos_CTe__UPDATE.sql
+Testing     dbSql\20211130_tblCompraNFItem.sql
+Testing     dbSql\20211201_ItensCompra.sql
+Testing     dbSql\20211203_0845_tblNatOp.sql
+Testing     dbSql\20211214_0735_tblNatOp.sql
+Testing     dbSql\20211214_0837_validar_ComprasComItens.sql
+Testing     dbSql\20211214_1342_AjustesFinais.sql
+Testing     dbSql\20211214_1342_AjustesFinais_qryComprasItem_Insert.sql
+Testing     dbSql\comprasNF.sql
+Testing     dbSql\consultasProparts.sql
+Testing     dbSql\FiltroCFOP.sql
+Testing     dbSql\MSSQL_ComsultasDeTestes.sql
+Testing     dbSql\qryClientes_Insert.sql
+Testing     dbSql\qryDadosGerais_Update_ID_NatOp_CompraNF__FiltroCFOP.sql
+Testing     dbSql\qryInsertItensCTe.sql
+Testing     dbSql\qryInsertItensCTe_OLD.sql
+Testing     dbSql\qryTblNatOp.sql
+Testing     dbSql\qryTblNatOp_Insert.sql
+Testing     dbSql\templates.sql
+Testing     dbSql\templates_scripts_20211026_0844.sql
+Testing     dbSql\update_tblDadosConexaoNFeCTe.sql
+Testing     dbSql\update_tblDadosConexaoNFeCTe_20210422_1635.sql
+Testing     dbSql\validar_tblCompraNFItem_Almox_CompraNFItem.sql
+Testing     dbSql\validar_tblCompraNFItem_campos.sql
+Testing     dbSql\tblNatOper.xlsx
+Testing     dbSql
+
+Everything is Ok
+
+Folders: 1
+Files: 35
+Size:       370973
+Compressed: 130534
