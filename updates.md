@@ -1,4 +1,4 @@
-# Segue relação de funções concluidas da aplicação ( SispartsConexao.accdb ):
+# Relação de funções concluidas da aplicação:
 
 * (Concluído) 1. Não reprocessar o mesmo arquivo - ( Controle por nome de arquivo )
 	- (Concluído) 1.1 Endentimento de principais pastas:
