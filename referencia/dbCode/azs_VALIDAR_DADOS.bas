@@ -5,13 +5,22 @@ Option Compare Database
 
 Sub teste_moveFile()
 
-Dim pSource As String: pSource = "C:\ConexaoNFe\XML\68.365.5010001-05 - Proparts Comércio de Artigos Esportivos e Tecnologia Ltda\recebimento\"
-Dim pFileName As String: pFileName = "nfse35503087269760000016161111fc8allpg-nfse.xml"
-Dim pDestination As String: pDestination = CStr(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaTentativaDeReprocessamento'"))
-Dim tFileLog As String: tFileLog = left(Split(strLog, ".")(0), 6) & ".csv"
+Dim pChvAcesso As String: pChvAcesso = ""
+
+Dim pSource As String: _
+    pSource = DLookup("[CaminhoDoArquivo]", "[tblDadosConexaoNFeCTe]", "[ChvAcesso]='" & pPathFile & "'")
+    
+Dim pFileName As String: _
+    pFileName = getNomeDoArquivo(pSource)
+
+Dim pDestination As String: _
+    pDestination = CStr(DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaTentativaDeReprocessamento'"))
+    
+Dim tFileLog As String: _
+    tFileLog = left(Split(strLog, ".")(0), 6) & ".csv"
+
 
     '' mover arquivo
-'    If (Dir(pDestination & pFileName) <> "") Then Kill pDestination & pFileName
     FileCopy pSource & pFileName, pDestination & pFileName
     Kill pSource & pFileName
     
