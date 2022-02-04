@@ -16,6 +16,8 @@ Dim retVal As Variant: retVal = MsgBox("Deseja iniciar o processamento de arquiv
 
     If retVal = vbOK Then
         processarDadosGerais pArquivos
+        Controle_InibirReprocessamento
+        
         Me.Requery
         MsgBox "Concluido!", vbInformation + vbOKOnly, strTitulo
     End If
