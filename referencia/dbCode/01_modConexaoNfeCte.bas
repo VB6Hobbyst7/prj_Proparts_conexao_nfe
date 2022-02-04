@@ -701,8 +701,7 @@ Dim sql_Select_CaminhoDestino As String: sql_Select_CaminhoDestino = _
             Debug.Print "# DESTINO"
             Debug.Print rst.Fields("CaminhoDestino").value
             
-            
-            Kill rst.Fields("CaminhoDestino").value
+            If (Dir(rst.Fields("CaminhoDestino").value) <> "") Then Kill rst.Fields("CaminhoDestino").value
             FileCopy rst.Fields("CaminhoDoArquivo").value, rst.Fields("CaminhoDestino").value
             Kill rst.Fields("CaminhoDoArquivo").value
         End If

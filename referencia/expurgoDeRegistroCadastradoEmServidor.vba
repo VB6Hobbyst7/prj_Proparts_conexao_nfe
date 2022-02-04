@@ -1,3 +1,8 @@
+' 1. analise
+' 2. logica
+' 3. regra de negocio
+' 4. desenvolvimento
+' 
 Sub expurgoDeRegistroCadastradoEmServidor()
 On Error GoTo adm_Err
 
