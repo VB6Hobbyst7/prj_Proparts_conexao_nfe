@@ -1,6 +1,0 @@
-INFO 12/08/2021 09:56:18 - carregarDadosGerais - Importar Dados Gerais ( Quantidade de registros: 1087 ) - 00:04:57
-INFO 12/08/2021 10:05:09 - carregarArquivosPendentes - Importar arquivos pendentes ( Quantidade de registros: 562 ) - 00:08:51
-INFO 12/08/2021 10:08:34 - CadastroDeComprasEmServidor - Exportar compras ( Quantidade de registros: 563 ) - 00:03:25
-INFO 12/08/2021 10:08:38 - Processamento - CriarTipoDeArquivo (FlagLancadaERP) - 00:00:04
-INFO 12/08/2021 10:08:42 - Processamento - CriarTipoDeArquivo (Manifesto) - 00:00:04
-Concluido! - testeDeFuncionamentoGeral
