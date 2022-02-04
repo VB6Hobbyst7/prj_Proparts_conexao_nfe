@@ -16,8 +16,10 @@ Dim retVal As Variant: retVal = MsgBox("Deseja iniciar o processamento de arquiv
 
     If retVal = vbOK Then
         processarDadosGerais pArquivos
+                
+        '' #20220202_Controle_InibirReprocessamento
         Controle_InibirReprocessamento
-        
+                
         Me.Requery
         MsgBox "Concluido!", vbInformation + vbOKOnly, strTitulo
     End If
@@ -40,6 +42,7 @@ Dim qryProcessos() As Variant: qryProcessos = Array( _
         If (DCount("[id]", "tblDadosConexaoNFeCTe", "[registroProcessado]=0") > 0) Then
             processarArquivosPendentes
             executarComandos qryProcessos
+            
             Me.Requery
             MsgBox "Concluido!", vbInformation + vbOKOnly, strTitulo
         Else

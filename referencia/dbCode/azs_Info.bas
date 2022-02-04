@@ -6,6 +6,7 @@ Attribute VB_Name = "azs_Info"
 
 '' Done | Subistituição deste item
 '' ----------------------------------------------------------------------------------
+'' #20220202_Controle_InibirReprocessamento
 '' #20220119_dhEmiCopia
 '' #20220119_GerarArquivosDeLancamentos_e_Manifestos
 '' #20220112_InsertLogProcessados
