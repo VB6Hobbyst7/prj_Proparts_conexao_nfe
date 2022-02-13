@@ -1,3 +1,6 @@
+
+----------------------------------
+
 SELECT COUNT(*) as RegistroExistente 
 FROM tblCompraNF where ChvAcesso_CompraNF = '32210268365501000296550000000637741001351624';
 
@@ -5,15 +8,15 @@ FROM tblCompraNF where ChvAcesso_CompraNF = '32210268365501000296550000000637741
 SELECT COUNT(*) as RegistroExistente,ChvAcesso_CompraNF FROM tblCompraNF where ChvAcesso_CompraNF = '32210268365501000296550000000637741001351624' GROUP BY ChvAcesso_CompraNF 
 
 
-SELECT COUNT(*) 
-FROM tblCompraNF where ChvAcesso_CompraNF = '26210324073694000155550010006291401018935070' 
+
 
 
 SELECT COUNT(*)	-- SELECT * -- DELETE
 FROM tblCompraNF;
 
+
 SELECT COUNT(*)	-- SELECT * -- DELETE
-FROM tblCompraNFItem;
+FROM tblCompraNFItem
 
 
 SELECT ChvAcesso_CompraNF
