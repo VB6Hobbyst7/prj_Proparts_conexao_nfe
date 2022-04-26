@@ -1,5 +1,21 @@
 Attribute VB_Name = "azs_Info"
 
+Sub azs_teste_gerarArquivosJson()
+
+Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
+
+''' #20220119_GerarArquivosDeLancamentos_e_Manifestos
+''' LANÇAMENTO
+'gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes
+
+'' MANIFESTO
+gerarArquivosJson opManifesto, , strCaminhoAcoes
+
+
+
+
+End Sub
+
 
 '' #20211128_MoverArquivosProcessados
 
@@ -139,22 +155,6 @@ Attribute VB_Name = "azs_Info"
 'End Sub
 
 
-'Sub azs_teste_gerarArquivosJson()
-'
-'Dim strCaminhoAcoes As String: strCaminhoAcoes = DLookup("[ValorDoParametro]", "[tblParametros]", "[TipoDeParametro]='caminhoDeColetaAcoes'")
-'
-''' #20220119_GerarArquivosDeLancamentos_e_Manifestos
-''' LANÇAMENTO
-'gerarArquivosJson opFlagLancadaERP, , strCaminhoAcoes
-'
-''' MANIFESTO
-'gerarArquivosJson opManifesto, , strCaminhoAcoes
-'
-'
-''Debug.Print DateDiff("s", "1/1/1970", "2021-03-03 08:20:00") * 1000
-'
-'
-'End Sub
 '
 '
 'Sub azs_teste_carregarDadosGerais()

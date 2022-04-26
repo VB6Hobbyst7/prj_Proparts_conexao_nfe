@@ -322,14 +322,14 @@ Dim TMP As String
         '' #20220111_update_FlagEst_CompraNFItem
         dbDestino.SqlExecute sql_comprasItens_Update_FlagEst
             
-        '' #20211128_LimparRepositorios
-        '' Limpar repositorio de itens de compras
-        Application.CurrentDb.Execute _
-                "Delete from tblCompraNFItem"
-
-        '' Limpar repositorio de compras
-        Application.CurrentDb.Execute _
-                "Delete from tblCompraNF"
+'        '' #20211128_LimparRepositorios
+'        '' Limpar repositorio de itens de compras
+'        Application.CurrentDb.Execute _
+'                "Delete from tblCompraNFItem"
+'
+'        '' Limpar repositorio de compras
+'        Application.CurrentDb.Execute _
+'                "Delete from tblCompraNF"
         
         '' #20211128_MoverArquivosProcessados
         MoverArquivosProcessados
@@ -344,8 +344,8 @@ Dim TMP As String
         '' Limpar repositorio de dados gerais
         Application.CurrentDb.Execute _
                 scripts.InsertLogProcessados
-        Application.CurrentDb.Execute _
-                "Delete from tblDadosConexaoNFeCTe"
+'        Application.CurrentDb.Execute _
+'                "Delete from tblDadosConexaoNFeCTe"
         
     End If
     

@@ -87,7 +87,6 @@ Dim retVal As Variant: retVal = MsgBox("Deseja gerar Json de desse item.?", vbQu
     If retVal = vbOK Then
         If Me.txtRegistroValido.value = 1 Then
             If Me.txtChvAcesso.value <> "" Then gerarArquivosJson opFlagLancadaERP, Me.txtChvAcesso.value, Me.txtCaminhoPadrao.value
-            MsgBox "Concluido!", vbInformation + vbOKOnly, strTitulo
             
             Shell "explorer " & Me.txtCaminhoPadrao.value, vbMaximizedFocus
             

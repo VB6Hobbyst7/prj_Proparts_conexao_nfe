@@ -52,13 +52,7 @@ Property Let strFileName(pValue As String): This.strFileName = pValue: End Prope
 Public Function criarERP()
 Dim objERP As Collection: Set objERP = New Collection
 
-    objERP.add "{"
-    objERP.add "    ""Chave"": """ & This.ChvAcesso & ""","
-    objERP.add "    ""Comando"": """ & This.Comando & """, "
-    objERP.add "    ""data"": " & This.dhEmi & ","
-    objERP.add "    ""codUsuarioErp"": """ & This.codUsuarioErp & """, "
-    objERP.add "    ""nomeUsuarioErp"": """ & This.nomeUsuarioErp & """"
-    objERP.add "}"
+    objERP.add "{""chave"":""" & This.ChvAcesso & """," & """comando"":""" & This.Comando & """," & """data"":" & This.dhEmi & "," & """codUsuarioErp"":""" & This.codUsuarioErp & """," & """nomeUsuarioErp"":""" & This.nomeUsuarioErp & """}"
 
 This.strFileName = This.ChvAcesso & ".erp.json"
 
@@ -66,22 +60,51 @@ execucao objERP, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, str
 
 End Function
 
+'Public Function criarERP()
+'Dim objERP As Collection: Set objERP = New Collection
+'
+'    objERP.add "{"
+'    objERP.add "    ""chave"": """ & This.ChvAcesso & ""","
+'    objERP.add "    ""comando"": """ & This.Comando & """, "
+'    objERP.add "    ""data"": " & This.dhEmi & ","
+'    objERP.add "    ""codUsuarioErp"": """ & This.codUsuarioErp & """, "
+'    objERP.add "    ""nomeUsuarioErp"": """ & This.nomeUsuarioErp & """"
+'    objERP.add "}"
+'
+'This.strFileName = This.ChvAcesso & ".erp.json"
+'
+'execucao objERP, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.caminhoDeProcessados
+'
+'End Function
+
+
 Public Function criarManifesto()
 Dim objManifesto As Collection: Set objManifesto = New Collection
 
-    objManifesto.add "{"
-    objManifesto.add "    ""chaveAcessoNFe"": """ & This.ChvAcesso & ""","
-    objManifesto.add "    ""codTipoEvento"": """ & This.codTipoEvento & """, "
-    objManifesto.add "    ""data"": " & This.dhEmi & ","
-    objManifesto.add "    ""codUsuarioErp"": """ & This.codUsuarioErp & """, "
-    objManifesto.add "    ""nomeUsuarioErp"": """ & This.nomeUsuarioErp & """"
-    objManifesto.add "}"
+    objManifesto.add "{""chaveAcessoNFe"":""" & This.ChvAcesso & """," & """codTipoEvento"":""" & This.codTipoEvento & """," & """data"":" & This.dhEmi & "," & """codUsuarioErp"":""" & This.codUsuarioErp & """," & """nomeUsuarioErp"":""" & This.nomeUsuarioErp & """}"
 
 This.strFileName = This.ChvAcesso & "-" & codTipoEvento & ".man.json"
 
 execucao objManifesto, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.caminhoDeProcessados
 
 End Function
+
+'Public Function criarManifesto()
+'Dim objManifesto As Collection: Set objManifesto = New Collection
+'
+'    objManifesto.add "{"
+'    objManifesto.add "    ""chaveAcessoNFe"": """ & This.ChvAcesso & ""","
+'    objManifesto.add "    ""codTipoEvento"": """ & This.codTipoEvento & """, "
+'    objManifesto.add "    ""data"": " & This.dhEmi & ","
+'    objManifesto.add "    ""codUsuarioErp"": """ & This.codUsuarioErp & """, "
+'    objManifesto.add "    ""nomeUsuarioErp"": """ & This.nomeUsuarioErp & """"
+'    objManifesto.add "}"
+'
+'This.strFileName = This.ChvAcesso & "-" & codTipoEvento & ".man.json"
+'
+'execucao objManifesto, This.strFileName, strApp:="Notepad.exe", pOperacao:=opNone, strFilePath:=This.caminhoDeProcessados
+'
+'End Function
 
 Public Function NewEnum() As IUnknown
     Set NewEnum = pCol.[_NewEnum]

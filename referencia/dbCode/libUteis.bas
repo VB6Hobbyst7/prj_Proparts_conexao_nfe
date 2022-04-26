@@ -86,7 +86,7 @@ Dim c As Variant, TMP As String: TMP = ""
     
     '' Criação
     For Each c In pCol
-        TMP = TMP + CStr(c) + vbNewLine
+        If Len(CStr(c)) > 0 Then TMP = TMP + Trim(CStr(c))
     Next c
     
     '' Saida para arquivo
