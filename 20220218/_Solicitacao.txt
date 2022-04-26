@@ -1,0 +1,5 @@
+A situação das notas emitidas no CFOP 5.927 (baixa de estoque), continua entrando no sistema como transferência no CFOP 2.152.
+
+Olhar as notas emitidas no CFOP 1.949 (entrada própria) também estão entrando como transferência.
+
+Lembrando que esses dois casos são de notas emitidas de um CNPJ para o mesmo CNPJ e não damos entrada porque elas já constam como notas emitidas.
